@@ -179,13 +179,6 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 @media (max-width: 480px) { .admin-status-filters { gap: 6px; } .status-filter-btn { padding: 10px 4px; font-size: 9px; } .filter-icon { font-size: 16px; } .card.pedido-admin { padding: 12px; margin-bottom: 8px; } .fab-refresh { width: 48px; height: 48px; } }
 </style>
 </head>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(reg => console.log('Service Worker registrado'))
-    .catch(err => console.log('Error:', err));
-}
-</script>
 <body>
 <div id="modo_arranque_servidor" data-modo="{{ modo|default('cliente') }}" data-token="{{ token|default('') }}" style="display:none;"></div>
 <div id="loader">
@@ -271,14 +264,14 @@ if ('serviceWorker' in navigator) {
 <div class="success-icon">✅</div>
 <p class="account-detail">No tienes deuda pendiente</p>
 </div>
-<button class="btn-primary-modern" onclick="abrirNuevo()"><span>➕</span><span>Nuevo Envío</span></button>
+<button class="btn-primary-modern" onclick="abrirNuevo()"><span></span><span>Nuevo Envío</span></button>
 <div class="actions-grid">
 <button class="action-card" onclick="abrirHistorial()"><div class="action-icon">📋</div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="abrirPerfil()"><div class="action-icon">🎨</div><div class="action-content"><span class="action-title">Personalizar</span><span class="action-subtitle">Logo y slogan de tu marca</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon"></div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
 </div>
-<button class="btn-logout" onclick="location.reload()"><span></span><span>Cerrar Sesión</span></button>
+<button class="btn-logout" onclick="location.reload()"><span>🚪</span><span>Cerrar Sesión</span></button>
 </div>
 </div>
 <div id="v_perfil" class="seccion card">
@@ -288,9 +281,9 @@ if ('serviceWorker' in navigator) {
 <p id="perfil_nombre" style="font-weight:900; font-size:20px; margin:0;"></p>
 <p id="perfil_slogan_preview" style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;"></p>
 </div>
-<div class="form-group"><label>📸 Logo de tu marca</label><input type="file" id="input_logo" accept="image/*" onchange="previsualizarLogo(this)"></div>
+<div class="form-group"><label> Logo de tu marca</label><input type="file" id="input_logo" accept="image/*" onchange="previsualizarLogo(this)"></div>
 <div class="form-group"><label>✍️ Slogan o descripción corta</label><input type="text" id="perfil_slogan" maxlength="60" placeholder="Ej: Hecho con amor 💜" oninput="renderizarPreviewPerfil()"></div>
-<button class="btn btn-primary" onclick="guardarPerfil()">💾 Guardar Cambios</button>
+<button class="btn btn-primary" onclick="guardarPerfil()"> Guardar Cambios</button>
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
 <button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">🗑️ Quitar foto</button>
 <button class="btn btn-outline" style="margin:0;" onclick="volverAlMenu()">← Regresar</button>
@@ -300,9 +293,9 @@ if ('serviceWorker' in navigator) {
 <h3 id="form_title" style="font-weight:900; font-size: 22px; margin-bottom: 20px;">Solicitar Envío</h3>
 <input type="hidden" id="c_fila">
 <div class="form-group" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:16px; border-radius:var(--radius-md); border:2px solid var(--border); margin-bottom:18px;">
-<label style="color:var(--accent); font-weight:800; margin-bottom:10px;"> TIPO DE SERVICIO</label>
+<label style="color:var(--accent); font-weight:800; margin-bottom:10px;">📦 TIPO DE SERVICIO</label>
 <div class="toggle-servicio">
-<button type="button" id="btn_enviar" class="active" onclick="cambiarTipoServicio('enviar')"> Enviar</button>
+<button type="button" id="btn_enviar" class="active" onclick="cambiarTipoServicio('enviar')">📤 Enviar</button>
 <button type="button" id="btn_recibir" onclick="cambiarTipoServicio('recibir')">📥 Recibir</button>
 </div>
 <small id="tipo_servicio_desc" style="font-size:11px; color:var(--text-muted); display:block; margin-top:8px;">📤 Envío desde tu tienda a un destinatario</small>
@@ -330,9 +323,9 @@ if ('serviceWorker' in navigator) {
 </div>
 <div id="modo_recibir_contenido" style="display:none;">
 <div class="ruta-2-puntos">
-<div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;"> RUTA DE RECOLECCIÓN</div>
+<div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;">🛣️ RUTA DE RECOLECCIÓN</div>
 <div class="punto">
-<div class="punto-titulo">📍 Punto A - Recolección (Proveedor)</div>
+<div class="punto-titulo"> Punto A - Recolección (Proveedor)</div>
 <div id="grupo_proveedor" class="proveedor-box" style="margin-bottom: 12px;">
 <label style="color:#92400e; font-weight:800; margin-bottom:10px;">🏭 PROVEEDOR CONOCIDO</label>
 <select id="c_proveedor" onchange="seleccionarProveedor()" style="background:#fff; border-color:#f59e0b; font-weight:600;"><option value="">— Seleccionar proveedor —</option></select>
@@ -351,11 +344,11 @@ if ('serviceWorker' in navigator) {
 </div>
 <div class="flecha">⬇️</div>
 <div class="punto" style="border-left-color: var(--success);">
-<div class="punto-titulo" style="color: #166534;"> Punto B - Entrega (Mi Tienda)</div>
+<div class="punto-titulo" style="color: #166534;">🏪 Punto B - Entrega (Mi Tienda)</div>
 <div id="info_tienda_destino"><div class="punto-direccion" id="texto_direccion_tienda">Cargando dirección...</div></div>
 </div>
 </div>
-<div id="grupo_guardar_proveedor" class="checkbox-guardar"><input type="checkbox" id="chk_guardar_proveedor" onchange="toggleNombreProveedor()"><label for="chk_guardar_proveedor"> Guardar este proveedor como frecuente</label></div>
+<div id="grupo_guardar_proveedor" class="checkbox-guardar"><input type="checkbox" id="chk_guardar_proveedor" onchange="toggleNombreProveedor()"><label for="chk_guardar_proveedor">💾 Guardar este proveedor como frecuente</label></div>
 <div id="grupo_nombre_proveedor" class="form-group" style="display:none;"><label>Nombre del proveedor</label><input type="text" id="nombre_proveedor_nuevo" placeholder="Ej: Proveedor Guadalajara"></div>
 </div>
 <div id="box_precio" class="price-tag">Costo: —</div>
@@ -398,7 +391,7 @@ if ('serviceWorker' in navigator) {
 <div class="admin-status-filters">
 <button id="adm_tab_pend" class="status-filter-btn active" onclick="cambiarEstatusAdmin('Pendiente')"><span class="filter-icon">🚚</span><span class="filter-text">En Ruta</span></button>
 <button id="adm_tab_comp" class="status-filter-btn" onclick="cambiarEstatusAdmin('Entregado')"><span class="filter-icon">✅</span><span class="filter-text">Entregados</span></button>
-<button id="adm_tab_cancel" class="status-filter-btn" onclick="cambiarEstatusAdmin('Cancelado')"><span class="filter-icon">️</span><span class="filter-text">Cancelados</span></button>
+<button id="adm_tab_cancel" class="status-filter-btn" onclick="cambiarEstatusAdmin('Cancelado')"><span class="filter-icon">🚫</span><span class="filter-text">Cancelados</span></button>
 </div>
 <div id="selector_fecha_admin" class="date-selector-container" style="display:none;">
 <button class="btn-date-toggle" onclick="toggleFechaSelectorAdmin()"><span>📅</span><span>Fecha Específica</span></button>
@@ -419,7 +412,7 @@ if ('serviceWorker' in navigator) {
 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap: wrap;">
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
-<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()"> Mes</button>
+<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
 <button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
@@ -427,7 +420,7 @@ if ('serviceWorker' in navigator) {
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Total Pedidos</div><div id="fin_total_pedidos" class="fin-numero" style="color: var(--primary);">0</div></div>
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Ingresos Totales</div><div id="fin_total_ingresos" class="fin-numero" style="color: var(--accent);">$0</div></div>
 <div class="fin-card" style="background: #dcfce7;"><div class="fin-label" style="color: #166534;">✅ Pagado</div><div id="fin_total_pagado" class="fin-numero" style="color: var(--success);">$0</div></div>
-<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;">⏳ Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
+<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;"> Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
 </div>
 </div>
 <div id="nav_semana_container">
@@ -489,14 +482,14 @@ if ('serviceWorker' in navigator) {
 <div class="bottom-tabs bottom-nav-modern">
 <button class="tab-btn modern-tab active" onclick="cambiarTab('pedidos')"><span class="tab-icon">📦</span><span class="tab-label">Pedidos</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('finanzas')"><span class="tab-icon"></span><span class="tab-label">Finanzas</span></button>
-<button class="tab-btn modern-tab" onclick="cambiarTab('cobros')"><span class="tab-icon"></span><span class="tab-label">Cobros</span></button>
-<button class="tab-btn modern-tab" onclick="cambiarTab('repartidores')"><span class="tab-icon"></span><span class="tab-label">Repartidores</span></button>
+<button class="tab-btn modern-tab" onclick="cambiarTab('cobros')"><span class="tab-icon">💳</span><span class="tab-label">Cobros</span></button>
+<button class="tab-btn modern-tab" onclick="cambiarTab('repartidores')"><span class="tab-icon">👷</span><span class="tab-label">Repartidores</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('mas')"><span class="tab-icon">⚙️</span><span class="tab-label">Más</span></button>
 </div>
 <div class="days-panel-overlay" id="days-panel-overlay" onclick="closeDaysPanel()"></div>
 <div class="days-panel" id="days-panel">
 <div class="days-panel-header">
-<h3 class="days-panel-title"> Seleccionar Día</h3>
+<h3 class="days-panel-title">📅 Seleccionar Día</h3>
 <button class="days-panel-close" onclick="closeDaysPanel()">✕</button>
 </div>
 <div class="days-panel-content">
@@ -504,16 +497,16 @@ if ('serviceWorker' in navigator) {
 <button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span>📋</span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label">📆 Días de la Semana</span>
-<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span></span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
+<span class="day-section-label"> Días de la Semana</span>
+<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
 <button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
-<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
+<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span></span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
 <button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
-<button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span></span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
-<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span></span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
+<button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span>📆</span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
+<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label">📥 Nuevos Pedidos</span>
+<span class="day-section-label"> Nuevos Pedidos</span>
 <button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span>📥</span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
 <div id="routes-buttons-section" style="display: none; margin-top: 20px;">
 <span class="day-section-label">🗺️ Rutas de Entrega</span>
@@ -526,7 +519,7 @@ if ('serviceWorker' in navigator) {
 </button>
 <div id="modal_rango" class="modal-overlay">
 <div class="modal-content">
-<h3 style="font-weight:900; margin-bottom:18px; font-size: 20px;"> Rango Personalizado</h3>
+<h3 style="font-weight:900; margin-bottom:18px; font-size: 20px;">📆 Rango Personalizado</h3>
 <div class="form-group"><label>Fecha Inicio</label><input type="date" id="rango_inicio"></div>
 <div class="form-group"><label>Fecha Fin</label><input type="date" id="rango_fin"></div>
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
@@ -537,13 +530,13 @@ if ('serviceWorker' in navigator) {
 </div>
 </div>
 <div id="v_rastreo" class="seccion card">
-<h2 style="font-weight:900; letter-spacing:-0.5px; margin-bottom:6px; font-size: 22px;">🌙 Rastreo de Envío</h2>
+<h2 style="font-weight:900; letter-spacing:-0.5px; margin-bottom:6px; font-size: 22px;"> Rastreo de Envío</h2>
 <button class="btn btn-outline" style="margin-bottom:18px;" onclick="ver('v_consulta_id')">← Buscar otro pedido</button>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Luna Delivery System</p>
 <div id="rastreo_activo" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="rastreo_marca"></span></p>
-<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="rastreo_recibe"></span></p>
+<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="rastreo_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b> Recibe:</b> <span id="rastreo_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="rastreo_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="rastreo_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
@@ -554,11 +547,11 @@ if ('serviceWorker' in navigator) {
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
 <p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="espera_marca"></span></p>
 <p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="espera_recibe"></span></p>
-<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="espera_destino"></span></p>
+<p style="margin:0 0 6px 0;"><b> Destino:</b> <span id="espera_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="espera_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
 <div id="map_placeholder" class="map-placeholder">
-<div style="font-size:56px; margin-bottom:18px;"></div>
+<div style="font-size:56px; margin-bottom:18px;">⏳</div>
 <p id="espera_mensaje" style="font-weight:700; color:var(--primary); margin-bottom:12px;"></p>
 <p style="font-size:12px; color:var(--text-muted);">Recibirás notificación cuando tu pedido esté en camino.</p>
 </div>
@@ -793,7 +786,6 @@ const botones = document.querySelectorAll('.modern-tab');
 if (index >= 0 && botones[index]) botones[index].classList.add('active');
 }
 function obtenerDiaSemanaActualFront() { const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return dias[new Date().getDay()]; }
-window.addEventListener("DOMContentLoaded", function() {
 async function ejecutarRastreoClienteLoop() {
 if (!tokenClienteActual) return;
 try {
@@ -802,7 +794,7 @@ if (res.error) {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'none';
 let errorDiv = document.getElementById('rastreo_error');
 if (!errorDiv) { errorDiv = document.createElement('div'); errorDiv.id = 'rastreo_error'; errorDiv.style.padding = '24px'; errorDiv.style.textAlign = 'center'; document.getElementById('v_rastreo').appendChild(errorDiv); }
-errorDiv.style.display = 'block'; errorDiv.innerHTML = '<div style="font-size:56px;">️</div><h3 style="font-weight:900; color:var(--danger); margin:12px 0; font-size: 20px;">Pedido no encontrado</h3><p style="font-size:13px; color:var(--text-muted);">' + res.error + '</p>';
+errorDiv.style.display = 'block'; errorDiv.innerHTML = '<div style="font-size:56px;">⚠️</div><h3 style="font-weight:900; color:var(--danger); margin:12px 0; font-size: 20px;">Pedido no encontrado</h3><p style="font-size:13px; color:var(--text-muted);">' + res.error + '</p>';
 if (intervaloRastreo) clearInterval(intervaloRastreo); return;
 }
 if (res.status === "Entregado") {
@@ -820,7 +812,7 @@ document.getElementById('rastreo_activo').style.display = 'block'; document.getE
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 } else {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
-document.getElementById('espera_mensaje').innerHTML = res.esHoy ? ' Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
+document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : '📅 Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
 }
@@ -870,7 +862,7 @@ document.getElementById('modo_enviar_contenido').style.display = 'block';
 document.getElementById('modo_recibir_contenido').style.display = 'none';
 document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
 } else {
-desc.innerText = ' Recibir mercancía: Proveedor → Tu tienda';
+desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
 document.getElementById('modo_enviar_contenido').style.display = 'none';
 document.getElementById('modo_recibir_contenido').style.display = 'block';
 cargarProveedoresFrecuentes(); cargarDireccionTienda();
@@ -939,7 +931,7 @@ if (d && c && m && cp) {
 document.getElementById('box_precio').innerText = "Calculando tarifa...";
 try {
 const res = await gs('calcularPrecio', d + ', ' + c + ', ' + m, marca, tipoOrigen, cp);
-if (res.tarifaEspecial) document.getElementById('box_precio').innerText = ' $90.00 (Tarifa Especial) | ' + res.km + ' KM';
+if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
 else if (tipoOrigen === "hub" && res.precio === 75) document.getElementById('box_precio').innerText = '$75.00 (¡Tarifa Fija Hub!)';
 else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
 km = res.km; origen = res.origen;
@@ -1030,7 +1022,7 @@ if (fp !== fechaFiltro) return false;
 return true;
 });
 const contador = document.getElementById('contador_resultados');
-if (textoBusqueda || fechaFiltro) { contador.style.display = 'block'; contador.innerText = ' ' + filtrados.length + ' resultado(s) encontrado(s)'; }
+if (textoBusqueda || fechaFiltro) { contador.style.display = 'block'; contador.innerText = '🔎 ' + filtrados.length + ' resultado(s) encontrado(s)'; }
 else contador.style.display = 'none';
 let bloquesDias = { 'Por asignar': [], 'Lunes': [], 'Martes': [], 'Miércoles': [], 'Jueves': [], 'Viernes': [], 'Sábado': [], 'Domingo': [] };
 filtrados.forEach(p => { if (bloquesDias[p.dia] !== undefined) bloquesDias[p.dia].push(p); else bloquesDias['Por asignar'].push(p); });
@@ -1045,15 +1037,15 @@ const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo"> Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + '</p>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + '</p>';
 let fechaMostrar = '';
 if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>🗓️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
-const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')"> Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
+const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')">❌ Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
 bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--warning)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; margin-bottom: 8px;"><div><strong style="font-size:13px; color:var(--primary);">' + (p.recibe || 'Sin nombre') + '</strong><span style="display:block; font-size:13px; color:var(--text-muted); font-weight:700;">ID: ' + idParaMostrar + ' ' + tipoBadge + '</span></div>' + statusBadge + '</div>' +
 contenidoDireccion + fechaMostrar +
 '<div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:12px; border-radius:var(--radius-sm); border: 2px solid var(--border); margin-bottom:10px;">' +
-'<p style="margin:0 0 6px 0;"><b>📱 Celular:</b> <a class="wa-link" href="https://api.whatsapp.com/send?phone=52' + celLimpio + '" target="_blank">' + p.celular + ' 💬</a></p>' +
+'<p style="margin:0 0 6px 0;"><b> Celular:</b> <a class="wa-link" href="https://api.whatsapp.com/send?phone=52' + celLimpio + '" target="_blank">' + p.celular + ' </a></p>' +
 '<p style="margin:0; color:var(--text-muted);"><b>📝 Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
 '<div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:700; color:var(--accent);">' + p.km + ' KM | $' + p.precio + '.00</span><div style="display:flex; gap:8px;">' + botonesAccion + '</div></div></div>');
 });
@@ -1168,11 +1160,11 @@ const displayAsignar = (p.status === 'Entregado' || p.status === 'Cancelado') ? 
 const valPrioridad = (p.prioridad === 999) ? "" : p.prioridad;
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
-const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend"> Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
+const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled> Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')"> Iniciar Entrega</button>');
-const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir"> Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo"> Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
+const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
+const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
 const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' 💬</a>';
 bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--accent)')) + ';">' +
@@ -1184,11 +1176,11 @@ bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-s
 contenidoDireccion +
 '<div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:14px; border-radius:var(--radius-sm); border: 2px solid var(--border); margin-bottom:12px; font-size:11px;">' +
 '<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> ' + p.recibe + ' | 📞 ' + celularLink + '</p>' +
-'<p style="margin:0; color:var(--text-muted);"><b> Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
+'<p style="margin:0; color:var(--text-muted);"><b>📝 Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
 '<div class="form-group" style="margin-bottom:14px; display: ' + displayAsignar + ';"><div class="grupo-dias"><button class="btn-dia ' + (p.diaLetra === 'L' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'L\')">L</button><button class="btn-dia ' + (p.diaLetra === 'M' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'M\')">M</button><button class="btn-dia ' + (p.diaLetra === 'Mi' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'Mi\')">Mi</button><button class="btn-dia ' + (p.diaLetra === 'J' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'J\')">J</button><button class="btn-dia ' + (p.diaLetra === 'V' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'V\')">V</button><button class="btn-dia ' + (p.diaLetra === 'S' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'S\')">S</button></div></div>' +
 '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">' + btnIniciar +
 (p.status !== 'Cancelado' ? '<button class="btn btn-success" style="padding:12px; margin:0; font-size:11px;" onclick="setSt(' + p.fila + ', \'Completado\')">✅ Finalizar</button>' : '') + '</div>' +
-(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;"><button class="btn" style="padding:10px; font-size:10px; background:var(--success-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pagado\')">✅ Pagado</button><button class="btn" style="padding:10px; font-size:10px; background:var(--warning-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pendiente\')">⏳ Pendiente</button></div>' : '') +
+(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;"><button class="btn" style="padding:10px; font-size:10px; background:var(--success-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pagado\')">✅ Pagado</button><button class="btn" style="padding:10px; font-size:10px; background:var(--warning-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pendiente\')"> Pendiente</button></div>' : '') +
 (p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;"><button class="btn" style="padding:12px; margin:0; font-size:11px; background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); color:#fff;" onclick="abrirRutaIndividual(' + p.fila + ')">🗺️ Ver Ruta</button><button class="btn btn-primary" style="padding:12px; margin:0; font-size:11px;" onclick="enviarNotificacionWhatsApp(' + p.fila + ')">💬 WhatsApp</button></div>' : '') +
 '</div>');
 });
@@ -1226,19 +1218,10 @@ try {
 const baseUrl = await gs('obtenerUrlApp');
 const linkPedido = baseUrl + "?t=" + idParaMostrar;
 let emojiStatus = "📦", textoStatus = "En preparación";
-if (p.status === "En Entrega") { emojiStatus = ""; textoStatus = "En ruta a tu domicilio"; }
+if (p.status === "En Entrega") { emojiStatus = "🛵"; textoStatus = "En ruta a tu domicilio"; }
 else if (p.status === "Entregado") { emojiStatus = "✅"; textoStatus = "Entregado"; }
 else if (p.status === "Cancelado") { emojiStatus = "❌"; textoStatus = "Cancelado"; }
-const msg = "🌙 *LUNA DELIVERY* 🌙
-━━━━━━━━━━━━━━
- *Pedido:* " + idParaMostrar + "
-*Marca:* " + p.marca + "
-👤 *Recibe:* " + p.recibe + "
-" + emojiStatus + " *Estatus:* " + textoStatus + "
-━━━━━━━━━━━━━━
-📍 *Sigue tu pedido en vivo aquí:*
-🔗 " + linkPedido + "
-¡Gracias por tu preferencia! 💜";
+const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n📦 *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
@@ -1251,7 +1234,7 @@ window.open(url, '_blank');
 };
 if (!navigator.geolocation) { loading(false); abrir(origenRespaldo); return; }
 navigator.geolocation.getCurrentPosition(position => { loading(false); abrir(position.coords.latitude + "," + position.coords.longitude); },
-() => { loading(false); showToast('⚠️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
+() => { loading(false); showToast('️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 async function abrirRutaMapsPriorizada(filtro) {
@@ -1274,7 +1257,7 @@ pendientesDia.forEach(p => { const parts = p.destino.split(','); if (parts.lengt
 const hBotonesSheet = [];
 if (pendientesDia.length > 0) {
 hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'TODOS\')">🗺️ Ruta Organizada (' + pendientesDia.length + ')</button>');
-municipios.forEach(mun => hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'' + mun + '\')"> ' + mun + '</button>'));
+municipios.forEach(mun => hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'' + mun + '\')">📍 ' + mun + '</button>'));
 }
 const routesSection = document.getElementById('routes-buttons-section'), botonesContainer = document.getElementById('botones_mapeo_sheet');
 if (hBotonesSheet.length > 0) { routesSection.style.display = 'block'; botonesContainer.innerHTML = hBotonesSheet.join(''); }
@@ -1288,7 +1271,7 @@ destruirMapa(); loading(true);
 try {
 const res = await gs('obtenerDatosRastreoCliente', id);
 loading(false);
-if (res.error) { showToast('️ ' + res.error, 'error'); return; }
+if (res.error) { showToast('⚠️ ' + res.error, 'error'); return; }
 ver('v_rastreo');
 if (res.status === "Entregado") { document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'block'; }
 else if (res.mostrarMapa && res.moto && res.moto.lat > 0) {
@@ -1301,7 +1284,7 @@ intervaloRastreo = setInterval(() => actualizarRastreoEnVivo(id), 30000);
 } else {
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
-document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? '📅 Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : '⏳ Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
+document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? ' Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : '⏳ Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
 document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
 }
 } catch (e) { loading(false); showToast('Error al buscar', 'error'); }
@@ -1325,24 +1308,24 @@ async function iniciarEntrega(fila) {
 const ok = await showConfirm("¿Iniciar entrega? El cliente podrá ver tu ubicación en el mapa.");
 if (!ok) return;
 if (!navigator.geolocation) {
-showToast(' Navegador sin GPS', 'error'); loading(true);
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
+showToast('⚠️ Navegador sin GPS', 'error'); loading(true);
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 return;
 }
 loading(true);
 navigator.geolocation.getCurrentPosition(async position => {
 const lat = position.coords.latitude, lng = position.coords.longitude;
-try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 }, async () => {
-loading(false); showToast('️ Sin GPS, iniciando sin coordenadas', 'warning');
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) {}
+loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning');
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) {}
 }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 function mostrarNotifGPS(mensaje) { const notif = document.createElement('div'); notif.className = 'gps-notif'; notif.textContent = mensaje; document.body.appendChild(notif); setTimeout(() => notif.remove(), 3000); }
 async function activarGPSGlobal() {
-if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
+if (!navigator.geolocation) { showToast(' Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
-document.getElementById('gps_status').innerHTML = '️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
+document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 30000);
 showToast('✅ GPS Global activado', 'success');
 }
@@ -1418,7 +1401,7 @@ document.getElementById('lista_dias_semana').innerHTML = html;
 }
 function renderizarDiaCard(dia, datos, esUnico) {
 const sinPedidos = datos.pedidos === 0;
-return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre">📅 ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
+return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre"> ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
 }
 async function verDetalleDia(dia) {
 loading(true);
@@ -1426,7 +1409,7 @@ try {
 const res = await gs('obtenerResumenSemana', fechaSemanaActual.toISOString());
 loading(false); if (!res.exito) return;
 const datosDia = res.porDia[dia]; if (!datosDia || !datosDia.pedidosLista || datosDia.pedidosLista.length === 0) return;
-let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;">📋 ' + dia + ' - ' + datosDia.fecha + '</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
+let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;"> ' + dia + ' - ' + datosDia.fecha + '</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
 datosDia.pedidosLista.forEach(p => { html += '<div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 2px solid var(--border); font-size: 12px;"><div><div style="font-weight: 700;">' + p.marca + '</div><div style="font-size: 10px; color: var(--text-muted);">' + p.recibe + ' | ID: ' + p.id + '</div></div><div style="text-align: right;"><div style="font-weight: 900; color: var(--accent);">$' + p.precio.toFixed(2) + '</div><span class="pago-badge ' + (p.estadoPago === 'Pagado' ? 'pago-ok' : 'pago-pend') + '">' + (p.estadoPago === 'Pagado' ? '✅' : '❌') + ' ' + p.estadoPago + '</span></div></div>'; });
 html += '</div>'; document.getElementById('lista_dias_semana').innerHTML = html;
 } catch (e) { loading(false); showToast('Error al ver detalle', 'error'); }
@@ -1479,10 +1462,10 @@ renderizarListaPendientes(); actualizarResumenSeleccion();
 }
 function renderizarListaPendientes() {
 let html = '';
-if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;"> No hay pagos pendientes</p>';
+if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;">🎉 No hay pagos pendientes</p>';
 else {
 pedidosPendientesCache.forEach(p => {
-html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle">📦 ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle"> ' + p.fecha + ' | 📍 ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')"> WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
+html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle"> ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle">📅 ' + p.fecha + ' | 📍 ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')">💬 WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
 });
 }
 document.getElementById('lista_pendientes').innerHTML = html;
@@ -1498,7 +1481,7 @@ if (checkboxes.length === 0) { showToast('Selecciona al menos un pedido', 'warni
 const ok = await showConfirm('¿Marcar ' + checkboxes.length + ' pedido(s) como Pagado?');
 if (!ok) return;
 const filas = Array.from(checkboxes).map(cb => cb.dataset.fila); loading(true);
-try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarPendientes(); } else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pagos', 'error'); }
+try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarPendientes(); } else showToast(' ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pagos', 'error'); }
 }
 async function marcarUnPago(fila) {
 const ok = await showConfirm('¿Marcar este pedido como Pagado?');
@@ -1513,20 +1496,14 @@ const pedidosSeleccionados = pedidosPendientesCache.filter(p => filas.includes(p
 if (pedidosSeleccionados.length > 0) {
 const p = pedidosSeleccionados[0];
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* 🌙
-Hola *' + p.marca + '*,
-Te recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.
-Por favor realiza tu transferencia. ¡Gracias!';
+const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 }
 function enviarRecordatorioUn(fila) {
 const p = pedidosPendientesCache.find(x => x.fila === fila); if (!p) return;
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* 🌙
-Hola *' + p.marca + '*,
-Te recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.
-¡Gracias!';
+const msg = '*Luna Delivery* \nHola *' + p.marca + '*,\nTe recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.\n¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 function cargarDropdownDestinatarios(dests) {
@@ -1594,11 +1571,11 @@ loading(false);
 }
 function mostrarInstruccionesInstalacion() {
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent), esAndroid = /Android/.test(navigator.userAgent);
-if (esIOS) showToast('📲 Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
+if (esIOS) showToast(' Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
 else if (esAndroid) {
 if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('✅ ¡App instalada!', 'success'); deferredPrompt = null; }); }
 else showToast('📲 Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
-} else showToast(' Busca "Agregar a inicio" en el menú de tu navegador', 'info');
+} else showToast('📲 Busca "Agregar a inicio" en el menú de tu navegador', 'info');
 }
 let touchStartX = 0, touchEndX = 0;
 document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
@@ -1627,7 +1604,7 @@ const pedidosActivos = pedidos.filter(p => p.status !== 'Entregado' && p.status 
 const sinAsignar = pedidosActivos.filter(p => !p.repartidor || p.repartidor === "");
 const asignados = pedidosActivos.filter(p => p.repartidor && p.repartidor !== "");
 let htmlSinAsignar = '';
-if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;"> No hay pedidos sin asignar</p>';
+if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;">🎉 No hay pedidos sin asignar</p>';
 else sinAsignar.forEach(p => { htmlSinAsignar += crearCardPedidoAsignable(p); });
 document.getElementById('lista_pedidos_sin_asignar').innerHTML = htmlSinAsignar;
 let htmlAsignados = '';
@@ -1641,7 +1618,7 @@ let opciones = '<option value="">— Seleccionar repartidor —</option>';
 repartidoresCache.forEach(r => { if (r.activo) opciones += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
 const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b> Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
 }
 function crearCardPedidoAsignado(p) {
 let nombreRepartidor = 'Sin nombre';
@@ -1651,14 +1628,14 @@ const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
 let opcionesReasignar = '<option value="' + p.repartidor + '">' + nombreRepartidor + ' (actual)</option><option value="">— Quitar asignación —</option>';
 repartidoresCache.forEach(r => { if (r.activo && r.id !== p.repartidor) opcionesReasignar += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b> Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
 }
 async function asignarRepartidor(fila, idRepartidor) {
 if (!idRepartidor) return;
 const ok = await showConfirm('¿Asignar este pedido al repartidor seleccionado?');
 if (!ok) { cargarAsignacionRepartidores(); return; }
 loading(true);
-try { const res = await gs('asignarPedidoRepartidor', fila, idRepartidor); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast(' Error de conexión', 'error'); cargarAsignacionRepartidores(); }
+try { const res = await gs('asignarPedidoRepartidor', fila, idRepartidor); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast('❌ Error de conexión', 'error'); cargarAsignacionRepartidores(); }
 }
 async function reasignarPedido(fila, nuevoId) {
 const pedidoActual = pedidosCache.find(p => p.fila === fila);
@@ -1667,13 +1644,53 @@ if (nuevoId === "" || nuevoId === "null") {
 const ok = await showConfirm('¿Quitar la asignación de este pedido?');
 if (!ok) { cargarAsignacionRepartidores(); return; }
 loading(true);
-try { const res = await gs('quitarAsignacionRepartidor', fila); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast(' Error de conexión', 'error'); cargarAsignacionRepartidores(); }
+try { const res = await gs('quitarAsignacionRepartidor', fila); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast('❌ Error de conexión', 'error'); cargarAsignacionRepartidores(); }
 } else {
 const ok = await showConfirm('¿Reasignar este pedido a otro repartidor?');
 if (!ok) { cargarAsignacionRepartidores(); return; }
 loading(true);
-try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast(' Error de conexión', 'error'); cargarAsignacionRepartidores(); }
+try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast('❌ Error de conexión', 'error'); cargarAsignacionRepartidores(); }
 }
+}
+// ============ INICIALIZACIÓN CON MANEJO DE ERRORES ============
+window.addEventListener("DOMContentLoaded", function() {
+    try {
+        const box = document.getElementById('modo_arranque_servidor');
+        const modo = box ? box.getAttribute('data-modo') : 'cliente';
+        tokenClienteActual = box ? box.getAttribute('data-token') : '';
+        console.log('🚀 Modo detectado:', modo);
+        
+        if (modo === "rastreo") { 
+            ver('v_rastreo'); 
+            ejecutarRastreoClienteLoop(); 
+            intervaloRastreo = setInterval(ejecutarRastreoClienteLoop, 30000); 
+        }
+        else if (modo === "admin") { 
+            ver('v_admin'); 
+            try { cambiarTab('pedidos'); } catch(e) { console.error('❌ Error cambiarTab:', e); }
+            try { verificarGPSAlCargar(); } catch(e) { console.error('❌ Error GPS:', e); }
+        }
+        else { 
+            ver('v_bienvenida'); 
+        }
+    } catch (e) {
+        console.error(' Error en DOMContentLoaded:', e);
+    }
+    // SIEMPRE ocultar el loader, incluso si hay error
+    loading(false);
+});
+
+// Respaldo: forzar ocultar loader después de 5 segundos
+setTimeout(function() {
+    loading(false);
+    console.log('⏰ Loader forzado a ocultar por timeout');
+}, 5000);
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => console.log('✅ Service Worker registrado'))
+    .catch(err => console.log('❌ Error SW:', err));
 }
 </script>
 </body>
