@@ -794,13 +794,6 @@ if (index >= 0 && botones[index]) botones[index].classList.add('active');
 }
 function obtenerDiaSemanaActualFront() { const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return dias[new Date().getDay()]; }
 window.addEventListener("DOMContentLoaded", function() {
-const box = document.getElementById('modo_arranque_servidor');
-const modo = box ? box.getAttribute('data-modo') : 'cliente';
-tokenClienteActual = box ? box.getAttribute('data-token') : '';
-if (modo === "rastreo") { ver('v_rastreo'); ejecutarRastreoClienteLoop(); intervaloRastreo = setInterval(ejecutarRastreoClienteLoop, 30000); loading(false); }
-else if (modo === "admin") { ver('v_admin'); cambiarTab('pedidos'); verificarGPSAlCargar(); }
-else { ver('v_bienvenida'); loading(false); }
-});
 async function ejecutarRastreoClienteLoop() {
 if (!tokenClienteActual) return;
 try {
