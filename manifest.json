@@ -1,0 +1,17 @@
+{
+  "name": "Luna Delivery",
+  "short_name": "Luna",
+  "description": "Sistema de entregas Luna Delivery",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#6366f1",
+  "theme_color": "#6366f1",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w1000",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

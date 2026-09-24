@@ -481,6 +481,14 @@ def api_get_destinatarios():
 def api_obtener_url():
     return jsonify({"result": request.host_url})
 
+@app.route('/manifest.json')
+def manifest():
+    return send_from_directory('.', 'manifest.json', mimetype='application/json')
+
+@app.route('/service-worker.js')
+def service_worker():
+    return send_from_directory('.', 'service-worker.js', mimetype='application/javascript')
+
 # ==========================================
 # 9. INICIAR SERVIDOR
 # ==========================================

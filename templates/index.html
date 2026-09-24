@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Luna Delivery">
 <base target="_top">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -174,6 +179,13 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 @media (max-width: 480px) { .admin-status-filters { gap: 6px; } .status-filter-btn { padding: 10px 4px; font-size: 9px; } .filter-icon { font-size: 16px; } .card.pedido-admin { padding: 12px; margin-bottom: 8px; } .fab-refresh { width: 48px; height: 48px; } }
 </style>
 </head>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => console.log('Service Worker registrado'))
+    .catch(err => console.log('Error:', err));
+}
+</script>
 <body>
 <div id="modo_arranque_servidor" data-modo="{{ modo|default('cliente') }}" data-token="{{ token|default('') }}" style="display:none;"></div>
 <div id="loader">
