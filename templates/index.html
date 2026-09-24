@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <base target="_top">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -263,9 +264,9 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="action-card" onclick="abrirHistorial()"><div class="action-icon">📋</div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="abrirPerfil()"><div class="action-icon">🎨</div><div class="action-content"><span class="action-title">Personalizar</span><span class="action-subtitle">Logo y slogan de tu marca</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
-<button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon">🔍</div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
+<button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon"></div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
 </div>
-<button class="btn-logout" onclick="location.reload()"><span>🚪</span><span>Cerrar Sesión</span></button>
+<button class="btn-logout" onclick="location.reload()"><span></span><span>Cerrar Sesión</span></button>
 </div>
 </div>
 <div id="v_perfil" class="seccion card">
@@ -287,7 +288,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <h3 id="form_title" style="font-weight:900; font-size: 22px; margin-bottom: 20px;">Solicitar Envío</h3>
 <input type="hidden" id="c_fila">
 <div class="form-group" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:16px; border-radius:var(--radius-md); border:2px solid var(--border); margin-bottom:18px;">
-<label style="color:var(--accent); font-weight:800; margin-bottom:10px;">📦 TIPO DE SERVICIO</label>
+<label style="color:var(--accent); font-weight:800; margin-bottom:10px;"> TIPO DE SERVICIO</label>
 <div class="toggle-servicio">
 <button type="button" id="btn_enviar" class="active" onclick="cambiarTipoServicio('enviar')"> Enviar</button>
 <button type="button" id="btn_recibir" onclick="cambiarTipoServicio('recibir')">📥 Recibir</button>
@@ -338,7 +339,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div class="flecha">⬇️</div>
 <div class="punto" style="border-left-color: var(--success);">
-<div class="punto-titulo" style="color: #166534;">🏪 Punto B - Entrega (Mi Tienda)</div>
+<div class="punto-titulo" style="color: #166534;"> Punto B - Entrega (Mi Tienda)</div>
 <div id="info_tienda_destino"><div class="punto-direccion" id="texto_direccion_tienda">Cargando dirección...</div></div>
 </div>
 </div>
@@ -406,7 +407,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap: wrap;">
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
-<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
+<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()"> Mes</button>
 <button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
@@ -492,13 +493,13 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
 <span class="day-section-label">📆 Días de la Semana</span>
-<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
+<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span></span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
 <button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
 <button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
 <button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
 <button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span></span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
-<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
+<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span></span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
 <div class="day-divider"></div>
 <span class="day-section-label">📥 Nuevos Pedidos</span>
 <button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span>📥</span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
@@ -529,7 +530,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Luna Delivery System</p>
 <div id="rastreo_activo" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="rastreo_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="rastreo_marca"></span></p>
 <p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="rastreo_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="rastreo_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="rastreo_status" style="font-weight:700; color:var(--accent);"></span></p>
@@ -566,30 +567,26 @@ let pedidosPendientesCache = [], tipoServicioActual = 'enviar', direccionTiendaC
 let fechaFiltroAdmin = null, deferredPrompt, repartidoresCache = [];
 let perfilCache = null, logoBase64Pendiente = null, logoMimePendiente = 'image/jpeg';
 let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
-
-// FUNCIÓN GS MODIFICADA PARA USAR FETCH EN LUGAR DE GOOGLE.SCRIPT.RUN
 function gs(func, ...args) {
-    let url = '/api/' + func;
-    if (args.length > 0) {
-        const params = new URLSearchParams();
-        args.forEach((arg, index) => {
-            params.append('arg' + index, typeof arg === 'object' ? JSON.stringify(arg) : String(arg));
-        });
-        url += '?' + params.toString();
-    }
-    
-    return fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) throw new Error(data.error);
-            return data.result !== undefined ? data.result : data;
-        })
-        .catch(err => {
-            console.error("Error en gs:", func, err);
-            throw err;
-        });
+let url = '/api/' + func;
+if (args.length > 0) {
+const params = new URLSearchParams();
+args.forEach((arg, index) => {
+params.append('arg' + index, typeof arg === 'object' ? JSON.stringify(arg) : String(arg));
+});
+url += '?' + params.toString();
 }
-
+return fetch(url)
+.then(response => response.json())
+.then(data => {
+if (data.error) throw new Error(data.error);
+return data.result !== undefined ? data.result : data;
+})
+.catch(err => {
+console.error("Error en gs:", func, err);
+throw err;
+});
+}
 function showToast(msg, type) {
 type = type || 'info';
 const toast = document.createElement('div');
@@ -619,7 +616,6 @@ if (mapaCliente) { mapaCliente.remove(); mapaCliente = null; marcadorMoto = null
 const mapDiv = document.getElementById('map');
 if (mapDiv) mapDiv.innerHTML = '';
 }
-/* ============ PERFIL DE MARCA ============ */
 function abrirPerfil() {
 loading(true);
 gs('obtenerPerfilMarca', marca).then(function(res) {
@@ -701,7 +697,6 @@ else sloganEl.innerText = 'Panel de Control';
 function cargarPerfilMenu() {
 gs('obtenerPerfilMarca', marca).then(function(res) { if (res.exito) { perfilCache = res; aplicarLogoEnMenu(); } }).catch(function() {});
 }
-/* ============ FIN PERFIL ============ */
 function togglePassword() {
 var input = document.getElementById('l_p'), icon = document.getElementById('iconEye');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
@@ -802,7 +797,7 @@ if (res.error) {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'none';
 let errorDiv = document.getElementById('rastreo_error');
 if (!errorDiv) { errorDiv = document.createElement('div'); errorDiv.id = 'rastreo_error'; errorDiv.style.padding = '24px'; errorDiv.style.textAlign = 'center'; document.getElementById('v_rastreo').appendChild(errorDiv); }
-errorDiv.style.display = 'block'; errorDiv.innerHTML = '<div style="font-size:56px;">⚠️</div><h3 style="font-weight:900; color:var(--danger); margin:12px 0; font-size: 20px;">Pedido no encontrado</h3><p style="font-size:13px; color:var(--text-muted);">' + res.error + '</p>';
+errorDiv.style.display = 'block'; errorDiv.innerHTML = '<div style="font-size:56px;">️</div><h3 style="font-weight:900; color:var(--danger); margin:12px 0; font-size: 20px;">Pedido no encontrado</h3><p style="font-size:13px; color:var(--text-muted);">' + res.error + '</p>';
 if (intervaloRastreo) clearInterval(intervaloRastreo); return;
 }
 if (res.status === "Entregado") {
@@ -820,7 +815,7 @@ document.getElementById('rastreo_activo').style.display = 'block'; document.getE
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 } else {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
-document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
+document.getElementById('espera_mensaje').innerHTML = res.esHoy ? ' Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
 }
@@ -870,7 +865,7 @@ document.getElementById('modo_enviar_contenido').style.display = 'block';
 document.getElementById('modo_recibir_contenido').style.display = 'none';
 document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
 } else {
-desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
+desc.innerText = ' Recibir mercancía: Proveedor → Tu tienda';
 document.getElementById('modo_enviar_contenido').style.display = 'none';
 document.getElementById('modo_recibir_contenido').style.display = 'block';
 cargarProveedoresFrecuentes(); cargarDireccionTienda();
@@ -1030,7 +1025,7 @@ if (fp !== fechaFiltro) return false;
 return true;
 });
 const contador = document.getElementById('contador_resultados');
-if (textoBusqueda || fechaFiltro) { contador.style.display = 'block'; contador.innerText = '🔎 ' + filtrados.length + ' resultado(s) encontrado(s)'; }
+if (textoBusqueda || fechaFiltro) { contador.style.display = 'block'; contador.innerText = ' ' + filtrados.length + ' resultado(s) encontrado(s)'; }
 else contador.style.display = 'none';
 let bloquesDias = { 'Por asignar': [], 'Lunes': [], 'Martes': [], 'Miércoles': [], 'Jueves': [], 'Viernes': [], 'Sábado': [], 'Domingo': [] };
 filtrados.forEach(p => { if (bloquesDias[p.dia] !== undefined) bloquesDias[p.dia].push(p); else bloquesDias['Por asignar'].push(p); });
@@ -1045,10 +1040,10 @@ const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + '</p>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo"> Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + '</p>';
 let fechaMostrar = '';
 if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>🗓️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
-const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')">❌ Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
+const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')"> Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
 bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--warning)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; margin-bottom: 8px;"><div><strong style="font-size:13px; color:var(--primary);">' + (p.recibe || 'Sin nombre') + '</strong><span style="display:block; font-size:13px; color:var(--text-muted); font-weight:700;">ID: ' + idParaMostrar + ' ' + tipoBadge + '</span></div>' + statusBadge + '</div>' +
 contenidoDireccion + fechaMostrar +
@@ -1168,7 +1163,7 @@ const displayAsignar = (p.status === 'Entregado' || p.status === 'Cancelado') ? 
 const valPrioridad = (p.prioridad === 999) ? "" : p.prioridad;
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
-const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
+const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend"> Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled> Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')"> Iniciar Entrega</button>');
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir"> Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
@@ -1226,10 +1221,19 @@ try {
 const baseUrl = await gs('obtenerUrlApp');
 const linkPedido = baseUrl + "?t=" + idParaMostrar;
 let emojiStatus = "📦", textoStatus = "En preparación";
-if (p.status === "En Entrega") { emojiStatus = "🛵"; textoStatus = "En ruta a tu domicilio"; }
+if (p.status === "En Entrega") { emojiStatus = ""; textoStatus = "En ruta a tu domicilio"; }
 else if (p.status === "Entregado") { emojiStatus = "✅"; textoStatus = "Entregado"; }
 else if (p.status === "Cancelado") { emojiStatus = "❌"; textoStatus = "Cancelado"; }
-const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n📦 *Pedido:* " + idParaMostrar + "\n *Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
+const msg = "🌙 *LUNA DELIVERY* 🌙
+━━━━━━━━━━━━━━
+ *Pedido:* " + idParaMostrar + "
+*Marca:* " + p.marca + "
+👤 *Recibe:* " + p.recibe + "
+" + emojiStatus + " *Estatus:* " + textoStatus + "
+━━━━━━━━━━━━━━
+📍 *Sigue tu pedido en vivo aquí:*
+🔗 " + linkPedido + "
+¡Gracias por tu preferencia! 💜";
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
@@ -1317,15 +1321,15 @@ const ok = await showConfirm("¿Iniciar entrega? El cliente podrá ver tu ubicac
 if (!ok) return;
 if (!navigator.geolocation) {
 showToast(' Navegador sin GPS', 'error'); loading(true);
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
 return;
 }
 loading(true);
 navigator.geolocation.getCurrentPosition(async position => {
 const lat = position.coords.latitude, lng = position.coords.longitude;
-try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
 }, async () => {
-loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning');
+loading(false); showToast('️ Sin GPS, iniciando sin coordenadas', 'warning');
 try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) {}
 }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
@@ -1333,7 +1337,7 @@ function mostrarNotifGPS(mensaje) { const notif = document.createElement('div');
 async function activarGPSGlobal() {
 if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
-document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
+document.getElementById('gps_status').innerHTML = '️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 30000);
 showToast('✅ GPS Global activado', 'success');
 }
@@ -1470,10 +1474,10 @@ renderizarListaPendientes(); actualizarResumenSeleccion();
 }
 function renderizarListaPendientes() {
 let html = '';
-if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;">🎉 No hay pagos pendientes</p>';
+if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;"> No hay pagos pendientes</p>';
 else {
 pedidosPendientesCache.forEach(p => {
-html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle">📦 ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle"> ' + p.fecha + ' | 📍 ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')">💬 WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
+html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle">📦 ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle"> ' + p.fecha + ' | 📍 ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')"> WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
 });
 }
 document.getElementById('lista_pendientes').innerHTML = html;
@@ -1504,14 +1508,20 @@ const pedidosSeleccionados = pedidosPendientesCache.filter(p => filas.includes(p
 if (pedidosSeleccionados.length > 0) {
 const p = pedidosSeleccionados[0];
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
+const msg = '*Luna Delivery* 🌙
+Hola *' + p.marca + '*,
+Te recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.
+Por favor realiza tu transferencia. ¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 }
 function enviarRecordatorioUn(fila) {
 const p = pedidosPendientesCache.find(x => x.fila === fila); if (!p) return;
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.\n¡Gracias!';
+const msg = '*Luna Delivery* 🌙
+Hola *' + p.marca + '*,
+Te recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.
+¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 function cargarDropdownDestinatarios(dests) {
@@ -1612,7 +1622,7 @@ const pedidosActivos = pedidos.filter(p => p.status !== 'Entregado' && p.status 
 const sinAsignar = pedidosActivos.filter(p => !p.repartidor || p.repartidor === "");
 const asignados = pedidosActivos.filter(p => p.repartidor && p.repartidor !== "");
 let htmlSinAsignar = '';
-if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;">🎉 No hay pedidos sin asignar</p>';
+if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;"> No hay pedidos sin asignar</p>';
 else sinAsignar.forEach(p => { htmlSinAsignar += crearCardPedidoAsignable(p); });
 document.getElementById('lista_pedidos_sin_asignar').innerHTML = htmlSinAsignar;
 let htmlAsignados = '';
@@ -1657,7 +1667,7 @@ try { const res = await gs('quitarAsignacionRepartidor', fila); loading(false); 
 const ok = await showConfirm('¿Reasignar este pedido a otro repartidor?');
 if (!ok) { cargarAsignacionRepartidores(); return; }
 loading(true);
-try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast('❌ Error de conexión', 'error'); cargarAsignacionRepartidores(); }
+try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast(' Error de conexión', 'error'); cargarAsignacionRepartidores(); }
 }
 }
 </script>
