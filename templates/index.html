@@ -190,14 +190,14 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 </div>
 <div id="v_bienvenida" class="seccion card">
-<h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;"> LUNA DELIVERY</h1>
+<h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;">🌙 LUNA DELIVERY</h1>
 <button class="btn btn-primary" onclick="ver('v_login')">Acceso Clientes</button>
 <button class="btn btn-outline" onclick="abrirReg()">Registrar mi Marca</button>
 <button class="btn btn-outline" onclick="ver('v_consulta_id')">🔍 Consultar Pedido</button>
-<button class="btn btn-outline" onclick="ver('v_recuperar_password')"> Recuperar Contraseña</button>
+<button class="btn btn-outline" onclick="ver('v_recuperar_password')">🔑 Recuperar Contraseña</button>
 </div>
 <div id="v_recuperar_password" class="seccion card">
-<h2 style="font-weight:800; margin-bottom: 24px;">🔑 Recuperar Contraseña</h2>
+<h2 style="font-weight:800; margin-bottom: 24px;"> Recuperar Contraseña</h2>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">Ingresa los datos de tu marca y te mostraremos tu contraseña.</p>
 <div class="form-group"><label for="rp_m">Marca</label><input type="text" id="rp_m" placeholder="Nombre de tu negocio"></div>
 <div class="form-group"><label for="rp_tel">Teléfono Registrado</label><input type="tel" id="rp_tel" placeholder="Ej: 3312345678"></div>
@@ -225,15 +225,15 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <h3 style="font-weight:800; font-size: 20px; margin-bottom: 20px;">Alta de Nueva Marca</h3>
 <div class="form-group"><label for="r_m">Nombre de la Marca</label><input type="text" id="r_m" name="username" autocomplete="username" required></div>
 <div class="form-group">
-    <label>Municipio de Origen</label>
-    <select id="r_mun" onchange="getCPReg(this.value)" required>
-        <option value="">Selecciona un municipio</option>
-        <option value="Zapopan">Zapopan</option>
-        <option value="Guadalajara">Guadalajara</option>
-        <option value="San Pedro Tlaquepaque">Tlaquepaque</option>
-        <option value="Tlajomulco de Zúñiga">Tlajomulco</option>
-        <option value="Tonalá">Tonalá</option>
-    </select>
+<label>Municipio de Origen</label>
+<select id="r_mun" onchange="getCPReg(this.value)" required>
+<option value="">Selecciona un municipio</option>
+<option value="Zapopan">Zapopan</option>
+<option value="Guadalajara">Guadalajara</option>
+<option value="San Pedro Tlaquepaque">Tlaquepaque</option>
+<option value="Tlajomulco de Zúñiga">Tlajomulco</option>
+<option value="Tonalá">Tonalá</option>
+</select>
 </div>
 <div class="form-group"><label>Código Postal</label><select id="r_cp" onchange="getColReg(this.value)" required></select></div>
 <div class="form-group"><label>Colonia</label><select id="r_col" required></select></div>
@@ -245,11 +245,11 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </form>
 </div>
 <div id="v_cambiar_password" class="seccion card">
-<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;">🔑 Cambiar Contraseña</h2>
+<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;"> Cambiar Contraseña</h2>
 <div class="form-group"><label for="cp_actual">Contraseña Actual</label><div class="password-wrapper"><input type="password" id="cp_actual"><span class="toggle-password" onclick="togglePasswordCP()"><svg viewBox="0 0 24 24" id="iconEyeCP"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_nueva">Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_nueva"><span class="toggle-password" onclick="togglePasswordCPNueva()"><svg viewBox="0 0 24 24" id="iconEyeCPNueva"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_confirmar">Confirmar Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_confirmar"><span class="toggle-password" onclick="togglePasswordCPConfirmar()"><svg viewBox="0 0 24 24" id="iconEyeCPConfirmar"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
-<button class="btn btn-success" onclick="cambiarPassword()">🔑 Actualizar Contraseña</button>
+<button class="btn btn-success" onclick="cambiarPassword()"> Actualizar Contraseña</button>
 <button class="btn btn-outline" onclick="volverAlMenu()">← Regresar</button>
 </div>
 <div id="v_menu" class="seccion">
@@ -321,7 +321,17 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;">💡 Al seleccionar, se rellenará la dirección automáticamente.</small>
 </div>
 <div id="grupo_destino_manual">
-<div class="form-group"><label>Municipio Destino</label><select id="c_mun" onchange="getCP(this.value)"></select></div>
+<div class="form-group">
+<label>Municipio Destino</label>
+<select id="c_mun" onchange="getCP(this.value)" required>
+<option value="">Selecciona un municipio</option>
+<option value="Zapopan">Zapopan</option>
+<option value="Guadalajara">Guadalajara</option>
+<option value="San Pedro Tlaquepaque">Tlaquepaque</option>
+<option value="Tlajomulco de Zúñiga">Tlajomulco</option>
+<option value="Tonalá">Tonalá</option>
+</select>
+</div>
 <div class="form-group"><label>CP Destino</label><select id="c_cp" onchange="getCol(this.value)"></select></div>
 <div class="form-group"><label>Colonia Destino</label><select id="c_col" onchange="calc()"></select></div>
 <div class="form-group"><label>Calle</label><input type="text" id="c_dir" onblur="calc()" placeholder="Ej: Av. Vallarta"></div>
@@ -342,7 +352,17 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <small style="font-size:10px; color:#92400e; display:block; margin-top:8px;">💡 Selecciona un proveedor guardado o ingresa uno nuevo.</small>
 </div>
 <div id="grupo_origen_manual">
-<div class="form-group" style="margin-bottom: 12px;"><label>Municipio Origen</label><select id="c_mun_origen" onchange="getCPOrigen(this.value)"></select></div>
+<div class="form-group" style="margin-bottom: 12px;">
+<label>Municipio Origen</label>
+<select id="c_mun_origen" onchange="getCPOrigen(this.value)" required>
+<option value="">Selecciona un municipio</option>
+<option value="Zapopan">Zapopan</option>
+<option value="Guadalajara">Guadalajara</option>
+<option value="San Pedro Tlaquepaque">Tlaquepaque</option>
+<option value="Tlajomulco de Zúñiga">Tlajomulco</option>
+<option value="Tonalá">Tonalá</option>
+</select>
+</div>
 <div class="form-group" style="margin-bottom: 12px;"><label>CP Origen</label><select id="c_cp_origen" onchange="getColOrigen(this.value)"></select></div>
 <div class="form-group" style="margin-bottom: 12px;"><label>Colonia Origen</label><select id="c_col_origen" onchange="calc()"></select></div>
 <div class="form-group" style="margin-bottom: 12px;"><label>Calle Origen</label><input type="text" id="c_dir_origen" onblur="calc()" placeholder="Ej: Av. Vallarta"></div>
@@ -384,7 +404,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <input type="text" id="buscador_historial" placeholder="Buscar por nombre, ID o colonia..." oninput="filtrarHistorial(statusHistorialActual)" style="margin-bottom:10px;">
 <div style="display:flex; gap:8px; align-items:center;">
 <input type="date" id="fecha_historial" onchange="filtrarHistorial(statusHistorialActual)" style="flex:1;">
-<button class="btn btn-outline" style="margin:0; width:auto; padding:12px 16px; font-size:11px; white-space:nowrap;" onclick="limpiarFiltrosHistorial()"> Limpiar</button>
+<button class="btn btn-outline" style="margin:0; width:auto; padding:12px 16px; font-size:11px; white-space:nowrap;" onclick="limpiarFiltrosHistorial()">✕ Limpiar</button>
 </div>
 <div id="contador_resultados" style="display:none; margin-top:10px; font-size:11px; font-weight:700; color:var(--accent); text-align:center;"></div>
 </div>
@@ -423,14 +443,14 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
 <button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
-<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()">📆 Rango</button>
+<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Total Pedidos</div><div id="fin_total_pedidos" class="fin-numero" style="color: var(--primary);">0</div></div>
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Ingresos Totales</div><div id="fin_total_ingresos" class="fin-numero" style="color: var(--accent);">$0</div></div>
 <div class="fin-card" style="background: #dcfce7;"><div class="fin-label" style="color: #166534;">✅ Pagado</div><div id="fin_total_pagado" class="fin-numero" style="color: var(--success);">$0</div></div>
-<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;"> Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
+<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;">⏳ Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
 </div>
 </div>
 <div id="nav_semana_container">
@@ -463,7 +483,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px;">
 <button class="btn btn-success" onclick="marcarSeleccionadosPagado()">✅ Marcar Pagado</button>
-<button class="btn btn-primary" onclick="enviarRecordatoriosWA()"> Recordatorio WA</button>
+<button class="btn btn-primary" onclick="enviarRecordatoriosWA()">💬 Recordatorio WA</button>
 </div>
 </div>
 </div>
@@ -484,7 +504,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="card" style="border-top: 5px solid var(--text-muted);">
 <h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">⚙️ Opciones</h2>
 <button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
-<div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">️ GPS Inactivo</div>
+<div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
 <button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida'); location.reload();">🚪 Cerrar Sesión</button>
 </div>
@@ -494,7 +514,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="tab-btn modern-tab" onclick="cambiarTab('finanzas')"><span class="tab-icon">💰</span><span class="tab-label">Finanzas</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('cobros')"><span class="tab-icon">💳</span><span class="tab-label">Cobros</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('repartidores')"><span class="tab-icon">👷</span><span class="tab-label">Repartidores</span></button>
-<button class="tab-btn modern-tab" onclick="cambiarTab('mas')"><span class="tab-icon">️</span><span class="tab-label">Más</span></button>
+<button class="tab-btn modern-tab" onclick="cambiarTab('mas')"><span class="tab-icon">⚙️</span><span class="tab-label">Más</span></button>
 </div>
 <div class="days-panel-overlay" id="days-panel-overlay" onclick="closeDaysPanel()"></div>
 <div class="days-panel" id="days-panel">
@@ -504,20 +524,20 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div class="days-panel-content">
 <span class="day-section-label">⭐ Vista rápida</span>
-<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span>📋</span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
+<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span></span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label">📆 Días de la Semana</span>
+<span class="day-section-label"> Días de la Semana</span>
 <button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
 <button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
-<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span></span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
+<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
 <button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
 <button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span>📆</span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
-<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
+<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span></span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label"> Nuevos Pedidos</span>
-<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span>📥</span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
+<span class="day-section-label">📥 Nuevos Pedidos</span>
+<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span></span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
 <div id="routes-buttons-section" style="display: none; margin-top: 20px;">
 <span class="day-section-label">🗺️ Rutas de Entrega</span>
 <div id="botones_mapeo_sheet" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -582,7 +602,6 @@ let pedidosPendientesCache = [], tipoServicioActual = 'enviar', direccionTiendaC
 let fechaFiltroAdmin = null, deferredPrompt, repartidoresCache = [];
 let perfilCache = null, logoBase64Pendiente = null, logoMimePendiente = 'image/jpeg';
 let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
-
 function gs(func, ...args) {
 let url = '/api/' + func;
 if (args.length > 0) {
@@ -632,8 +651,6 @@ if (mapaCliente) { mapaCliente.remove(); mapaCliente = null; marcadorMoto = null
 const mapDiv = document.getElementById('map');
 if (mapDiv) mapDiv.innerHTML = '';
 }
-
-/* ============ PERFIL DE MARCA ============ */
 function abrirPerfil() {
 loading(true);
 gs('obtenerPerfilMarca', marca).then(function(res) {
@@ -657,7 +674,7 @@ document.getElementById('perfil_slogan_preview').innerText = document.getElement
 function previsualizarLogo(input) {
 if (!input.files || !input.files[0]) return;
 var file = input.files[0];
-if (!file.type.match('image.*')) { showToast('⚠️ Selecciona una imagen válida', 'warning'); return; }
+if (!file.type.match('image.*')) { showToast('️ Selecciona una imagen válida', 'warning'); return; }
 var reader = new FileReader();
 reader.onload = function(e) {
 var img = new Image();
@@ -715,8 +732,6 @@ else sloganEl.innerText = 'Panel de Control';
 function cargarPerfilMenu() {
 gs('obtenerPerfilMarca', marca).then(function(res) { if (res.exito) { perfilCache = res; aplicarLogoEnMenu(); } }).catch(function() {});
 }
-/* ============ FIN PERFIL ============ */
-
 function togglePassword() {
 var input = document.getElementById('l_p'), icon = document.getElementById('iconEye');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
@@ -756,9 +771,9 @@ else showToast('❌ ' + res.mensaje, 'error');
 }
 async function cambiarPassword() {
 const pa = document.getElementById('cp_actual').value, pn = document.getElementById('cp_nueva').value, pc = document.getElementById('cp_confirmar').value;
-if (!pa || !pn || !pc) { showToast('⚠️ Completa todos los campos', 'warning'); return; }
+if (!pa || !pn || !pc) { showToast('️ Completa todos los campos', 'warning'); return; }
 if (pn !== pc) { showToast('❌ Las contraseñas nuevas no coinciden', 'error'); return; }
-if (pn === pa) { showToast('️ La nueva contraseña debe ser diferente a la actual', 'warning'); return; }
+if (pn === pa) { showToast('⚠️ La nueva contraseña debe ser diferente a la actual', 'warning'); return; }
 loading(true);
 try {
 const res = await gs('actualizarPassword', marca, pa, pn);
@@ -882,7 +897,7 @@ document.getElementById('modo_enviar_contenido').style.display = 'block';
 document.getElementById('modo_recibir_contenido').style.display = 'none';
 document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
 } else {
-desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
+desc.innerText = ' Recibir mercancía: Proveedor → Tu tienda';
 document.getElementById('modo_enviar_contenido').style.display = 'none';
 document.getElementById('modo_recibir_contenido').style.display = 'block';
 cargarProveedoresFrecuentes(); cargarDireccionTienda();
@@ -1055,11 +1070,11 @@ bloquesHtml.push('<div class="dia-header">📅 ' + nomDia.toUpperCase() + ' (' +
 deEsteDia.forEach(p => {
 const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
-const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir"> Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
+const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + '</p>';
 let fechaMostrar = '';
-if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>🗓️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
+if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
 const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')">❌ Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
 bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--warning)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; margin-bottom: 8px;"><div><strong style="font-size:13px; color:var(--primary);">' + (p.recibe || 'Sin nombre') + '</strong><span style="display:block; font-size:13px; color:var(--text-muted); font-weight:700;">ID: ' + idParaMostrar + ' ' + tipoBadge + '</span></div>' + statusBadge + '</div>' +
@@ -1071,7 +1086,7 @@ contenidoDireccion + fechaMostrar +
 });
 }
 });
-document.getElementById('list_c').innerHTML = bloquesHtml.join('') || '<p style="color:var(--text-muted); margin-top:24px;">' + ((textoBusqueda || fechaFiltro) ? ' Sin resultados para tu búsqueda.' : 'Sin pedidos.') + '</p>';
+document.getElementById('list_c').innerHTML = bloquesHtml.join('') || '<p style="color:var(--text-muted); margin-top:24px;">' + ((textoBusqueda || fechaFiltro) ? '🤷 Sin resultados para tu búsqueda.' : 'Sin pedidos.') + '</p>';
 }
 async function confirmarCancelacion(fila, idPedido) {
 const ok = await showConfirm('¿Estás seguro de cancelar el pedido ' + idPedido + '?');
@@ -1180,11 +1195,11 @@ const displayAsignar = (p.status === 'Entregado' || p.status === 'Cancelado') ? 
 const valPrioridad = (p.prioridad === 999) ? "" : p.prioridad;
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
-const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
+const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend"> Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
 const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' 💬</a>';
 bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--accent)')) + ';">' +
@@ -1201,7 +1216,7 @@ contenidoDireccion +
 '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">' + btnIniciar +
 (p.status !== 'Cancelado' ? '<button class="btn btn-success" style="padding:12px; margin:0; font-size:11px;" onclick="setSt(' + p.fila + ', \'Completado\')">✅ Finalizar</button>' : '') + '</div>' +
 (p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;"><button class="btn" style="padding:10px; font-size:10px; background:var(--success-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pagado\')">✅ Pagado</button><button class="btn" style="padding:10px; font-size:10px; background:var(--warning-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pendiente\')">⏳ Pendiente</button></div>' : '') +
-(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;"><button class="btn" style="padding:12px; margin:0; font-size:11px; background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); color:#fff;" onclick="abrirRutaIndividual(' + p.fila + ')">🗺️ Ver Ruta</button><button class="btn btn-primary" style="padding:12px; margin:0; font-size:11px;" onclick="enviarNotificacionWhatsApp(' + p.fila + ')">💬 WhatsApp</button></div>' : '') +
+(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;"><button class="btn" style="padding:12px; margin:0; font-size:11px; background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); color:#fff;" onclick="abrirRutaIndividual(' + p.fila + ')">🗺️ Ver Ruta</button><button class="btn btn-primary" style="padding:12px; margin:0; font-size:11px;" onclick="enviarNotificacionWhatsApp(' + p.fila + ')"> WhatsApp</button></div>' : '') +
 '</div>');
 });
 document.getElementById('lista_admin').innerHTML = bloquesAdmin.join('') || "<p style='color:var(--text-muted); padding:24px;'>Sin pedidos.</p>";
@@ -1238,10 +1253,10 @@ try {
 const baseUrl = await gs('obtenerUrlApp');
 const linkPedido = baseUrl + "?t=" + idParaMostrar;
 let emojiStatus = "📦", textoStatus = "En preparación";
-if (p.status === "En Entrega") { emojiStatus = "🛵"; textoStatus = "En ruta a tu domicilio"; }
+if (p.status === "En Entrega") { emojiStatus = ""; textoStatus = "En ruta a tu domicilio"; }
 else if (p.status === "Entregado") { emojiStatus = "✅"; textoStatus = "Entregado"; }
 else if (p.status === "Cancelado") { emojiStatus = "❌"; textoStatus = "Cancelado"; }
-const msg = "🌙 *LUNA DELIVERY* \n━━━━━━━━━━━━━━\n📦 *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
+const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
@@ -1267,7 +1282,7 @@ try {
 const direccionesOptimizadas = await gs('obtenerDireccionesOptimizadas', seleccionados);
 const paradas = direccionesOptimizadas.map(d => encodeURIComponent(limpiarDestinoParaRuta(d)));
 construirRutaConGPS(paradas, seleccionados[0].origen || "");
-} catch (e) { loading(false); showToast('❌ Error al optimizar la ruta', 'error'); }
+} catch (e) { loading(false); showToast(' Error al optimizar la ruta', 'error'); }
 }
 function generarBotonesRuta() {
 const pendientesDia = obtenerPedidosPorDiaAdmin();
@@ -1291,7 +1306,7 @@ destruirMapa(); loading(true);
 try {
 const res = await gs('obtenerDatosRastreoCliente', id);
 loading(false);
-if (res.error) { showToast('⚠️ ' + res.error, 'error'); return; }
+if (res.error) { showToast('️ ' + res.error, 'error'); return; }
 ver('v_rastreo');
 if (res.status === "Entregado") { document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'block'; }
 else if (res.mostrarMapa && res.moto && res.moto.lat > 0) {
@@ -1329,13 +1344,13 @@ const ok = await showConfirm("¿Iniciar entrega? El cliente podrá ver tu ubicac
 if (!ok) return;
 if (!navigator.geolocation) {
 showToast('⚠️ Navegador sin GPS', 'error'); loading(true);
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 return;
 }
 loading(true);
 navigator.geolocation.getCurrentPosition(async position => {
 const lat = position.coords.latitude, lng = position.coords.longitude;
-try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 }, async () => {
 loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning');
 try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) {}
@@ -1343,7 +1358,7 @@ try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.ex
 }
 function mostrarNotifGPS(mensaje) { const notif = document.createElement('div'); notif.className = 'gps-notif'; notif.textContent = mensaje; document.body.appendChild(notif); setTimeout(() => notif.remove(), 3000); }
 async function activarGPSGlobal() {
-if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
+if (!navigator.geolocation) { showToast(' Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
 document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 30000);
@@ -1352,13 +1367,13 @@ showToast('✅ GPS Global activado', 'success');
 function desactivarGPSGlobal() {
 localStorage.setItem('gpsActivo', 'false'); if (gpsIntervalo) { clearInterval(gpsIntervalo); gpsIntervalo = null; }
 actualizarBotonGPS(false); document.getElementById('gps_status').innerHTML = '🛰️ GPS Detenido'; document.getElementById('gps_status').style.color = 'var(--danger)';
-showToast('️ GPS Global detenido', 'info');
+showToast('ℹ️ GPS Global detenido', 'info');
 }
 function actualizarBotonGPS(activo) {
 const btnGPS = document.getElementById('btn_gps_global');
 if (btnGPS) {
 if (activo) { btnGPS.innerHTML = '⚠️ Detener GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%);'; btnGPS.onclick = desactivarGPSGlobal; }
-else { btnGPS.innerHTML = '🛰️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
+else { btnGPS.innerHTML = '️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
 }
 }
 async function enviarGPSGlobal() {
@@ -1406,7 +1421,7 @@ try {
 const res = await gs('obtenerResumenRango', inicioMes.toISOString(), finMes.toISOString());
 loading(false); if (!res.exito) { showToast(res.error, 'error'); return; }
 mostrarResumenSuperior(res); document.getElementById('rango_semana_texto').innerText = res.rangoTexto;
-let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;">📋 Pedidos del Mes</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
+let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;"> Pedidos del Mes</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
 if (res.pedidos && res.pedidos.length > 0) {
 res.pedidos.forEach(p => { html += '<div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 2px solid var(--border); font-size: 12px;"><div><div style="font-weight: 700;">' + p.marca + '</div><div style="font-size: 10px; color: var(--text-muted);">' + p.fecha + ' - ' + p.recibe + '</div></div><div style="text-align: right;"><div style="font-weight: 900; color: var(--accent);">$' + p.precio.toFixed(2) + '</div><span class="pago-badge ' + (p.estadoPago === 'Pagado' ? 'pago-ok' : 'pago-pend') + '">' + (p.estadoPago === 'Pagado' ? '✅' : '❌') + ' ' + p.estadoPago + '</span></div></div>'; });
 } else html += '<p style="text-align:center; color:var(--text-muted); padding:24px;">Sin pedidos este mes</p>';
@@ -1421,7 +1436,7 @@ document.getElementById('lista_dias_semana').innerHTML = html;
 }
 function renderizarDiaCard(dia, datos, esUnico) {
 const sinPedidos = datos.pedidos === 0;
-return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre"> ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente"> $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
+return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre">📅 ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
 }
 async function verDetalleDia(dia) {
 loading(true);
@@ -1591,7 +1606,7 @@ loading(false);
 }
 function mostrarInstruccionesInstalacion() {
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent), esAndroid = /Android/.test(navigator.userAgent);
-if (esIOS) showToast(' Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
+if (esIOS) showToast('📲 Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
 else if (esAndroid) {
 if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('✅ ¡App instalada!', 'success'); deferredPrompt = null; }); }
 else showToast('📲 Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
@@ -1624,7 +1639,7 @@ const pedidosActivos = pedidos.filter(p => p.status !== 'Entregado' && p.status 
 const sinAsignar = pedidosActivos.filter(p => !p.repartidor || p.repartidor === "");
 const asignados = pedidosActivos.filter(p => p.repartidor && p.repartidor !== "");
 let htmlSinAsignar = '';
-if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;"> No hay pedidos sin asignar</p>';
+if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;">🎉 No hay pedidos sin asignar</p>';
 else sinAsignar.forEach(p => { htmlSinAsignar += crearCardPedidoAsignable(p); });
 document.getElementById('lista_pedidos_sin_asignar').innerHTML = htmlSinAsignar;
 let htmlAsignados = '';
@@ -1638,7 +1653,7 @@ let opciones = '<option value="">— Seleccionar repartidor —</option>';
 repartidoresCache.forEach(r => { if (r.activo) opciones += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
 const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b> Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
 }
 function crearCardPedidoAsignado(p) {
 let nombreRepartidor = 'Sin nombre';
@@ -1689,8 +1704,8 @@ window.addEventListener("DOMContentLoaded", function() {
         }
         else if (modo === "admin") { 
             ver('v_admin'); 
-            try { cambiarTab('pedidos'); } catch(e) { console.error('❌ Error cambiarTab:', e); }
-            try { verificarGPSAlCargar(); } catch(e) { console.error(' Error GPS:', e); }
+            try { cambiarTab('pedidos'); } catch(e) { console.error(' Error cambiarTab:', e); }
+            try { verificarGPSAlCargar(); } catch(e) { console.error('❌ Error GPS:', e); }
         }
         else { 
             ver('v_bienvenida'); 
