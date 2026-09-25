@@ -873,16 +873,24 @@ loading(false); ver('v_menu');
 }
 
 async function abrirReg() {
-ver('v_reg');
-}
-async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
-async function getColReg(cp) { document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('r_col', d); loading(false); } catch (e) { loading(false); } }
-async function ejecutarRegistro(event) {
-if (event) event.preventDefault();
-const o = { m: document.getElementById('r_m').value, mun: document.getElementById('r_mun').value, cp: document.getElementById('r_cp').value, col: document.getElementById('r_col').value, calle: document.getElementById('r_dir').value, tel: document.getElementById('r_tel').value, pass: document.getElementById('r_p').value };
-if (!o.m || !o.pass) { showToast('Completa todos los campos', 'warning'); return; }
-loading(true);
-try { await gs('registrarMarca', o); loading(false); showToast('¡Cuenta creada! Ahora puedes iniciar sesión.', 'success'); ver('v_login'); document.getElementById('l_m').value = o.m; } catch (e) { loading(false); showToast('Error al registrar', 'error'); }
+    loading(true);
+    try {
+        const muns = await gs('getMunicipios');
+        const select = document.getElementById('r_mun');
+        select.innerHTML = '<option value="">Selecciona un municipio</option>';
+        muns.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m;
+            opt.text = m;
+            select.appendChild(opt);
+        });
+        loading(false);
+        ver('v_reg');
+    } catch (e) {
+        loading(false);
+        showToast('Error al cargar municipios', 'error');
+        ver('v_reg');
+    }
 }
 function cambiarTipoServicio(tipo) {
 tipoServicioActual = tipo;
@@ -939,11 +947,32 @@ loading(false);
 function limpiarCamposDireccion() { document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; limpiarCamposOrigen(); }
 function limpiarCamposOrigen() { document.getElementById('c_mun_origen').value = ""; document.getElementById('c_cp_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_col_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir_origen').value = ""; document.getElementById('c_ext_origen').value = ""; document.getElementById('c_int_origen').value = ""; }
 async function abrirNuevo() {
-esEdicion = false; document.getElementById('form_title').innerText = "Solicitar Envío"; loading(true);
-try {
-const dests = await gs('getDestinatariosFrecuentes', marca);
-destinatariosCache = dests || []; cargarDropdownDestinatarios(destinatariosCache); cambiarTipoServicio('enviar'); limpiarCot(); loading(false); ver('v_cot');
-} catch (e) { loading(false); showToast('Error al abrir formulario', 'error'); }
+    esEdicion = false; 
+    document.getElementById('form_title').innerText = "Solicitar Envío"; 
+    loading(true);
+    try {
+        const muns = await gs('getMunicipios');
+        ['c_mun', 'c_mun_origen'].forEach(id => {
+            const select = document.getElementById(id);
+            select.innerHTML = '<option value="">Selecciona un municipio</option>';
+            muns.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.text = m;
+                select.appendChild(opt);
+            });
+        });
+        const dests = await gs('getDestinatariosFrecuentes', marca);
+        destinatariosCache = dests || []; 
+        cargarDropdownDestinatarios(destinatariosCache); 
+        cambiarTipoServicio('enviar'); 
+        limpiarCot(); 
+        loading(false); 
+        ver('v_cot');
+    } catch (e) { 
+        loading(false); 
+        showToast('Error al abrir formulario', 'error'); 
+    }
 }
 function limpiarCot() {
 document.getElementById('c_fila').value = ""; document.getElementById('c_origen_tipo').value = "marca"; document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('c_rec').value = ""; document.getElementById('c_tel').value = ""; document.getElementById('c_com').value = ""; document.getElementById('btn_g').disabled = true; document.getElementById('chk_guardar_proveedor').checked = false; document.getElementById('grupo_nombre_proveedor').style.display = 'none'; document.getElementById('nombre_proveedor_nuevo').value = "";

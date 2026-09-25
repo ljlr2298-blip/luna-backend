@@ -15,7 +15,7 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f" SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
 print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
@@ -459,7 +459,7 @@ def api_calcular_precio():
 def api_get_municipios():
     if not supabase: return jsonify({"result": []}), 500
     try:
-        # CORREGIDO: Usar 'municipio' en singular (no 'municipios')
+        # Obtener municipios únicos de la tabla colonias
         response = supabase.table('colonias').select('municipio').execute()
         municipios = sorted(list(set([row['municipio'] for row in response.data if row.get('municipio')])))
         return jsonify({"result": municipios})
@@ -471,7 +471,6 @@ def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
     try:
-        # CORREGIDO: Usar 'municipio' en singular (no 'municipios')
         response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
         return jsonify({"result": cps})
@@ -483,7 +482,6 @@ def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
     try:
-        # CORREGIDO: Usar 'colonia' en singular (no 'colonias')
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         return jsonify({"result": colonias})
@@ -563,7 +561,7 @@ def service_worker():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print("🚀 LUNA DELIVERY BACKEND")
+    print(" LUNA DELIVERY BACKEND")
     print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
