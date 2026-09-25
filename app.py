@@ -12,8 +12,6 @@ app = Flask(__name__, static_folder='templates')
 # ==========================================
 # 1. CONFIGURACIÓN DE SUPABASE
 # ==========================================
-# Se intenta leer de las variables de entorno (Railway). 
-# Si fallan, se usan estos valores por defecto como respaldo.
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
@@ -30,6 +28,12 @@ if SUPABASE_URL and SUPABASE_KEY:
         print(f"⚠️ Error conectando a Supabase: {e}")
 else:
     print("⚠️ Supabase no configurado. La app iniciará pero sin base de datos.")
+
+# ==========================================
+# 1.5 CONFIGURACIÓN DE TARIFAS ESPECIALES
+# ==========================================
+MARCAS_PREMIUM = ['VS Beauty', 'VS Beauty 2', 'Ale Joyería', 'Alicia Aranda']
+MARCAS_PRECIO_FIJO = {'Hane & beauty': 90}
 
 # ==========================================
 # 2. RUTAS DE VISTAS (Frontend)
@@ -275,7 +279,7 @@ def api_get_lista_repartidores():
         response = supabase.table('repartidores').select('id, nombre, telefono, activo').eq('activo', True).execute()
         return jsonify({"result": response.data})
     except Exception as e:
-        return jsonify({"result": []}) # Retorna vacío si la tabla no existe aún
+        return jsonify({"result": []})
 
 @app.route('/api/asignarPedidoRepartidor', methods=['GET'])
 def api_asignar_pedido_repartidor():
@@ -391,14 +395,74 @@ def api_obtener_resumen_rango():
         return jsonify({"error": str(e)}), 500
 
 # ==========================================
-# 8. APIs DE PERFIL Y UTILIDADES
+# 8. APIs DE PERFIL, ZONAS Y CALCULO DE PRECIOS
 # ==========================================
+
+@app.route('/api/calcularPrecio', methods=['GET'])
+def api_calcular_precio():
+    if not supabase: return jsonify({"error": "Supabase no configurado"}), 500
+    try:
+        direccion = request.args.get('arg0', '')
+        marca = request.args.get('arg1', '')
+        tipo_origen = request.args.get('arg2', 'marca')
+        cp = request.args.get('arg3', '')
+        
+        # 1. Verificar precio fijo
+        if marca in MARCAS_PRECIO_FIJO:
+            return jsonify({"precio": MARCAS_PRECIO_FIJO[marca], "km": 0, "origen": "Fijo", "tarifaEspecial": True})
+        
+        # 2. Extraer municipio de la dirección (formato esperado: "Calle, Colonia, Municipio")
+        partes = direccion.split(',')
+        municipio_destino = partes[-1].strip() if len(partes) >= 3 else ""
+        
+        # Si no se pudo extraer, intentar con el CP
+        if not municipio_destino and cp:
+            cp_response = supabase.table('colonias').select('municipio').eq('cp', cp).limit(1).execute()
+            if cp_response.data:
+                municipio_destino = cp_response.data[0]['municipio']
+        
+        # 3. Determinar tabla de tarifas según la marca
+        tabla_tarifas = 'tarifa_premium' if marca in MARCAS_PREMIUM else 'tarifa_general'
+        
+        # 4. Calcular KM (⚠️ SIMULADO: Reemplaza esto con tu lógica real de Google Maps Distance Matrix si la tienes)
+        km_estimado = 10 
+        
+        # 5. Buscar tarifa en Supabase
+        response = supabase.table(tabla_tarifas).select('km, precio').eq('municipio_origen', municipio_destino).execute()
+        
+        if response.data:
+            # Ordenar tarifas por KM ascendente
+            tarifas = sorted(response.data, key=lambda x: x['km'])
+            precio_encontrado = tarifas[-1]['precio'] # Precio máximo por defecto
+            
+            # Buscar la tarifa que corresponda al KM estimado
+            for t in tarifas:
+                if t['km'] >= km_estimado:
+                    precio_encontrado = t['precio']
+                    break
+                    
+            return jsonify({
+                "precio": precio_encontrado, 
+                "km": km_estimado, 
+                "origen": municipio_destino,
+                "tarifaEspecial": False
+            })
+        else:
+            # Fallback si no se encuentra el municipio en la tabla
+            return jsonify({"precio": 90, "km": km_estimado, "origen": municipio_destino or "Desconocido", "tarifaEspecial": True})
+            
+    except Exception as e:
+        print(f"Error calcularPrecio: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
     if not supabase: return jsonify({"result": []}), 500
     try:
-        response = supabase.table('zonas_postales').select('municipio').execute()
-        return jsonify({"result": sorted(list(set([row['municipio'] for row in response.data if row.get('municipio')])))})
+        # Consultamos la tabla 'colonias' que acabamos de crear
+        response = supabase.table('colonias').select('municipio').execute()
+        municipios = sorted(list(set([row['municipio'] for row in response.data if row.get('municipio')])))
+        return jsonify({"result": municipios})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -407,8 +471,9 @@ def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
     try:
-        response = supabase.table('zonas_postales').select('cp').eq('municipio', municipio).execute()
-        return jsonify({"result": sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))})
+        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
+        cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
+        return jsonify({"result": cps})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -417,8 +482,9 @@ def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
     try:
-        response = supabase.table('zonas_postales').select('colonia').eq('cp', cp).execute()
-        return jsonify({"result": sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))})
+        response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
+        colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
+        return jsonify({"result": colonias})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
