@@ -455,14 +455,15 @@ def api_calcular_precio():
         print(f"Error calcularPrecio: {e}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/getMunicipios', methods=['GET'])
-def api_get_municipios():
+@app.route('/api/getCPs', methods=['GET'])
+def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
+    municipio = request.args.get('arg0', '')
     try:
-        # Consultamos la tabla 'colonias' que acabamos de crear
-        response = supabase.table('colonias').select('municipio').execute()
-        municipios = sorted(list(set([row['municipio'] for row in response.data if row.get('municipio')])))
-        return jsonify({"result": municipios})
+        # Usar 'municipios' (con s) en lugar de 'municipio'
+        response = supabase.table('colonias').select('cp').eq('municipios', municipio).execute()
+        cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
+        return jsonify({"result": cps})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -471,7 +472,8 @@ def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
     try:
-        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
+        # Usar 'municipios' (con s) en lugar de 'municipio'
+        response = supabase.table('colonias').select('cp').eq('municipios', municipio).execute()
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
         return jsonify({"result": cps})
     except Exception as e:
@@ -482,8 +484,9 @@ def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
     try:
-        response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
+        # Usar 'colonias' (con s) en lugar de 'colonia'
+        response = supabase.table('colonias').select('colonias').eq('cp', cp).execute()
+        colonias = sorted(list(set([row['colonias'] for row in response.data if row.get('colonias')])))
         return jsonify({"result": colonias})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
