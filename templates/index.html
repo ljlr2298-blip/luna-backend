@@ -197,7 +197,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-outline" onclick="ver('v_recuperar_password')">🔑 Recuperar Contraseña</button>
 </div>
 <div id="v_recuperar_password" class="seccion card">
-<h2 style="font-weight:800; margin-bottom: 24px;"> Recuperar Contraseña</h2>
+<h2 style="font-weight:800; margin-bottom: 24px;">🔑 Recuperar Contraseña</h2>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">Ingresa los datos de tu marca y te mostraremos tu contraseña.</p>
 <div class="form-group"><label for="rp_m">Marca</label><input type="text" id="rp_m" placeholder="Nombre de tu negocio"></div>
 <div class="form-group"><label for="rp_tel">Teléfono Registrado</label><input type="tel" id="rp_tel" placeholder="Ej: 3312345678"></div>
@@ -245,11 +245,11 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </form>
 </div>
 <div id="v_cambiar_password" class="seccion card">
-<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;"> Cambiar Contraseña</h2>
+<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;">🔑 Cambiar Contraseña</h2>
 <div class="form-group"><label for="cp_actual">Contraseña Actual</label><div class="password-wrapper"><input type="password" id="cp_actual"><span class="toggle-password" onclick="togglePasswordCP()"><svg viewBox="0 0 24 24" id="iconEyeCP"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_nueva">Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_nueva"><span class="toggle-password" onclick="togglePasswordCPNueva()"><svg viewBox="0 0 24 24" id="iconEyeCPNueva"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_confirmar">Confirmar Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_confirmar"><span class="toggle-password" onclick="togglePasswordCPConfirmar()"><svg viewBox="0 0 24 24" id="iconEyeCPConfirmar"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
-<button class="btn btn-success" onclick="cambiarPassword()"> Actualizar Contraseña</button>
+<button class="btn btn-success" onclick="cambiarPassword()">🔑 Actualizar Contraseña</button>
 <button class="btn btn-outline" onclick="volverAlMenu()">← Regresar</button>
 </div>
 <div id="v_menu" class="seccion">
@@ -276,7 +276,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <button class="btn-primary-modern" onclick="abrirNuevo()"><span>➕</span><span>Nuevo Envío</span></button>
 <div class="actions-grid">
-<button class="action-card" onclick="abrirHistorial()"><div class="action-icon">📋</div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
+<button class="action-card" onclick="abrirHistorial()"><div class="action-icon"></div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="abrirPerfil()"><div class="action-icon">🎨</div><div class="action-content"><span class="action-title">Personalizar</span><span class="action-subtitle">Logo y slogan de tu marca</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon">🔍</div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
@@ -295,7 +295,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="form-group"><label>✍️ Slogan o descripción corta</label><input type="text" id="perfil_slogan" maxlength="60" placeholder="Ej: Hecho con amor 💜" oninput="renderizarPreviewPerfil()"></div>
 <button class="btn btn-primary" onclick="guardarPerfil()">💾 Guardar Cambios</button>
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-<button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">🗑️ Quitar foto</button>
+<button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">️ Quitar foto</button>
 <button class="btn btn-outline" style="margin:0;" onclick="volverAlMenu()">← Regresar</button>
 </div>
 </div>
@@ -308,11 +308,11 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button type="button" id="btn_enviar" class="active" onclick="cambiarTipoServicio('enviar')">📤 Enviar</button>
 <button type="button" id="btn_recibir" onclick="cambiarTipoServicio('recibir')">📥 Recibir</button>
 </div>
-<small id="tipo_servicio_desc" style="font-size:11px; color:var(--text-muted); display:block; margin-top:8px;"> Envío desde tu tienda a un destinatario</small>
+<small id="tipo_servicio_desc" style="font-size:11px; color:var(--text-muted); display:block; margin-top:8px;">📤 Envío desde tu tienda a un destinatario</small>
 </div>
 <div id="modo_enviar_contenido">
 <div id="grupo_origen_tipo" class="form-group" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:16px; border-radius:var(--radius-md); border:2px solid var(--border); margin-bottom:18px;">
-<label style="color:var(--accent); font-weight:800;">📍 Punto de Recolección</label>
+<label style="color:var(--accent); font-weight:800;"> Punto de Recolección</label>
 <select id="c_origen_tipo" onchange="calc()" style="background:#fff; border-color:var(--accent); font-weight:700;"><option value="marca">Recolección (Normal)</option><option value="hub">Entregar en Centro Físico Luna</option></select>
 </div>
 <div id="grupo_destinatario" class="destinatario-box" style="display:none;">
@@ -404,7 +404,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <input type="text" id="buscador_historial" placeholder="Buscar por nombre, ID o colonia..." oninput="filtrarHistorial(statusHistorialActual)" style="margin-bottom:10px;">
 <div style="display:flex; gap:8px; align-items:center;">
 <input type="date" id="fecha_historial" onchange="filtrarHistorial(statusHistorialActual)" style="flex:1;">
-<button class="btn btn-outline" style="margin:0; width:auto; padding:12px 16px; font-size:11px; white-space:nowrap;" onclick="limpiarFiltrosHistorial()">✕ Limpiar</button>
+<button class="btn btn-outline" style="margin:0; width:auto; padding:12px 16px; font-size:11px; white-space:nowrap;" onclick="limpiarFiltrosHistorial()"> Limpiar</button>
 </div>
 <div id="contador_resultados" style="display:none; margin-top:10px; font-size:11px; font-weight:700; color:var(--accent); text-align:center;"></div>
 </div>
@@ -442,8 +442,8 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap: wrap;">
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
-<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
-<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
+<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()"> Mes</button>
+<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()">📆 Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -489,7 +489,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="tab_repartidores" class="tab-content">
 <div class="card" style="border-top: 5px solid var(--warning);">
-<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">👷 Asignación de Repartidores</h2>
+<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;"> Asignación de Repartidores</h2>
 <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 16px; border-radius: var(--radius-md); margin-bottom: 18px; border: 2px dashed #3b82f6;">
 <h3 style="font-size: 14px; font-weight: 800; color: #1e40af; margin-bottom: 12px;">📦 Pedidos Sin Asignar</h3>
 <div id="lista_pedidos_sin_asignar"><p style="text-align:center; color:var(--text-muted); padding:24px;">Cargando...</p></div>
@@ -504,7 +504,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="card" style="border-top: 5px solid var(--text-muted);">
 <h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">⚙️ Opciones</h2>
 <button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
-<div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
+<div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">️ GPS Inactivo</div>
 <button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida'); location.reload();">🚪 Cerrar Sesión</button>
 </div>
@@ -524,22 +524,22 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div class="days-panel-content">
 <span class="day-section-label">⭐ Vista rápida</span>
-<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span></span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
+<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span>📋</span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label"> Días de la Semana</span>
-<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
+<span class="day-section-label">📆 Días de la Semana</span>
+<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span></span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
 <button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
 <button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
-<button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
+<button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span></span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
 <button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span>📆</span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
-<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span></span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
+<button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
 <div class="day-divider"></div>
 <span class="day-section-label">📥 Nuevos Pedidos</span>
-<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span></span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
+<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span>📥</span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
 <div id="routes-buttons-section" style="display: none; margin-top: 20px;">
-<span class="day-section-label">🗺️ Rutas de Entrega</span>
+<span class="day-section-label">️ Rutas de Entrega</span>
 <div id="botones_mapeo_sheet" style="display: flex; flex-direction: column; gap: 8px;"></div>
 </div>
 </div>
@@ -566,7 +566,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="rastreo_activo" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
 <p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="rastreo_marca"></span></p>
-<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="rastreo_recibe"></span></p>
+<p style="margin:0 0 6px 0;"><b> Recibe:</b> <span id="rastreo_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="rastreo_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="rastreo_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
@@ -575,8 +575,8 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="rastreo_espera" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="espera_marca"></span></p>
-<p style="margin:0 0 6px 0;"><b> Recibe:</b> <span id="espera_recibe"></span></p>
+<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="espera_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="espera_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="espera_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="espera_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
@@ -587,7 +587,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 </div>
 <div id="rastreo_entregado" style="display:none; padding:24px 0;">
-<div style="font-size:64px;">🎉</div>
+<div style="font-size:64px;"></div>
 <h3 style="font-weight:900; color:var(--success); margin:12px 0; font-size: 24px;">¡Pedido Entregado!</h3>
 <p style="font-size:13px; color:var(--text-muted);">Tu paquete ha sido llevado a su destino con éxito. Gracias por tu confianza en Luna Delivery.</p>
 </div>
@@ -602,6 +602,7 @@ let pedidosPendientesCache = [], tipoServicioActual = 'enviar', direccionTiendaC
 let fechaFiltroAdmin = null, deferredPrompt, repartidoresCache = [];
 let perfilCache = null, logoBase64Pendiente = null, logoMimePendiente = 'image/jpeg';
 let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
+
 function gs(func, ...args) {
 let url = '/api/' + func;
 if (args.length > 0) {
@@ -651,6 +652,8 @@ if (mapaCliente) { mapaCliente.remove(); mapaCliente = null; marcadorMoto = null
 const mapDiv = document.getElementById('map');
 if (mapDiv) mapDiv.innerHTML = '';
 }
+
+/* ============ PERFIL DE MARCA ============ */
 function abrirPerfil() {
 loading(true);
 gs('obtenerPerfilMarca', marca).then(function(res) {
@@ -732,6 +735,8 @@ else sloganEl.innerText = 'Panel de Control';
 function cargarPerfilMenu() {
 gs('obtenerPerfilMarca', marca).then(function(res) { if (res.exito) { perfilCache = res; aplicarLogoEnMenu(); } }).catch(function() {});
 }
+/* ============ FIN PERFIL ============ */
+
 function togglePassword() {
 var input = document.getElementById('l_p'), icon = document.getElementById('iconEye');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
@@ -771,7 +776,7 @@ else showToast('❌ ' + res.mensaje, 'error');
 }
 async function cambiarPassword() {
 const pa = document.getElementById('cp_actual').value, pn = document.getElementById('cp_nueva').value, pc = document.getElementById('cp_confirmar').value;
-if (!pa || !pn || !pc) { showToast('️ Completa todos los campos', 'warning'); return; }
+if (!pa || !pn || !pc) { showToast('⚠️ Completa todos los campos', 'warning'); return; }
 if (pn !== pc) { showToast('❌ Las contraseñas nuevas no coinciden', 'error'); return; }
 if (pn === pa) { showToast('⚠️ La nueva contraseña debe ser diferente a la actual', 'warning'); return; }
 loading(true);
@@ -844,7 +849,7 @@ document.getElementById('rastreo_activo').style.display = 'block'; document.getE
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 } else {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
-document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : '📅 Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
+document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
 }
@@ -870,13 +875,13 @@ if (ok) {
 document.getElementById('tag_marca').innerText = marca;
 cargarPerfilMenu();
 await refrescarDeuda();
-const muns = await gs('getMunicipios');
-fill('c_mun', muns);
 loading(false); ver('v_menu');
 } else { loading(false); showToast('Credenciales incorrectas', 'error'); }
 } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
-async function abrirReg() { loading(true); try { const d = await gs('getMunicipios'); fill('r_mun', d); loading(false); ver('v_reg'); } catch (e) { loading(false); showToast('Error al cargar municipios', 'error'); } }
+async function abrirReg() {
+ver('v_reg');
+}
 async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
 async function getColReg(cp) { document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('r_col', d); loading(false); } catch (e) { loading(false); } }
 async function ejecutarRegistro(event) {
@@ -897,7 +902,7 @@ document.getElementById('modo_enviar_contenido').style.display = 'block';
 document.getElementById('modo_recibir_contenido').style.display = 'none';
 document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
 } else {
-desc.innerText = ' Recibir mercancía: Proveedor → Tu tienda';
+desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
 document.getElementById('modo_enviar_contenido').style.display = 'none';
 document.getElementById('modo_recibir_contenido').style.display = 'block';
 cargarProveedoresFrecuentes(); cargarDireccionTienda();
@@ -921,8 +926,7 @@ if (idx === "" || !proveedoresCache[idx]) { limpiarCamposOrigen(); return; }
 const prov = proveedoresCache[idx];
 loading(true);
 try {
-const muns = await gs('getMunicipios');
-fill('c_mun_origen', muns); document.getElementById('c_mun_origen').value = prov.municipio || "";
+document.getElementById('c_mun_origen').value = prov.municipio || "";
 if (prov.municipio) {
 const cps = await gs('getCPs', prov.municipio);
 fill('c_cp_origen', cps); document.getElementById('c_cp_origen').value = prov.cp || "";
@@ -942,8 +946,7 @@ function limpiarCamposOrigen() { document.getElementById('c_mun_origen').value =
 async function abrirNuevo() {
 esEdicion = false; document.getElementById('form_title').innerText = "Solicitar Envío"; loading(true);
 try {
-const [muns, dests] = await Promise.all([gs('getMunicipios'), gs('getDestinatariosFrecuentes', marca)]);
-fill('c_mun', muns); fill('c_mun_origen', muns);
+const dests = await gs('getDestinatariosFrecuentes', marca);
 destinatariosCache = dests || []; cargarDropdownDestinatarios(destinatariosCache); cambiarTipoServicio('enviar'); limpiarCot(); loading(false); ver('v_cot');
 } catch (e) { loading(false); showToast('Error al abrir formulario', 'error'); }
 }
@@ -1072,9 +1075,9 @@ const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + '</p>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b> Destino:</b> ' + p.destino + '</p>';
 let fechaMostrar = '';
-if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
+if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>🗓️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
 const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')">❌ Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
 bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--warning)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; margin-bottom: 8px;"><div><strong style="font-size:13px; color:var(--primary);">' + (p.recibe || 'Sin nombre') + '</strong><span style="display:block; font-size:13px; color:var(--text-muted); font-weight:700;">ID: ' + idParaMostrar + ' ' + tipoBadge + '</span></div>' + statusBadge + '</div>' +
@@ -1086,7 +1089,7 @@ contenidoDireccion + fechaMostrar +
 });
 }
 });
-document.getElementById('list_c').innerHTML = bloquesHtml.join('') || '<p style="color:var(--text-muted); margin-top:24px;">' + ((textoBusqueda || fechaFiltro) ? '🤷 Sin resultados para tu búsqueda.' : 'Sin pedidos.') + '</p>';
+document.getElementById('list_c').innerHTML = bloquesHtml.join('') || '<p style="color:var(--text-muted); margin-top:24px;">' + ((textoBusqueda || fechaFiltro) ? ' Sin resultados para tu búsqueda.' : 'Sin pedidos.') + '</p>';
 }
 async function confirmarCancelacion(fila, idPedido) {
 const ok = await showConfirm('¿Estás seguro de cancelar el pedido ' + idPedido + '?');
@@ -1108,7 +1111,7 @@ const match = primeraParte.match(/^(.+?)\s+(\d+)(?:\s+(?:int\.?|int\.?\s*\d+|dep
 if (match) { document.getElementById('c_dir').value = match[1].trim(); document.getElementById('c_ext').value = match[2]; document.getElementById('c_int').value = primeraParte.substring(match[1].length + match[2].length + 1).trim(); }
 else { document.getElementById('c_dir').value = primeraParte; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; }
 }
-loading(true); try { const d = await gs('getMunicipios'); fill('c_mun', d); fill('c_mun_origen', d); loading(false); ver('v_cot'); } catch (e) { loading(false); }
+loading(false); ver('v_cot');
 }
 async function cargarAdmin() { loading(true); try { pedidosCache = await gs('getPedidos', "", "admin"); calcularContadoresRutas(); renderizarAdmin(); generarBotonesRuta(); loading(false); } catch (e) { loading(false); showToast('Error al cargar panel', 'error'); } }
 function calcularContadoresRutas() {
@@ -1195,11 +1198,11 @@ const displayAsignar = (p.status === 'Entregado' || p.status === 'Cancelado') ? 
 const valPrioridad = (p.prioridad === 999) ? "" : p.prioridad;
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
-const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend"> Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
+const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
-const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
+const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar"> Enviar</span>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
 const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' 💬</a>';
 bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--accent)')) + ';">' +
@@ -1216,7 +1219,7 @@ contenidoDireccion +
 '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">' + btnIniciar +
 (p.status !== 'Cancelado' ? '<button class="btn btn-success" style="padding:12px; margin:0; font-size:11px;" onclick="setSt(' + p.fila + ', \'Completado\')">✅ Finalizar</button>' : '') + '</div>' +
 (p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;"><button class="btn" style="padding:10px; font-size:10px; background:var(--success-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pagado\')">✅ Pagado</button><button class="btn" style="padding:10px; font-size:10px; background:var(--warning-gradient); color:#fff; margin:0;" onclick="marcarPagoAdmin(' + p.fila + ', \'Pendiente\')">⏳ Pendiente</button></div>' : '') +
-(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;"><button class="btn" style="padding:12px; margin:0; font-size:11px; background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); color:#fff;" onclick="abrirRutaIndividual(' + p.fila + ')">🗺️ Ver Ruta</button><button class="btn btn-primary" style="padding:12px; margin:0; font-size:11px;" onclick="enviarNotificacionWhatsApp(' + p.fila + ')"> WhatsApp</button></div>' : '') +
+(p.status !== 'Cancelado' ? '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:10px;"><button class="btn" style="padding:12px; margin:0; font-size:11px; background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); color:#fff;" onclick="abrirRutaIndividual(' + p.fila + ')">️ Ver Ruta</button><button class="btn btn-primary" style="padding:12px; margin:0; font-size:11px;" onclick="enviarNotificacionWhatsApp(' + p.fila + ')">💬 WhatsApp</button></div>' : '') +
 '</div>');
 });
 document.getElementById('lista_admin').innerHTML = bloquesAdmin.join('') || "<p style='color:var(--text-muted); padding:24px;'>Sin pedidos.</p>";
@@ -1242,7 +1245,7 @@ const origenRespaldo = p.origen || "";
 if (!navigator.geolocation) { window.open("https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origenRespaldo) + "&destination=" + encodeURIComponent(destinoRuta), '_blank'); return; }
 loading(true);
 navigator.geolocation.getCurrentPosition(position => { loading(false); window.open("https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(position.coords.latitude + "," + position.coords.longitude) + "&destination=" + encodeURIComponent(destinoRuta), '_blank'); },
-() => { loading(false); showToast('⚠️ Usando origen del pedido', 'warning'); window.open("https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origenRespaldo) + "&destination=" + encodeURIComponent(destinoRuta), '_blank'); },
+() => { loading(false); showToast('️ Usando origen del pedido', 'warning'); window.open("https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origenRespaldo) + "&destination=" + encodeURIComponent(destinoRuta), '_blank'); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 async function enviarNotificacionWhatsApp(fila) {
@@ -1256,7 +1259,7 @@ let emojiStatus = "📦", textoStatus = "En preparación";
 if (p.status === "En Entrega") { emojiStatus = ""; textoStatus = "En ruta a tu domicilio"; }
 else if (p.status === "Entregado") { emojiStatus = "✅"; textoStatus = "Entregado"; }
 else if (p.status === "Cancelado") { emojiStatus = "❌"; textoStatus = "Cancelado"; }
-const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
+const msg = "🌙 *LUNA DELIVERY* \n━━━━━━━━━━━━━━\n📦 *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
@@ -1269,7 +1272,7 @@ window.open(url, '_blank');
 };
 if (!navigator.geolocation) { loading(false); abrir(origenRespaldo); return; }
 navigator.geolocation.getCurrentPosition(position => { loading(false); abrir(position.coords.latitude + "," + position.coords.longitude); },
-() => { loading(false); showToast('⚠️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
+() => { loading(false); showToast('️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 async function abrirRutaMapsPriorizada(filtro) {
@@ -1306,7 +1309,7 @@ destruirMapa(); loading(true);
 try {
 const res = await gs('obtenerDatosRastreoCliente', id);
 loading(false);
-if (res.error) { showToast('️ ' + res.error, 'error'); return; }
+if (res.error) { showToast('⚠️ ' + res.error, 'error'); return; }
 ver('v_rastreo');
 if (res.status === "Entregado") { document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'block'; }
 else if (res.mostrarMapa && res.moto && res.moto.lat > 0) {
@@ -1352,13 +1355,13 @@ navigator.geolocation.getCurrentPosition(async position => {
 const lat = position.coords.latitude, lng = position.coords.longitude;
 try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 }, async () => {
-loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning');
+loading(false); showToast('️ Sin GPS, iniciando sin coordenadas', 'warning');
 try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) {}
 }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 function mostrarNotifGPS(mensaje) { const notif = document.createElement('div'); notif.className = 'gps-notif'; notif.textContent = mensaje; document.body.appendChild(notif); setTimeout(() => notif.remove(), 3000); }
 async function activarGPSGlobal() {
-if (!navigator.geolocation) { showToast(' Tu navegador no soporta GPS', 'error'); return; }
+if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
 document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 30000);
@@ -1373,7 +1376,7 @@ function actualizarBotonGPS(activo) {
 const btnGPS = document.getElementById('btn_gps_global');
 if (btnGPS) {
 if (activo) { btnGPS.innerHTML = '⚠️ Detener GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%);'; btnGPS.onclick = desactivarGPSGlobal; }
-else { btnGPS.innerHTML = '️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
+else { btnGPS.innerHTML = '🛰️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
 }
 }
 async function enviarGPSGlobal() {
@@ -1382,7 +1385,7 @@ const filas = await gs('obtenerFilasEnEntrega');
 if (!filas || filas.length === 0) return;
 navigator.geolocation.getCurrentPosition(async position => {
 const lat = position.coords.latitude, lng = position.coords.longitude;
-try { const res = await gs('actualizarGPSGlobal', filas, lat, lng); if (res.exito) mostrarNotifGPS('📍 GPS enviado a ' + res.cantidad + ' pedido(s)'); } catch (e) { console.error(e); }
+try { const res = await gs('actualizarGPSGlobal', filas, lat, lng); if (res.exito) mostrarNotifGPS(' GPS enviado a ' + res.cantidad + ' pedido(s)'); } catch (e) { console.error(e); }
 }, () => mostrarNotifGPS("❌ Error GPS"), { enableHighAccuracy: true, timeout: 10000 });
 } catch (e) { console.error(e); }
 }
@@ -1421,7 +1424,7 @@ try {
 const res = await gs('obtenerResumenRango', inicioMes.toISOString(), finMes.toISOString());
 loading(false); if (!res.exito) { showToast(res.error, 'error'); return; }
 mostrarResumenSuperior(res); document.getElementById('rango_semana_texto').innerText = res.rangoTexto;
-let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;"> Pedidos del Mes</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
+let html = '<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;">📋 Pedidos del Mes</h3><div style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;">';
 if (res.pedidos && res.pedidos.length > 0) {
 res.pedidos.forEach(p => { html += '<div style="display: flex; justify-content: space-between; padding: 10px; border-bottom: 2px solid var(--border); font-size: 12px;"><div><div style="font-weight: 700;">' + p.marca + '</div><div style="font-size: 10px; color: var(--text-muted);">' + p.fecha + ' - ' + p.recibe + '</div></div><div style="text-align: right;"><div style="font-weight: 900; color: var(--accent);">$' + p.precio.toFixed(2) + '</div><span class="pago-badge ' + (p.estadoPago === 'Pagado' ? 'pago-ok' : 'pago-pend') + '">' + (p.estadoPago === 'Pagado' ? '✅' : '❌') + ' ' + p.estadoPago + '</span></div></div>'; });
 } else html += '<p style="text-align:center; color:var(--text-muted); padding:24px;">Sin pedidos este mes</p>';
@@ -1500,7 +1503,7 @@ let html = '';
 if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;">🎉 No hay pagos pendientes</p>';
 else {
 pedidosPendientesCache.forEach(p => {
-html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle">📦 ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle">📅 ' + p.fecha + ' |  ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')"> WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
+html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox" data-fila="' + p.fila + '" data-precio="' + p.precio + '" onchange="actualizarResumenSeleccion()"><div class="pendiente-info"><div class="pendiente-marca">' + p.marca + '</div><div class="pendiente-detalle">📦 ' + p.id + ' | 👤 ' + p.recibe + '</div><div class="pendiente-detalle">📅 ' + p.fecha + ' | 📍 ' + p.destino.substring(0, 40) + '...</div><div class="pendiente-acciones"><button class="btn-mini btn-mini-pago" onclick="marcarUnPago(' + p.fila + ')">✅ Pagado</button><button class="btn-mini btn-mini-wa" onclick="enviarRecordatorioUn(' + p.fila + ')">💬 WA</button></div></div><div class="pendiente-precio">$' + p.precio.toFixed(2) + '</div></div>';
 });
 }
 document.getElementById('lista_pendientes').innerHTML = html;
@@ -1578,8 +1581,6 @@ document.getElementById('c_dir').value = calle; document.getElementById('c_ext')
 document.getElementById('c_rec').value = dest.nombre || ""; document.getElementById('c_tel').value = dest.celular || "";
 loading(true);
 try {
-const muns = await gs('getMunicipios');
-fill('c_mun', muns);
 if (dest.municipio) {
 document.getElementById('c_mun').value = dest.municipio;
 const cps = await gs('getCPs', dest.municipio);
@@ -1704,8 +1705,8 @@ window.addEventListener("DOMContentLoaded", function() {
         }
         else if (modo === "admin") { 
             ver('v_admin'); 
-            try { cambiarTab('pedidos'); } catch(e) { console.error(' Error cambiarTab:', e); }
-            try { verificarGPSAlCargar(); } catch(e) { console.error('❌ Error GPS:', e); }
+            try { cambiarTab('pedidos'); } catch(e) { console.error('❌ Error cambiarTab:', e); }
+            try { verificarGPSAlCargar(); } catch(e) { console.error(' Error GPS:', e); }
         }
         else { 
             ver('v_bienvenida'); 
