@@ -276,7 +276,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <button class="btn-primary-modern" onclick="abrirNuevo()"><span>➕</span><span>Nuevo Envío</span></button>
 <div class="actions-grid">
-<button class="action-card" onclick="abrirHistorial()"><div class="action-icon"></div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
+<button class="action-card" onclick="abrirHistorial()"><div class="action-icon">📋</div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="abrirPerfil()"><div class="action-icon">🎨</div><div class="action-content"><span class="action-title">Personalizar</span><span class="action-subtitle">Logo y slogan de tu marca</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon">🔍</div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
@@ -295,7 +295,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="form-group"><label>✍️ Slogan o descripción corta</label><input type="text" id="perfil_slogan" maxlength="60" placeholder="Ej: Hecho con amor 💜" oninput="renderizarPreviewPerfil()"></div>
 <button class="btn btn-primary" onclick="guardarPerfil()">💾 Guardar Cambios</button>
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-<button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">️ Quitar foto</button>
+<button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">🗑️ Quitar foto</button>
 <button class="btn btn-outline" style="margin:0;" onclick="volverAlMenu()">← Regresar</button>
 </div>
 </div>
@@ -306,7 +306,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <label style="color:var(--accent); font-weight:800; margin-bottom:10px;">📦 TIPO DE SERVICIO</label>
 <div class="toggle-servicio">
 <button type="button" id="btn_enviar" class="active" onclick="cambiarTipoServicio('enviar')">📤 Enviar</button>
-<button type="button" id="btn_recibir" onclick="cambiarTipoServicio('recibir')">📥 Recibir</button>
+<button type="button" id="btn_recibir" onclick="cambiarTipoServicio('recibir')"> Recibir</button>
 </div>
 <small id="tipo_servicio_desc" style="font-size:11px; color:var(--text-muted); display:block; margin-top:8px;">📤 Envío desde tu tienda a un destinatario</small>
 </div>
@@ -318,7 +318,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="grupo_destinatario" class="destinatario-box" style="display:none;">
 <label style="color:var(--accent); font-weight:800; margin-bottom:10px;">📋 DESTINATARIO CONOCIDO</label>
 <select id="c_destinatario" onchange="seleccionarDestinatario()" style="background:#fff; border-color:var(--accent); font-weight:600;"><option value="">— Seleccionar destinatario —</option></select>
-<small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;"> Al seleccionar, se rellenará la dirección automáticamente.</small>
+<small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;">💡 Al seleccionar, se rellenará la dirección automáticamente.</small>
 </div>
 <div id="grupo_destino_manual">
 <div class="form-group">
@@ -345,7 +345,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="ruta-2-puntos">
 <div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;">🛣️ RUTA DE RECOLECCIÓN</div>
 <div class="punto">
-<div class="punto-titulo">📍 Punto A - Recolección (Proveedor)</div>
+<div class="punto-titulo"> Punto A - Recolección (Proveedor)</div>
 <div id="grupo_proveedor" class="proveedor-box" style="margin-bottom: 12px;">
 <label style="color:#92400e; font-weight:800; margin-bottom:10px;">🏭 PROVEEDOR CONOCIDO</label>
 <select id="c_proveedor" onchange="seleccionarProveedor()" style="background:#fff; border-color:#f59e0b; font-weight:600;"><option value="">— Seleccionar proveedor —</option></select>
@@ -400,7 +400,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button id="f_cancel" class="btn-filter" onclick="filtrarHistorial('Cancelado')">Cancelados</button>
 </div>
 <div class="busca-box">
-<label style="margin-bottom:10px;">🔎 Buscar y filtrar</label>
+<label style="margin-bottom:10px;"> Buscar y filtrar</label>
 <input type="text" id="buscador_historial" placeholder="Buscar por nombre, ID o colonia..." oninput="filtrarHistorial(statusHistorialActual)" style="margin-bottom:10px;">
 <div style="display:flex; gap:8px; align-items:center;">
 <input type="date" id="fecha_historial" onchange="filtrarHistorial(statusHistorialActual)" style="flex:1;">
@@ -443,7 +443,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
 <button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
-<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
+<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()">📆 Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -462,7 +462,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="lista_dias_semana"></div>
 </div>
 <div id="vista_rango" style="display:none;">
-<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;">📋 Pedidos del Rango</h3>
+<h3 style="font-size: 13px; font-weight: 800; margin: 18px 0 12px 0; text-align:left;"> Pedidos del Rango</h3>
 <div id="lista_pedidos_rango" style="background: #fff; border: 2px solid var(--border); border-radius: var(--radius-md); padding: 12px; max-height: 400px; overflow-y: auto;"></div>
 </div>
 </div>
@@ -476,7 +476,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div style="text-align: right;"><div style="font-size: 11px; font-weight: 700; color: #92400e;">PEDIDOS</div><div id="pend_total_count" style="font-size: 24px; font-weight: 800; color: #92400e;">0</div></div>
 </div>
 </div>
-<div class="form-group"><label>🔍 Buscar por marca</label><select id="filtro_marca_pend" onchange="cargarPendientes()"><option value="todas">Todas las marcas</option></select></div>
+<div class="form-group"><label> Buscar por marca</label><select id="filtro_marca_pend" onchange="cargarPendientes()"><option value="todas">Todas las marcas</option></select></div>
 <div id="lista_pendientes" style="max-height: 400px; overflow-y: auto;"></div>
 <div class="resumen-bar">
 <div><div class="resumen-bar-texto">Seleccionados: <span id="pend_seleccionados_count">0</span></div><div class="resumen-bar-monto" id="pend_seleccionados_monto">$0.00</div></div>
@@ -489,9 +489,9 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="tab_repartidores" class="tab-content">
 <div class="card" style="border-top: 5px solid var(--warning);">
-<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;"> Asignación de Repartidores</h2>
+<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">👷 Asignación de Repartidores</h2>
 <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 16px; border-radius: var(--radius-md); margin-bottom: 18px; border: 2px dashed #3b82f6;">
-<h3 style="font-size: 14px; font-weight: 800; color: #1e40af; margin-bottom: 12px;"> Pedidos Sin Asignar</h3>
+<h3 style="font-size: 14px; font-weight: 800; color: #1e40af; margin-bottom: 12px;">📦 Pedidos Sin Asignar</h3>
 <div id="lista_pedidos_sin_asignar"><p style="text-align:center; color:var(--text-muted); padding:24px;">Cargando...</p></div>
 </div>
 <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 16px; border-radius: var(--radius-md); border: 2px dashed #10b981;">
@@ -503,9 +503,9 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="tab_mas" class="tab-content">
 <div class="card" style="border-top: 5px solid var(--text-muted);">
 <h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">⚙️ Opciones</h2>
-<button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">️ Activar GPS Global</button>
+<button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
 <div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
-<button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
+<button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()"> Agregar a Pantalla de Inicio</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida'); location.reload();">🚪 Cerrar Sesión</button>
 </div>
 </div>
@@ -527,17 +527,17 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span>📋</span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label"> Días de la Semana</span>
+<span class="day-section-label">📆 Días de la Semana</span>
 <button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
-<button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
+<button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span></span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
-<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span></span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
+<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
 <button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
 <button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span>📆</span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
 <button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label"> Nuevos Pedidos</span>
-<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span>📥</span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
+<span class="day-section-label">📥 Nuevos Pedidos</span>
+<button class="day-btn" id="day-sin-asignar" onclick="selectDay('Por asignar')"><div class="day-btn-info"><span></span><span>Por Asignar</span></div><span class="day-btn-count" id="count-sin-asignar">0</span></button>
 <div id="routes-buttons-section" style="display: none; margin-top: 20px;">
 <span class="day-section-label">🗺️ Rutas de Entrega</span>
 <div id="botones_mapeo_sheet" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -565,9 +565,9 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Luna Delivery System</p>
 <div id="rastreo_activo" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="rastreo_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="rastreo_marca"></span></p>
 <p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="rastreo_recibe"></span></p>
-<p style="margin:0 0 6px 0;"><b> Destino:</b> <span id="rastreo_destino"></span></p>
+<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="rastreo_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="rastreo_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
 <p style="font-size:11px; color:var(--success); font-weight:700; margin:18px 0 8px 0; text-align:center;">🛰️ Ubicación del repartidor en vivo:</p>
@@ -576,8 +576,8 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="rastreo_espera" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
 <p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="espera_marca"></span></p>
-<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="espera_recibe"></span></p>
-<p style="margin:0 0 6px 0;"><b> Destino:</b> <span id="espera_destino"></span></p>
+<p style="margin:0 0 6px 0;"><b> Recibe:</b> <span id="espera_recibe"></span></p>
+<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="espera_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="espera_status" style="font-weight:700; color:var(--accent);"></span></p>
 </div>
 <div id="map_placeholder" class="map-placeholder">
@@ -842,7 +842,7 @@ document.getElementById('rastreo_activo').style.display = 'block'; document.getE
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 } else {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
-document.getElementById('espera_mensaje').innerHTML = res.esHoy ? ' Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
+document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
 }
@@ -855,7 +855,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:
 marcadorMoto = L.marker([lat, lng]).addTo(mapaCliente).bindPopup('Moto de Luna Delivery 🛵').openPopup();
 }
 
-// ✅ FUNCIÓN entrar() CORREGIDA - SIN fill() DE MUNICIPIOS
+// ✅ FUNCIÓN entrar() CORREGIDA
 async function entrar(event) {
 if (event) event.preventDefault();
 marca = document.getElementById('l_m').value;
@@ -867,14 +867,12 @@ if (ok) {
 document.getElementById('tag_marca').innerText = marca;
 cargarPerfilMenu();
 await refrescarDeuda();
-// ✅ ELIMINADAS las líneas que llamaban a getMunicipios y fill()
 loading(false); ver('v_menu');
 } else { loading(false); showToast('Credenciales incorrectas', 'error'); }
 } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
 
 async function abrirReg() {
-// ✅ SIMPLEMENTE MUESTRA EL FORMULARIO, SIN LLAMAR A getMunicipios
 ver('v_reg');
 }
 async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
@@ -916,14 +914,13 @@ async function cargarDireccionTienda() {
 try { const res = await gs('getDireccionTienda', marca); if (res.exito) { direccionTiendaCache = res; document.getElementById('texto_direccion_tienda').innerText = res.direccionCompleta; } } catch (e) { console.error(e); }
 }
 
-// ✅ FUNCIÓN seleccionarProveedor() CORREGIDA - SIN fill() DE MUNICIPIOS
+// ✅ FUNCIÓN seleccionarProveedor() CORREGIDA
 async function seleccionarProveedor() {
 const idx = document.getElementById('c_proveedor').value;
 if (idx === "" || !proveedoresCache[idx]) { limpiarCamposOrigen(); return; }
 const prov = proveedoresCache[idx];
 loading(true);
 try {
-// ✅ ELIMINADAS las líneas que llamaban a getMunicipios y fill()
 document.getElementById('c_mun_origen').value = prov.municipio || "";
 if (prov.municipio) {
 const cps = await gs('getCPs', prov.municipio);
@@ -1067,7 +1064,7 @@ const ordenVisual = ['Por asignar', 'Lunes', 'Martes', 'Miércoles', 'Jueves', '
 ordenVisual.forEach(nomDia => {
 const deEsteDia = bloquesDias[nomDia];
 if (deEsteDia.length > 0) {
-bloquesHtml.push('<div class="dia-header">📅 ' + nomDia.toUpperCase() + ' (' + deEsteDia.length + ')</div>');
+bloquesHtml.push('<div class="dia-header"> ' + nomDia.toUpperCase() + ' (' + deEsteDia.length + ')</div>');
 deEsteDia.forEach(p => {
 const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
@@ -1075,7 +1072,7 @@ const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Mi Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + '</p>';
 let fechaMostrar = '';
-if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
+if (p.fecha) { const f = new Date(p.fecha); fechaMostrar = '<p style="margin:0 0 6px 0; color:var(--text-muted);"><b>🗓️ Fecha:</b> ' + f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) + '</p>'; }
 const botonesAccion = (p.status !== 'Entregado' && p.status !== 'Cancelado') ? '<button class="edit-btn" onclick="prepararEdicion(\'' + encodeURIComponent(JSON.stringify(p)) + '\')">✏️ Editar</button><button class="cancel-btn" onclick="confirmarCancelacion(' + p.fila + ', \'' + idParaMostrar + '\')">❌ Cancelar</button>' : (p.status === 'Cancelado' ? '<span style="font-size:11px; color:var(--text-muted);">Pedido cancelado</span>' : '');
 bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--warning)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; margin-bottom: 8px;"><div><strong style="font-size:13px; color:var(--primary);">' + (p.recibe || 'Sin nombre') + '</strong><span style="display:block; font-size:13px; color:var(--text-muted); font-weight:700;">ID: ' + idParaMostrar + ' ' + tipoBadge + '</span></div>' + statusBadge + '</div>' +
@@ -1100,7 +1097,7 @@ if (res.exito) { pedidosCache = await gs('getPedidos', marca, "cliente"); filtra
 } catch (e) { loading(false); showToast('Error al cancelar', 'error'); }
 }
 
-// ✅ FUNCIÓN prepararEdicion() CORREGIDA - SIN fill() DE MUNICIPIOS
+// ✅ FUNCIÓN prepararEdicion() CORREGIDA
 async function prepararEdicion(pEncoded) {
 const p = JSON.parse(decodeURIComponent(pEncoded)); esEdicion = true; document.getElementById('form_title').innerText = "Editar Envío"; document.getElementById('c_fila').value = p.fila; document.getElementById('c_rec').value = p.recibe; document.getElementById('c_tel').value = p.celular; document.getElementById('c_com').value = p.coments;
 if (p.tipoServicio === 'recibir') cambiarTipoServicio('recibir');
@@ -1111,7 +1108,6 @@ const match = primeraParte.match(/^(.+?)\s+(\d+)(?:\s+(?:int\.?|int\.?\s*\d+|dep
 if (match) { document.getElementById('c_dir').value = match[1].trim(); document.getElementById('c_ext').value = match[2]; document.getElementById('c_int').value = primeraParte.substring(match[1].length + match[2].length + 1).trim(); }
 else { document.getElementById('c_dir').value = primeraParte; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; }
 }
-// ✅ ELIMINADAS las líneas que llamaban a getMunicipios y fill()
 loading(false); ver('v_cot');
 }
 
@@ -1202,9 +1198,9 @@ const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
 const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
-const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;"> Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
+const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled> En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
+const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar"> Enviar</span>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
 const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' 💬</a>';
 bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--accent)')) + ';">' +
@@ -1258,10 +1254,10 @@ try {
 const baseUrl = await gs('obtenerUrlApp');
 const linkPedido = baseUrl + "?t=" + idParaMostrar;
 let emojiStatus = "📦", textoStatus = "En preparación";
-if (p.status === "En Entrega") { emojiStatus = ""; textoStatus = "En ruta a tu domicilio"; }
+if (p.status === "En Entrega") { emojiStatus = "🛵"; textoStatus = "En ruta a tu domicilio"; }
 else if (p.status === "Entregado") { emojiStatus = "✅"; textoStatus = "Entregado"; }
 else if (p.status === "Cancelado") { emojiStatus = "❌"; textoStatus = "Cancelado"; }
-const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! 💜";
+const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━━\n📦 *Pedido:* " + idParaMostrar + "\n*Marca:* " + p.marca + "\n👤 *Recibe:* " + p.recibe + "\n" + emojiStatus + " *Estatus:* " + textoStatus + "\n━━━━━━━━━━━━━━\n📍 *Sigue tu pedido en vivo aquí:*\n🔗 " + linkPedido + "\n¡Gracias por tu preferencia! ";
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
@@ -1274,7 +1270,7 @@ window.open(url, '_blank');
 };
 if (!navigator.geolocation) { loading(false); abrir(origenRespaldo); return; }
 navigator.geolocation.getCurrentPosition(position => { loading(false); abrir(position.coords.latitude + "," + position.coords.longitude); },
-() => { loading(false); showToast('⚠️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
+() => { loading(false); showToast('️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 async function abrirRutaMapsPriorizada(filtro) {
@@ -1287,7 +1283,7 @@ try {
 const direccionesOptimizadas = await gs('obtenerDireccionesOptimizadas', seleccionados);
 const paradas = direccionesOptimizadas.map(d => encodeURIComponent(limpiarDestinoParaRuta(d)));
 construirRutaConGPS(paradas, seleccionados[0].origen || "");
-} catch (e) { loading(false); showToast('❌ Error al optimizar la ruta', 'error'); }
+} catch (e) { loading(false); showToast(' Error al optimizar la ruta', 'error'); }
 }
 function generarBotonesRuta() {
 const pendientesDia = obtenerPedidosPorDiaAdmin();
@@ -1296,7 +1292,7 @@ const municipios = [];
 pendientesDia.forEach(p => { const parts = p.destino.split(','); if (parts.length > 2) { const m = parts[2].trim(); if (m && municipios.indexOf(m) === -1) municipios.push(m); } });
 const hBotonesSheet = [];
 if (pendientesDia.length > 0) {
-hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'TODOS\')">️ Ruta Organizada (' + pendientesDia.length + ')</button>');
+hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'TODOS\')">🗺️ Ruta Organizada (' + pendientesDia.length + ')</button>');
 municipios.forEach(mun => hBotonesSheet.push('<button class="btn-filter" onclick="abrirRutaMapsPriorizada(\'' + mun + '\')">📍 ' + mun + '</button>'));
 }
 const routesSection = document.getElementById('routes-buttons-section'), botonesContainer = document.getElementById('botones_mapeo_sheet');
@@ -1324,7 +1320,7 @@ intervaloRastreo = setInterval(() => actualizarRastreoEnVivo(id), 30000);
 } else {
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
-document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? ' Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : '⏳ Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
+document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? '📅 Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : '⏳ Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
 document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
 }
 } catch (e) { loading(false); showToast('Error al buscar', 'error'); }
@@ -1349,7 +1345,7 @@ const ok = await showConfirm("¿Iniciar entrega? El cliente podrá ver tu ubicac
 if (!ok) return;
 if (!navigator.geolocation) {
 showToast('⚠️ Navegador sin GPS', 'error'); loading(true);
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) { loading(false); }
 return;
 }
 loading(true);
@@ -1358,14 +1354,14 @@ const lat = position.coords.latitude, lng = position.coords.longitude;
 try { const res = await gs('iniciarEntregaConGPS', fila, lat, lng); loading(false); if (res.exito) { showToast('✅ Entrega iniciada con GPS', 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) { loading(false); }
 }, async () => {
 loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning');
-try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) {}
+try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('️ ' + res.error, 'error'); } catch (e) {}
 }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
 function mostrarNotifGPS(mensaje) { const notif = document.createElement('div'); notif.className = 'gps-notif'; notif.textContent = mensaje; document.body.appendChild(notif); setTimeout(() => notif.remove(), 3000); }
 async function activarGPSGlobal() {
 if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
-document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
+document.getElementById('gps_status').innerHTML = '️ GPS Activo - Enviando ubicación cada 30 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 30000);
 showToast('✅ GPS Global activado', 'success');
 }
@@ -1377,7 +1373,7 @@ showToast('ℹ️ GPS Global detenido', 'info');
 function actualizarBotonGPS(activo) {
 const btnGPS = document.getElementById('btn_gps_global');
 if (btnGPS) {
-if (activo) { btnGPS.innerHTML = '⚠️ Detener GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%);'; btnGPS.onclick = desactivarGPSGlobal; }
+if (activo) { btnGPS.innerHTML = '️ Detener GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%);'; btnGPS.onclick = desactivarGPSGlobal; }
 else { btnGPS.innerHTML = '🛰️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
 }
 }
@@ -1441,7 +1437,7 @@ document.getElementById('lista_dias_semana').innerHTML = html;
 }
 function renderizarDiaCard(dia, datos, esUnico) {
 const sinPedidos = datos.pedidos === 0;
-return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre">📅 ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
+return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre"> ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
 }
 async function verDetalleDia(dia) {
 loading(true);
@@ -1521,12 +1517,12 @@ if (checkboxes.length === 0) { showToast('Selecciona al menos un pedido', 'warni
 const ok = await showConfirm('¿Marcar ' + checkboxes.length + ' pedido(s) como Pagado?');
 if (!ok) return;
 const filas = Array.from(checkboxes).map(cb => cb.dataset.fila); loading(true);
-try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarPendientes(); } else showToast(' ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pagos', 'error'); }
+try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarPendientes(); } else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pagos', 'error'); }
 }
 async function marcarUnPago(fila) {
 const ok = await showConfirm('¿Marcar este pedido como Pagado?');
 if (!ok) return; loading(true);
-try { const res = await gs('marcarPago', fila, 'Pagado'); loading(false); if (res.exito) cargarPendientes(); else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); }
+try { const res = await gs('marcarPago', fila, 'Pagado'); loading(false); if (res.exito) cargarPendientes(); else showToast(' ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); }
 }
 function enviarRecordatoriosWA() {
 const checkboxes = document.querySelectorAll('.pend-checkbox:checked');
@@ -1543,7 +1539,7 @@ window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + en
 function enviarRecordatorioUn(fila) {
 const p = pedidosPendientesCache.find(x => x.fila === fila); if (!p) return;
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* \nHola *' + p.marca + '*,\nTe recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.\n¡Gracias!';
+const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.\n¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 function cargarDropdownDestinatarios(dests) {
@@ -1562,7 +1558,7 @@ option.text = textoMostrar; select.appendChild(option);
 } else grupo.style.display = 'none';
 }
 
-// ✅ FUNCIÓN seleccionarDestinatario() CORREGIDA - SIN fill() DE MUNICIPIOS
+// ✅ FUNCIÓN seleccionarDestinatario() CORREGIDA
 async function seleccionarDestinatario() {
 const idx = document.getElementById('c_destinatario').value;
 if (idx === "" || !destinatariosCache[idx]) {
@@ -1585,7 +1581,6 @@ document.getElementById('c_dir').value = calle; document.getElementById('c_ext')
 document.getElementById('c_rec').value = dest.nombre || ""; document.getElementById('c_tel').value = dest.celular || "";
 loading(true);
 try {
-// ✅ ELIMINADAS las líneas que llamaban a getMunicipios y fill()
 if (dest.municipio) {
 document.getElementById('c_mun').value = dest.municipio;
 const cps = await gs('getCPs', dest.municipio);
@@ -1615,8 +1610,8 @@ const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent), esAndroid = /Android
 if (esIOS) showToast('📲 Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
 else if (esAndroid) {
 if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('✅ ¡App instalada!', 'success'); deferredPrompt = null; }); }
-else showToast('📲 Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
-} else showToast('📲 Busca "Agregar a inicio" en el menú de tu navegador', 'info');
+else showToast(' Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
+} else showToast(' Busca "Agregar a inicio" en el menú de tu navegador', 'info');
 }
 let touchStartX = 0, touchEndX = 0;
 document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
@@ -1659,7 +1654,7 @@ let opciones = '<option value="">— Seleccionar repartidor —</option>';
 repartidoresCache.forEach(r => { if (r.activo) opciones += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
 const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b> Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
 }
 function crearCardPedidoAsignado(p) {
 let nombreRepartidor = 'Sin nombre';
@@ -1669,7 +1664,7 @@ const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
 let opcionesReasignar = '<option value="' + p.repartidor + '">' + nombreRepartidor + ' (actual)</option><option value="">— Quitar asignación —</option>';
 repartidoresCache.forEach(r => { if (r.activo && r.id !== p.repartidor) opcionesReasignar += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b> Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
 }
 async function asignarRepartidor(fila, idRepartidor) {
 if (!idRepartidor) return;
