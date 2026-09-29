@@ -190,14 +190,14 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 </div>
 <div id="v_bienvenida" class="seccion card">
-<h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;"> LUNA DELIVERY</h1>
+<h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;">🌙 LUNA DELIVERY</h1>
 <button class="btn btn-primary" onclick="ver('v_login')">Acceso Clientes</button>
 <button class="btn btn-outline" onclick="abrirReg()">Registrar mi Marca</button>
 <button class="btn btn-outline" onclick="ver('v_consulta_id')">🔍 Consultar Pedido</button>
 <button class="btn btn-outline" onclick="ver('v_recuperar_password')">🔑 Recuperar Contraseña</button>
 </div>
 <div id="v_recuperar_password" class="seccion card">
-<h2 style="font-weight:800; margin-bottom: 24px;">🔑 Recuperar Contraseña</h2>
+<h2 style="font-weight:800; margin-bottom: 24px;"> Recuperar Contraseña</h2>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">Ingresa los datos de tu marca y te mostraremos tu contraseña.</p>
 <div class="form-group"><label for="rp_m">Marca</label><input type="text" id="rp_m" placeholder="Nombre de tu negocio"></div>
 <div class="form-group"><label for="rp_tel">Teléfono Registrado</label><input type="tel" id="rp_tel" placeholder="Ej: 3312345678"></div>
@@ -245,11 +245,11 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </form>
 </div>
 <div id="v_cambiar_password" class="seccion card">
-<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;">🔑 Cambiar Contraseña</h2>
+<h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;"> Cambiar Contraseña</h2>
 <div class="form-group"><label for="cp_actual">Contraseña Actual</label><div class="password-wrapper"><input type="password" id="cp_actual"><span class="toggle-password" onclick="togglePasswordCP()"><svg viewBox="0 0 24 24" id="iconEyeCP"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_nueva">Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_nueva"><span class="toggle-password" onclick="togglePasswordCPNueva()"><svg viewBox="0 0 24 24" id="iconEyeCPNueva"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
 <div class="form-group"><label for="cp_confirmar">Confirmar Nueva Contraseña</label><div class="password-wrapper"><input type="password" id="cp_confirmar"><span class="toggle-password" onclick="togglePasswordCPConfirmar()"><svg viewBox="0 0 24 24" id="iconEyeCPConfirmar"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
-<button class="btn btn-success" onclick="cambiarPassword()">🔑 Actualizar Contraseña</button>
+<button class="btn btn-success" onclick="cambiarPassword()"> Actualizar Contraseña</button>
 <button class="btn btn-outline" onclick="volverAlMenu()">← Regresar</button>
 </div>
 <div id="v_menu" class="seccion">
@@ -274,14 +274,14 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="success-icon">✅</div>
 <p class="account-detail">No tienes deuda pendiente</p>
 </div>
-<button class="btn-primary-modern" onclick="abrirNuevo()"><span></span><span>Nuevo Envío</span></button>
+<button class="btn-primary-modern" onclick="abrirNuevo()"><span>➕</span><span>Nuevo Envío</span></button>
 <div class="actions-grid">
 <button class="action-card" onclick="abrirHistorial()"><div class="action-icon">📋</div><div class="action-content"><span class="action-title">Historial</span><span class="action-subtitle">Ver pedidos</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="abrirPerfil()"><div class="action-icon">🎨</div><div class="action-content"><span class="action-title">Personalizar</span><span class="action-subtitle">Logo y slogan de tu marca</span></div><div class="action-arrow">→</div></button>
-<button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon"></div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
+<button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon">🔍</div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
 </div>
-<button class="btn-logout" onclick="location.reload()"><span></span><span>Cerrar Sesión</span></button>
+<button class="btn-logout" onclick="location.reload()"><span>🚪</span><span>Cerrar Sesión</span></button>
 </div>
 </div>
 <div id="v_perfil" class="seccion card">
@@ -291,9 +291,9 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <p id="perfil_nombre" style="font-weight:900; font-size:20px; margin:0;"></p>
 <p id="perfil_slogan_preview" style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;"></p>
 </div>
-<div class="form-group"><label>📸 Logo de tu marca</label><input type="file" id="input_logo" accept="image/*" onchange="previsualizarLogo(this)"></div>
+<div class="form-group"><label> Logo de tu marca</label><input type="file" id="input_logo" accept="image/*" onchange="previsualizarLogo(this)"></div>
 <div class="form-group"><label>✍️ Slogan o descripción corta</label><input type="text" id="perfil_slogan" maxlength="60" placeholder="Ej: Hecho con amor 💜" oninput="renderizarPreviewPerfil()"></div>
-<button class="btn btn-primary" onclick="guardarPerfil()">💾 Guardar Cambios</button>
+<button class="btn btn-primary" onclick="guardarPerfil()"> Guardar Cambios</button>
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
 <button class="btn btn-outline" style="margin:0;" onclick="quitarLogo()">🗑️ Quitar foto</button>
 <button class="btn btn-outline" style="margin:0;" onclick="volverAlMenu()">← Regresar</button>
@@ -343,7 +343,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="modo_recibir_contenido" style="display:none;">
 <div class="ruta-2-puntos">
-<div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;">️ RUTA DE RECOLECCIÓN</div>
+<div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;">🛣️ RUTA DE RECOLECCIÓN</div>
 <div class="punto">
 <div class="punto-titulo">📍 Punto A - Recolección (Proveedor)</div>
 <div id="grupo_proveedor" class="proveedor-box" style="margin-bottom: 12px;">
@@ -378,7 +378,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="info_tienda_destino"><div class="punto-direccion" id="texto_direccion_tienda">Cargando dirección...</div></div>
 </div>
 </div>
-<div id="grupo_guardar_proveedor" class="checkbox-guardar"><input type="checkbox" id="chk_guardar_proveedor" onchange="toggleNombreProveedor()"><label for="chk_guardar_proveedor">💾 Guardar este proveedor como frecuente</label></div>
+<div id="grupo_guardar_proveedor" class="checkbox-guardar"><input type="checkbox" id="chk_guardar_proveedor" onchange="toggleNombreProveedor()"><label for="chk_guardar_proveedor"> Guardar este proveedor como frecuente</label></div>
 <div id="grupo_nombre_proveedor" class="form-group" style="display:none;"><label>Nombre del proveedor</label><input type="text" id="nombre_proveedor_nuevo" placeholder="Ej: Proveedor Guadalajara"></div>
 </div>
 <div id="box_precio" class="price-tag">Costo: —</div>
@@ -400,7 +400,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button id="f_cancel" class="btn-filter" onclick="filtrarHistorial('Cancelado')">Cancelados</button>
 </div>
 <div class="busca-box">
-<label style="margin-bottom:10px;">🔎 Buscar y filtrar</label>
+<label style="margin-bottom:10px;"> Buscar y filtrar</label>
 <input type="text" id="buscador_historial" placeholder="Buscar por nombre, ID o colonia..." oninput="filtrarHistorial(statusHistorialActual)" style="margin-bottom:10px;">
 <div style="display:flex; gap:8px; align-items:center;">
 <input type="date" id="fecha_historial" onchange="filtrarHistorial(statusHistorialActual)" style="flex:1;">
@@ -442,15 +442,15 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap: wrap;">
 <button id="fin_hoy" class="btn-filter" onclick="cargarFinanzasHoy()">⭐ Hoy</button>
 <button id="fin_semana" class="btn-filter active" onclick="cargarFinanzasSemana()">📅 Semana</button>
-<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()"> Mes</button>
-<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()">📆 Rango</button>
+<button id="fin_mes" class="btn-filter" onclick="cargarFinanzasMes()">📊 Mes</button>
+<button id="fin_rango" class="btn-filter" onclick="abrirModalRango()"> Rango</button>
 </div>
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding: 18px; border-radius: var(--radius-md); margin-bottom: 18px;">
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Total Pedidos</div><div id="fin_total_pedidos" class="fin-numero" style="color: var(--primary);">0</div></div>
 <div class="fin-card"><div class="fin-label" style="color: var(--text-muted);">Ingresos Totales</div><div id="fin_total_ingresos" class="fin-numero" style="color: var(--accent);">$0</div></div>
 <div class="fin-card" style="background: #dcfce7;"><div class="fin-label" style="color: #166534;">✅ Pagado</div><div id="fin_total_pagado" class="fin-numero" style="color: var(--success);">$0</div></div>
-<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;"> Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
+<div class="fin-card" style="background: #fef3c7;"><div class="fin-label" style="color: #92400e;">⏳ Pendiente</div><div id="fin_total_pendiente" class="fin-numero" style="color: var(--warning);">$0</div></div>
 </div>
 </div>
 <div id="nav_semana_container">
@@ -469,7 +469,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="tab_cobros" class="tab-content">
 <div class="card" style="border-top: 5px solid var(--warning);">
-<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">💳 Pagos Pendientes</h2>
+<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;"> Pagos Pendientes</h2>
 <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 16px; border-radius: var(--radius-md); margin-bottom: 18px; text-align: left;">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <div><div style="font-size: 11px; font-weight: 700; color: #92400e;">TOTAL PENDIENTE</div><div id="pend_total_monto" style="font-size: 24px; font-weight: 800; color: #92400e;">$0.00</div></div>
@@ -502,7 +502,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="tab_mas" class="tab-content">
 <div class="card" style="border-top: 5px solid var(--text-muted);">
-<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">️ Opciones</h2>
+<h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">⚙️ Opciones</h2>
 <button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
 <div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
 <button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
@@ -513,25 +513,25 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="tab-btn modern-tab active" onclick="cambiarTab('pedidos')"><span class="tab-icon">📦</span><span class="tab-label">Pedidos</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('finanzas')"><span class="tab-icon">💰</span><span class="tab-label">Finanzas</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('cobros')"><span class="tab-icon">💳</span><span class="tab-label">Cobros</span></button>
-<button class="tab-btn modern-tab" onclick="cambiarTab('repartidores')"><span class="tab-icon"></span><span class="tab-label">Repartidores</span></button>
+<button class="tab-btn modern-tab" onclick="cambiarTab('repartidores')"><span class="tab-icon">👷</span><span class="tab-label">Repartidores</span></button>
 <button class="tab-btn modern-tab" onclick="cambiarTab('mas')"><span class="tab-icon">⚙️</span><span class="tab-label">Más</span></button>
 </div>
 <div class="days-panel-overlay" id="days-panel-overlay" onclick="closeDaysPanel()"></div>
 <div class="days-panel" id="days-panel">
 <div class="days-panel-header">
-<h3 class="days-panel-title"> Seleccionar Día</h3>
+<h3 class="days-panel-title">📅 Seleccionar Día</h3>
 <button class="days-panel-close" onclick="closeDaysPanel()">✕</button>
 </div>
 <div class="days-panel-content">
 <span class="day-section-label">⭐ Vista rápida</span>
-<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span>📋</span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
+<button class="day-btn" id="day-todos" onclick="selectDay('TODOS')"><div class="day-btn-info"><span></span><span>Todos (consulta)</span></div><span class="day-btn-count" id="count-todos">0</span></button>
 <button class="day-btn active" id="day-hoy" onclick="selectDay('HOY')"><div class="day-btn-info"><span>⭐</span><span id="text-hoy">Hoy</span></div><span class="day-btn-count" id="count-hoy">0</span></button>
 <div class="day-divider"></div>
-<span class="day-section-label">📆 Días de la Semana</span>
-<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span></span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
+<span class="day-section-label"> Días de la Semana</span>
+<button class="day-btn" id="day-lunes" onclick="selectDay('Lunes')"><div class="day-btn-info"><span>📆</span><span>Lunes</span></div><span class="day-btn-count" id="count-lunes">0</span></button>
 <button class="day-btn" id="day-martes" onclick="selectDay('Martes')"><div class="day-btn-info"><span>📆</span><span>Martes</span></div><span class="day-btn-count" id="count-martes">0</span></button>
 <button class="day-btn" id="day-miercoles" onclick="selectDay('Miércoles')"><div class="day-btn-info"><span>📆</span><span>Miércoles</span></div><span class="day-btn-count" id="count-miercoles">0</span></button>
-<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span>📆</span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
+<button class="day-btn" id="day-jueves" onclick="selectDay('Jueves')"><div class="day-btn-info"><span></span><span>Jueves</span></div><span class="day-btn-count" id="count-jueves">0</span></button>
 <button class="day-btn" id="day-viernes" onclick="selectDay('Viernes')"><div class="day-btn-info"><span>📆</span><span>Viernes</span></div><span class="day-btn-count" id="count-viernes">0</span></button>
 <button class="day-btn" id="day-sabado" onclick="selectDay('Sábado')"><div class="day-btn-info"><span>📆</span><span>Sábado</span></div><span class="day-btn-count" id="count-sabado">0</span></button>
 <button class="day-btn" id="day-domingo" onclick="selectDay('Domingo')"><div class="day-btn-info"><span>📆</span><span>Domingo</span></div><span class="day-btn-count" id="count-domingo">0</span></button>
@@ -565,7 +565,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:24px;">Luna Delivery System</p>
 <div id="rastreo_activo" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="rastreo_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="rastreo_marca"></span></p>
 <p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="rastreo_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="rastreo_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="rastreo_status" style="font-weight:700; color:var(--accent);"></span></p>
@@ -575,7 +575,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="rastreo_espera" style="display:none; text-align:left;">
 <div style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); padding:16px; border-radius:var(--radius-md); font-size:13px; line-height:1.6;">
-<p style="margin:0 0 6px 0;"><b> Remitente:</b> <span id="espera_marca"></span></p>
+<p style="margin:0 0 6px 0;"><b>📦 Remitente:</b> <span id="espera_marca"></span></p>
 <p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> <span id="espera_recibe"></span></p>
 <p style="margin:0 0 6px 0;"><b>📍 Destino:</b> <span id="espera_destino"></span></p>
 <p style="margin:0;"><b>Estatus:</b> <span id="espera_status" style="font-weight:700; color:var(--accent);"></span></p>
@@ -655,7 +655,7 @@ function abrirPerfil() {
 loading(true);
 gs('obtenerPerfilMarca', marca).then(function(res) {
 loading(false);
-if (!res.exito) { showToast('❌ ' + res.mensaje, 'error'); return; }
+if (!res.exito) { showToast(' ' + res.mensaje, 'error'); return; }
 perfilCache = res; logoBase64Pendiente = null;
 document.getElementById('perfil_slogan').value = res.slogan || '';
 document.getElementById('input_logo').value = '';
@@ -674,7 +674,7 @@ document.getElementById('perfil_slogan_preview').innerText = document.getElement
 function previsualizarLogo(input) {
 if (!input.files || !input.files[0]) return;
 var file = input.files[0];
-if (!file.type.match('image.*')) { showToast('️ Selecciona una imagen válida', 'warning'); return; }
+if (!file.type.match('image.*')) { showToast('⚠️ Selecciona una imagen válida', 'warning'); return; }
 var reader = new FileReader();
 reader.onload = function(e) {
 var img = new Image();
@@ -705,7 +705,7 @@ if (perfilCache) { perfilCache.logo = res.logo; perfilCache.slogan = slogan; }
 logoBase64Pendiente = null;
 aplicarLogoEnMenu();
 volverAlMenu();
-} else showToast('❌ ' + res.mensaje, 'error');
+} else showToast(' ' + res.mensaje, 'error');
 }).catch(function() { loading(false); showToast('Error de conexión', 'error'); });
 }
 function quitarLogo() {
@@ -842,7 +842,7 @@ document.getElementById('rastreo_activo').style.display = 'block'; document.getE
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 } else {
 destruirMapa(); document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
-document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : ' Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
+document.getElementById('espera_mensaje').innerHTML = res.esHoy ? '⏳ Tu pedido está en estatus: <b>' + res.status + '</b>. El mapa se activará cuando el repartidor inicie la entrega.' : '📅 Tu pedido está programado para: <b>' + res.dia + '</b>. El mapa estará disponible el día de la entrega.';
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
 }
@@ -870,24 +870,7 @@ loading(false); ver('v_menu');
 } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
 async function abrirReg() {
-    loading(true);
-    try {
-        const muns = await gs('getMunicipios');
-        const select = document.getElementById('r_mun');
-        select.innerHTML = '<option value="">Selecciona un municipio</option>';
-        muns.forEach(m => {
-            const opt = document.createElement('option');
-            opt.value = m;
-            opt.text = m;
-            select.appendChild(opt);
-        });
-        loading(false);
-        ver('v_reg');
-    } catch (e) {
-        loading(false);
-        showToast('Error al cargar municipios', 'error');
-        ver('v_reg');
-    }
+ver('v_reg');
 }
 async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
 async function getColReg(cp) { document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('r_col', d); loading(false); } catch (e) { loading(false); } }
@@ -951,32 +934,11 @@ loading(false);
 function limpiarCamposDireccion() { document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; limpiarCamposOrigen(); }
 function limpiarCamposOrigen() { document.getElementById('c_mun_origen').value = ""; document.getElementById('c_cp_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_col_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir_origen').value = ""; document.getElementById('c_ext_origen').value = ""; document.getElementById('c_int_origen').value = ""; }
 async function abrirNuevo() {
-    esEdicion = false;
-    document.getElementById('form_title').innerText = "Solicitar Envío";
-    loading(true);
-    try {
-        const muns = await gs('getMunicipios');
-        ['c_mun', 'c_mun_origen'].forEach(id => {
-            const select = document.getElementById(id);
-            select.innerHTML = '<option value="">Selecciona un municipio</option>';
-            muns.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m;
-                opt.text = m;
-                select.appendChild(opt);
-            });
-        });
-        const dests = await gs('getDestinatariosFrecuentes', marca);
-        destinatariosCache = dests || [];
-        cargarDropdownDestinatarios(destinatariosCache);
-        cambiarTipoServicio('enviar');
-        limpiarCot();
-        loading(false);
-        ver('v_cot');
-    } catch (e) {
-        loading(false);
-        showToast('Error al abrir formulario', 'error');
-    }
+esEdicion = false; document.getElementById('form_title').innerText = "Solicitar Envío"; loading(true);
+try {
+const dests = await gs('getDestinatariosFrecuentes', marca);
+destinatariosCache = dests || []; cargarDropdownDestinatarios(destinatariosCache); cambiarTipoServicio('enviar'); limpiarCot(); loading(false); ver('v_cot');
+} catch (e) { loading(false); showToast('Error al abrir formulario', 'error'); }
 }
 function limpiarCot() {
 document.getElementById('c_fila').value = ""; document.getElementById('c_origen_tipo').value = "marca"; document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('c_rec').value = ""; document.getElementById('c_tel').value = ""; document.getElementById('c_com').value = ""; document.getElementById('btn_g').disabled = true; document.getElementById('chk_guardar_proveedor').checked = false; document.getElementById('grupo_nombre_proveedor').style.display = 'none'; document.getElementById('nombre_proveedor_nuevo').value = "";
@@ -1097,7 +1059,7 @@ const ordenVisual = ['Por asignar', 'Lunes', 'Martes', 'Miércoles', 'Jueves', '
 ordenVisual.forEach(nomDia => {
 const deEsteDia = bloquesDias[nomDia];
 if (deEsteDia.length > 0) {
-bloquesHtml.push('<div class="dia-header">📅 ' + nomDia.toUpperCase() + ' (' + deEsteDia.length + ')</div>');
+bloquesHtml.push('<div class="dia-header"> ' + nomDia.toUpperCase() + ' (' + deEsteDia.length + ')</div>');
 deEsteDia.forEach(p => {
 const celLimpio = String(p.celular || '').replace(/[^0-9]/g, '');
 const idParaMostrar = p.idPedido || p.token || "Sin ID";
@@ -1112,7 +1074,7 @@ bloquesHtml.push('<div class="card" style="text-align:left; font-size:12px; marg
 contenidoDireccion + fechaMostrar +
 '<div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:12px; border-radius:var(--radius-sm); border: 2px solid var(--border); margin-bottom:10px;">' +
 '<p style="margin:0 0 6px 0;"><b>📱 Celular:</b> <a class="wa-link" href="https://api.whatsapp.com/send?phone=52' + celLimpio + '" target="_blank">' + p.celular + ' 💬</a></p>' +
-'<p style="margin:0; color:var(--text-muted);"><b>📝 Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
+'<p style="margin:0; color:var(--text-muted);"><b> Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
 '<div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px; font-weight:700; color:var(--accent);">' + p.km + ' KM | $' + p.precio + '.00</span><div style="display:flex; gap:8px;">' + botonesAccion + '</div></div></div>');
 });
 }
@@ -1228,11 +1190,11 @@ const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
 const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled> En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
-const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
-const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
+const btnIniciar = (p.status === "En Entrega") ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--warning-gradient); color:#fff;" disabled>🛵 En Ruta</button>' : (p.status === "Cancelado" ? '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>❌ Cancelado</button>' : '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>');
+const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir"> Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
+const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo"> Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
-const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' </a>';
+const celularLink = '<a href="https://wa.me/52' + celLimpio + '" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 700;">' + p.celular + ' 💬</a>';
 bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-size:12px; margin-bottom:14px; border-left: 4px solid ' + (p.status === 'Entregado' ? 'var(--success)' : (p.status === 'Cancelado' ? 'var(--danger)' : 'var(--accent)')) + ';">' +
 '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><div>' +
 (p.status !== 'Entregado' && p.status !== 'Cancelado' ? '<input type="number" class="input-prioridad" value="' + valPrioridad + '" onchange="guardarPrioridad(' + p.fila + ', this.value)"> ' : '') +
@@ -1241,8 +1203,8 @@ bloquesAdmin.push('<div class="card pedido-admin" style="text-align:left; font-s
 '<div><span style="font-weight:900; color:var(--accent); font-size:14px;">$' + p.precio + '.00</span></div></div>' +
 contenidoDireccion +
 '<div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); padding:14px; border-radius:var(--radius-sm); border: 2px solid var(--border); margin-bottom:12px; font-size:11px;">' +
-'<p style="margin:0 0 6px 0;"><b>👤 Recibe:</b> ' + p.recibe + ' | 📞 ' + celularLink + '</p>' +
-'<p style="margin:0; color:var(--text-muted);"><b>📝 Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
+'<p style="margin:0 0 6px 0;"><b> Recibe:</b> ' + p.recibe + ' | 📞 ' + celularLink + '</p>' +
+'<p style="margin:0; color:var(--text-muted);"><b> Notas:</b> ' + (p.coments || 'Sin notas') + '</p></div>' +
 '<div class="form-group" style="margin-bottom:14px; display: ' + displayAsignar + ';"><div class="grupo-dias"><button class="btn-dia ' + (p.diaLetra === 'L' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'L\')">L</button><button class="btn-dia ' + (p.diaLetra === 'M' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'M\')">M</button><button class="btn-dia ' + (p.diaLetra === 'Mi' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'Mi\')">Mi</button><button class="btn-dia ' + (p.diaLetra === 'J' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'J\')">J</button><button class="btn-dia ' + (p.diaLetra === 'V' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'V\')">V</button><button class="btn-dia ' + (p.diaLetra === 'S' ? 'activo' : '') + '" onclick="cambiarDiaDirecto(' + p.fila + ', \'S\')">S</button></div></div>' +
 '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">' + btnIniciar +
 (p.status !== 'Cancelado' ? '<button class="btn btn-success" style="padding:12px; margin:0; font-size:11px;" onclick="setSt(' + p.fila + ', \'Completado\')">✅ Finalizar</button>' : '') + '</div>' +
@@ -1350,7 +1312,7 @@ intervaloRastreo = setInterval(() => actualizarRastreoEnVivo(id), 30000);
 } else {
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
 document.getElementById('espera_destino').innerText = res.destino || ''; document.getElementById('espera_status').innerText = res.status || '';
-document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? ' Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : ' Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
+document.getElementById('espera_mensaje').innerHTML = !res.esHoy ? '📅 Tu pedido está programado para: <b>' + res.dia + '</b><br>El mapa estará disponible el día de la entrega.' : '⏳ Tu pedido está en estatus: <b>' + res.status + '</b><br>El mapa se activará cuando el repartidor inicie la entrega.';
 document.getElementById('rastreo_activo').style.display = 'none'; document.getElementById('rastreo_espera').style.display = 'block'; document.getElementById('rastreo_entregado').style.display = 'none';
 }
 } catch (e) { loading(false); showToast('Error al buscar', 'error'); }
@@ -1552,7 +1514,7 @@ try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.
 async function marcarUnPago(fila) {
 const ok = await showConfirm('¿Marcar este pedido como Pagado?');
 if (!ok) return; loading(true);
-try { const res = await gs('marcarPago', fila, 'Pagado'); loading(false); if (res.exito) cargarPendientes(); else showToast(' ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); }
+try { const res = await gs('marcarPago', fila, 'Pagado'); loading(false); if (res.exito) cargarPendientes(); else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); }
 }
 function enviarRecordatoriosWA() {
 const checkboxes = document.querySelectorAll('.pend-checkbox:checked');
@@ -1562,7 +1524,7 @@ const pedidosSeleccionados = pedidosPendientesCache.filter(p => filas.includes(p
 if (pedidosSeleccionados.length > 0) {
 const p = pedidosSeleccionados[0];
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
+const msg = '*Luna Delivery* \nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 }
@@ -1638,7 +1600,7 @@ const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent), esAndroid = /Android
 if (esIOS) showToast('📲 Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
 else if (esAndroid) {
 if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('✅ ¡App instalada!', 'success'); deferredPrompt = null; }); }
-else showToast('📲 Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
+else showToast(' Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
 } else showToast('📲 Busca "Agregar a inicio" en el menú de tu navegador', 'info');
 }
 let touchStartX = 0, touchEndX = 0;
@@ -1668,7 +1630,7 @@ const pedidosActivos = pedidos.filter(p => p.status !== 'Entregado' && p.status 
 const sinAsignar = pedidosActivos.filter(p => !p.repartidor || p.repartidor === "");
 const asignados = pedidosActivos.filter(p => p.repartidor && p.repartidor !== "");
 let htmlSinAsignar = '';
-if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;"> No hay pedidos sin asignar</p>';
+if (sinAsignar.length === 0) htmlSinAsignar = '<p style="text-align:center; color:var(--text-muted); padding:24px;">🎉 No hay pedidos sin asignar</p>';
 else sinAsignar.forEach(p => { htmlSinAsignar += crearCardPedidoAsignable(p); });
 document.getElementById('lista_pedidos_sin_asignar').innerHTML = htmlSinAsignar;
 let htmlAsignados = '';
@@ -1692,7 +1654,7 @@ const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
 let opcionesReasignar = '<option value="' + p.repartidor + '">' + nombreRepartidor + ' (actual)</option><option value="">— Quitar asignación —</option>';
 repartidoresCache.forEach(r => { if (r.activo && r.id !== p.repartidor) opcionesReasignar += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
-return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
+return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b> Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
 }
 async function asignarRepartidor(fila, idRepartidor) {
 if (!idRepartidor) return;
@@ -1717,7 +1679,7 @@ try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(fa
 }
 }
 window.addEventListener("DOMContentLoaded", function() {
-console.log(' DOMContentLoaded iniciado');
+console.log('🚀 DOMContentLoaded iniciado');
 try {
 const box = document.getElementById('modo_arranque_servidor');
 const modo = box ? box.getAttribute('data-modo') : 'cliente';
@@ -1730,7 +1692,7 @@ intervaloRastreo = setInterval(ejecutarRastreoClienteLoop, 30000);
 }
 else if (modo === "admin") {
 ver('v_admin');
-try { cambiarTab('pedidos'); } catch(e) { console.error(' Error cambiarTab:', e); }
+try { cambiarTab('pedidos'); } catch(e) { console.error('❌ Error cambiarTab:', e); }
 try { verificarGPSAlCargar(); } catch(e) { console.error('❌ Error GPS:', e); }
 }
 else {
