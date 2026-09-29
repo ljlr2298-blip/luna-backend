@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import math
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
@@ -404,15 +405,17 @@ def api_obtener_resumen_rango():
 # 8. APIs DE PERFIL, ZONAS Y CALCULO DE PRECIOS
 # ==========================================
 
+# ✅ FUNCIÓN CALCULAR PRECIO CON MATH.FLOOR() - LÓGICA CORRECTA
 @app.route('/api/calcularPrecio', methods=['GET'])
 def api_calcular_precio():
+    if not supabase: return jsonify({"error": "Supabase no configurado"}), 500
     try:
         direccion = request.args.get('arg0', '')
         marca = request.args.get('arg1', '')
         tipo_origen = request.args.get('arg2', 'marca')
         cp = request.args.get('arg3', '')
         
-        print(f"🔍 calcularPrecio: marca='{marca}', direccion='{direccion}', cp='{cp}', tipo='{tipo_origen}'")
+        print(f"🔍 calcularPrecio: marca='{marca}', direccion='{direccion}', cp='{cp}'")
         
         # 1. Verificar precio fijo
         if marca in MARCAS_PRECIO_FIJO:
@@ -421,7 +424,7 @@ def api_calcular_precio():
         # 2. Extraer municipio destino de la dirección
         partes = direccion.split(',')
         municipio_destino = partes[-1].strip() if len(partes) >= 3 else ""
-        print(f"📍 Municipio destino extraído: '{municipio_destino}'")
+        print(f"📍 Municipio destino: '{municipio_destino}'")
         
         # 3. Obtener municipio origen de la marca
         municipio_origen = ""
@@ -431,48 +434,65 @@ def api_calcular_precio():
                 if marca_response.data:
                     municipio_origen = marca_response.data[0].get('municipio', '')
             except Exception as e:
-                print(f"⚠️ Error obteniendo marca: {e}")
+                print(f"️ Error obteniendo marca: {e}")
         
         print(f"📍 Municipio origen: '{municipio_origen}'")
         
         # 4. Calcular KM estimado
         if municipio_origen == municipio_destino:
-            km_estimado = 5
+            km_estimado = 5.0
         else:
-            km_estimado = 15
+            km_estimado = 15.0
         
-        # 5. Determinar tabla según tipo de marca
+        # ✅ 5. REDONDEAR HACIA ABAJO (floor) - Lógica según tu tabla
+        # 7.9 → 7, 15.8 → 15, 16.0 → 16
+        km_cobrar = math.floor(km_estimado)
+        print(f" KM estimados: {km_estimado} → Se cobra: {km_cobrar} KM")
+        
+        # 6. Determinar tabla según tipo de marca
         tabla_tarifas = 'tarifa_premium' if marca in MARCAS_PREMIUM else 'tarifa_general'
-        print(f"💰 Tabla de tarifas: {tabla_tarifas}, KM: {km_estimado}")
+        print(f"💰 Tabla de tarifas: {tabla_tarifas}")
         
-        # 6. Buscar tarifa en Supabase
-        precio_encontrado = 90  # Precio por defecto
+        # 7. Buscar tarifa en Supabase
+        precio_encontrado = 50  # Precio mínimo por defecto
         
         if supabase:
             try:
-                response = supabase.table(tabla_tarifas).select('km, precio').execute()
-                print(f" Tarifas encontradas: {len(response.data) if response.data else 0}")
+                response = supabase.table(tabla_tarifas).select('km, precio').order('km', desc=False).execute()
+                print(f"📊 Tarifas encontradas: {len(response.data) if response.data else 0}")
                 
                 if response.data:
-                    tarifas = sorted(response.data, key=lambda x: x.get('km', 0))
+                    # Convertir km a número (puede venir como texto)
+                    tarifas = []
+                    for t in response.data:
+                        try:
+                            km_valor = float(t.get('km', 0))
+                            tarifas.append({'km': km_valor, 'precio': float(t.get('precio', 0))})
+                        except:
+                            continue
                     
-                    # Buscar la tarifa que corresponda al KM estimado
+                    # Ordenar por km ascendente
+                    tarifas.sort(key=lambda x: x['km'])
+                    print(f"📋 Tarifas ordenadas: {tarifas[:5]}...")
+                    
+                    # ✅ Buscar el precio donde km_tabla <= km_cobrar (el mayor que cumpla)
+                    precio_encontrado = tarifas[0]['precio']  # Precio mínimo por defecto
+                    
                     for t in tarifas:
-                        if t.get('km', 0) >= km_estimado:
-                            precio_encontrado = t.get('precio', 90)
-                            break
-                    else:
-                        # Si no encuentra, usar el precio máximo
-                        precio_encontrado = tarifas[-1].get('precio', 90)
+                        if t['km'] <= km_cobrar:
+                            precio_encontrado = t['precio']
+                        else:
+                            break  # Ya pasamos el km_cobrar, salir
                     
-                    print(f"✅ Precio encontrado: ${precio_encontrado}")
+                    print(f"✅ Precio final: ${precio_encontrado} para {km_cobrar} KM")
             except Exception as e:
                 print(f"⚠️ Error consultando tarifas: {e}")
-                precio_encontrado = 90
+                precio_encontrado = 50
         
         return jsonify({
             "precio": precio_encontrado,
-            "km": km_estimado,
+            "km": km_cobrar,
+            "km_reales": km_estimado,
             "origen": municipio_origen,
             "destino": municipio_destino,
             "tarifaEspecial": False,
@@ -480,8 +500,8 @@ def api_calcular_precio():
         })
             
     except Exception as e:
-        print(f"❌ Error calcularPrecio: {e}")
-        return jsonify({"precio": 90, "km": 10, "origen": "Error", "destino": "Error", "tarifaEspecial": True, "error": str(e)}), 200
+        print(f" Error calcularPrecio: {e}")
+        return jsonify({"precio": 50, "km": 7, "origen": "Error", "destino": "Error", "tarifaEspecial": True, "error": str(e)}), 200
 
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
@@ -492,10 +512,10 @@ def api_get_municipios():
 def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
-    print(f" getCPs: municipio='{municipio}'")
+    print(f"🔍 getCPs: municipio='{municipio}'")
     try:
-        response = supabase.table('colonias').select('cp').ilike('municipio', municipio).execute()
-        print(f" Resultados: {len(response.data)} registros")
+        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
+        print(f"📊 Resultados: {len(response.data)} registros")
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
         print(f"✅ CPs encontrados: {cps[:5]}...")
         return jsonify({"result": cps})
@@ -510,7 +530,7 @@ def api_get_colonias():
     print(f"🔍 getColonias: cp='{cp}'")
     try:
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        print(f" Resultados: {len(response.data)} registros")
+        print(f"📊 Resultados: {len(response.data)} registros")
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         print(f"✅ Colonias encontradas: {colonias[:5]}...")
         return jsonify({"result": colonias})
