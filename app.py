@@ -15,7 +15,7 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f" SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
 print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
@@ -407,70 +407,49 @@ def api_calcular_precio():
         tipo_origen = request.args.get('arg2', 'marca')
         cp = request.args.get('arg3', '')
         
-        # 1. Verificar precio fijo
         if marca in MARCAS_PRECIO_FIJO:
             return jsonify({"precio": MARCAS_PRECIO_FIJO[marca], "km": 0, "origen": "Fijo", "tarifaEspecial": True})
         
-        # 2. Extraer municipio de la dirección (formato esperado: "Calle, Colonia, Municipio")
         partes = direccion.split(',')
         municipio_destino = partes[-1].strip() if len(partes) >= 3 else ""
         
-        # Si no se pudo extraer, intentar con el CP
         if not municipio_destino and cp:
             cp_response = supabase.table('colonias').select('municipio').eq('cp', cp).limit(1).execute()
             if cp_response.data:
                 municipio_destino = cp_response.data[0]['municipio']
         
-        # 3. Determinar tabla de tarifas según la marca
         tabla_tarifas = 'tarifa_premium' if marca in MARCAS_PREMIUM else 'tarifa_general'
-        
-        # 4. Calcular KM (⚠️ SIMULADO: Reemplaza esto con tu lógica real de Google Maps Distance Matrix si la tienes)
         km_estimado = 10 
         
-        # 5. Buscar tarifa en Supabase
         response = supabase.table(tabla_tarifas).select('km, precio').eq('municipio_origen', municipio_destino).execute()
         
         if response.data:
-            # Ordenar tarifas por KM ascendente
             tarifas = sorted(response.data, key=lambda x: x['km'])
-            precio_encontrado = tarifas[-1]['precio'] # Precio máximo por defecto
-            
-            # Buscar la tarifa que corresponda al KM estimado
+            precio_encontrado = tarifas[-1]['precio']
             for t in tarifas:
                 if t['km'] >= km_estimado:
                     precio_encontrado = t['precio']
                     break
-                    
-            return jsonify({
-                "precio": precio_encontrado, 
-                "km": km_estimado, 
-                "origen": municipio_destino,
-                "tarifaEspecial": False
-            })
+            return jsonify({"precio": precio_encontrado, "km": km_estimado, "origen": municipio_destino, "tarifaEspecial": False})
         else:
-            # Fallback si no se encuentra el municipio en la tabla
             return jsonify({"precio": 90, "km": km_estimado, "origen": municipio_destino or "Desconocido", "tarifaEspecial": True})
-            
     except Exception as e:
         print(f"Error calcularPrecio: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/getMunicipios', methods=['GET'])
-@app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
-    # ✅ Devolver los 5 municipios hardcoded, sin consultar Supabase
+    # Devuelve los 5 municipios directamente, sin consultar Supabase
     municipios = ['Zapopan', 'Guadalajara', 'San Pedro Tlaquepaque', 'Tlajomulco de Zúñiga', 'Tonalá']
     return jsonify({"result": municipios})
-    except Exception as e:
-    return jsonify({"error": str(e)}), 500
 
 @app.route('/api/getCPs', methods=['GET'])
 def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
     try:
-        # CORREGIDO: usar 'municipios' (plural)
-        response = supabase.table('colonias').select('cp').eq('municipios', municipio).execute()
+        # Usa 'municipio' en minúsculas (como lo tienes en tu tabla)
+        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
         return jsonify({"result": cps})
     except Exception as e:
@@ -481,9 +460,9 @@ def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
     try:
-        # CORREGIDO: usar 'colonias' (plural)
-        response = supabase.table('colonias').select('colonias').eq('cp', cp).execute()
-        colonias = sorted(list(set([row['colonias'] for row in response.data if row.get('colonias')])))
+        # Usa 'colonia' en minúsculas (como lo tienes en tu tabla)
+        response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
+        colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         return jsonify({"result": colonias})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -561,7 +540,7 @@ def service_worker():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print(" LUNA DELIVERY BACKEND")
+    print("🚀 LUNA DELIVERY BACKEND")
     print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
