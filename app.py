@@ -15,8 +15,8 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else ' NO'}")
-print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
+print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f" SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -85,17 +85,24 @@ def api_validar_acc_access():
         print(f"Error login: {e}")
         return jsonify({"result": False})
 
+# ✅ CORREGIDO: Ahora guarda el CP
 @app.route('/api/registrarMarca', methods=['GET'])
 def api_registrar_marca():
     if not supabase: return jsonify({"result": False}), 500
     try:
         data = json.loads(request.args.get('arg0', '{}'))
         supabase.table('marcas').insert({
-            "nombre": data.get('m'), "municipio": data.get('mun'), "colonia": data.get('col'),
-            "calle": data.get('calle'), "telefono": data.get('tel'), "password_hash": data.get('pass')
+            "nombre": data.get('m'),
+            "municipio": data.get('mun'),
+            "cp": data.get('cp'),           # ✅ AGREGADO: guardar el CP
+            "colonia": data.get('col'),
+            "calle": data.get('calle'),
+            "telefono": data.get('tel'),
+            "password_hash": data.get('pass')
         }).execute()
         return jsonify({"result": True})
     except Exception as e:
+        print(f"Error registrarMarca: {e}")
         return jsonify({"error": str(e)}), 500
 
 # ==========================================
@@ -437,7 +444,6 @@ def api_calcular_precio():
         print(f"Error calcularPrecio: {e}")
         return jsonify({"error": str(e)}), 500
 
-# ✅ CORREGIDO: Sin decorador duplicado ni except huérfano
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
     municipios = ['Zapopan', 'Guadalajara', 'San Pedro Tlaquepaque', 'Tlajomulco de Zúñiga', 'Tonalá']
@@ -473,7 +479,7 @@ def api_obtener_perfil():
         response = supabase.table('marcas').select('*').ilike('nombre', marca).execute()
         if response.data and len(response.data) > 0:
             row = response.data[0]
-            return jsonify({"result": {"exito": True, "marca": row.get('nombre'), "municipio": row.get('municipio'), "colonia": row.get('colonia'), "calle": row.get('calle'), "telefono": row.get('telefono'), "logo": row.get('logo_url') or "", "slogan": row.get('slogan') or ""}})
+            return jsonify({"result": {"exito": True, "marca": row.get('nombre'), "municipio": row.get('municipio'), "cp": row.get('cp'), "colonia": row.get('colonia'), "calle": row.get('calle'), "telefono": row.get('telefono'), "logo": row.get('logo_url') or "", "slogan": row.get('slogan') or ""}})
         return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -495,10 +501,11 @@ def api_get_direccion_tienda():
     if not supabase: return jsonify({"result": {"exito": False}}), 500
     marca = request.args.get('arg0', '')
     try:
-        response = supabase.table('marcas').select('calle, colonia, municipio').ilike('nombre', marca).execute()
+        response = supabase.table('marcas').select('calle, colonia, municipio, cp').ilike('nombre', marca).execute()
         if response.data:
             row = response.data[0]
-            return jsonify({"result": {"exito": True, "direccionCompleta": f"{row.get('calle', '')}, {row.get('colonia', '')}, {row.get('municipio', '')}, Jalisco, Mexico"}})
+            cp = row.get('cp', '')
+            return jsonify({"result": {"exito": True, "direccionCompleta": f"{row.get('calle', '')}, {row.get('colonia', '')}, CP {cp}, {row.get('municipio', '')}, Jalisco, Mexico"}})
         return jsonify({"result": {"exito": False}})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
