@@ -456,22 +456,21 @@ def api_calcular_precio():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/getMunicipios', methods=['GET'])
+@app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
-    if not supabase: return jsonify({"result": []}), 500
-    try:
-        # Obtener municipios únicos de la tabla colonias
-        response = supabase.table('colonias').select('municipio').execute()
-        municipios = sorted(list(set([row['municipio'] for row in response.data if row.get('municipio')])))
-        return jsonify({"result": municipios})
+    # ✅ Devolver los 5 municipios hardcoded, sin consultar Supabase
+    municipios = ['Zapopan', 'Guadalajara', 'San Pedro Tlaquepaque', 'Tlajomulco de Zúñiga', 'Tonalá']
+    return jsonify({"result": municipios})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({"error": str(e)}), 500
 
 @app.route('/api/getCPs', methods=['GET'])
 def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
     try:
-        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
+        # CORREGIDO: usar 'municipios' (plural)
+        response = supabase.table('colonias').select('cp').eq('municipios', municipio).execute()
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
         return jsonify({"result": cps})
     except Exception as e:
@@ -482,8 +481,9 @@ def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
     try:
-        response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
+        # CORREGIDO: usar 'colonias' (plural)
+        response = supabase.table('colonias').select('colonias').eq('cp', cp).execute()
+        colonias = sorted(list(set([row['colonias'] for row in response.data if row.get('colonias')])))
         return jsonify({"result": colonias})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
