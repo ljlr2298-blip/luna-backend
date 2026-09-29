@@ -15,8 +15,8 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f" SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
-print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
+print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f" SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -437,32 +437,43 @@ def api_calcular_precio():
         print(f"Error calcularPrecio: {e}")
         return jsonify({"error": str(e)}), 500
 
-# ✅ CORREGIDO: Sin decorador duplicado ni except huérfano
+# ✅ MUNICIPIOS - Devuelve los 5 municipios hardcoded
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
     municipios = ['Zapopan', 'Guadalajara', 'San Pedro Tlaquepaque', 'Tlajomulco de Zúñiga', 'Tonalá']
     return jsonify({"result": municipios})
 
+# ✅ CPs - Búsqueda case-insensitive con ilike
 @app.route('/api/getCPs', methods=['GET'])
 def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
+    print(f"🔍 Buscando CPs para municipio: '{municipio}'")
     try:
-        response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
+        # Usar ilike para búsqueda sin importar mayúsculas/minúsculas
+        response = supabase.table('colonias').select('cp').ilike('municipio', municipio).execute()
+        print(f" Resultados de Supabase: {len(response.data)} registros")
         cps = sorted(list(set([row['cp'] for row in response.data if row.get('cp')])))
+        print(f"✅ CPs encontrados: {cps}")
         return jsonify({"result": cps})
     except Exception as e:
+        print(f"❌ Error en getCPs: {e}")
         return jsonify({"error": str(e)}), 500
 
+# ✅ Colonias - Búsqueda por CP
 @app.route('/api/getColonias', methods=['GET'])
 def api_get_colonias():
     if not supabase: return jsonify({"result": []}), 500
     cp = request.args.get('arg0', '')
+    print(f"🔍 Buscando colonias para CP: '{cp}'")
     try:
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
+        print(f"📊 Resultados de Supabase: {len(response.data)} registros")
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
+        print(f"✅ Colonias encontradas: {colonias}")
         return jsonify({"result": colonias})
     except Exception as e:
+        print(f"❌ Error en getColonias: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/obtenerPerfilMarca', methods=['GET'])
