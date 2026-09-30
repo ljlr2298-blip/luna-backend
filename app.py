@@ -419,7 +419,7 @@ def obtener_coordenadas(direccion_completa):
         if data and len(data) > 0:
             return float(data[0]['lat']), float(data[0]['lon'])
     except Exception as e:
-        print(f"⚠️ Error geocodificando '{direccion_completa}': {e}")
+        print(f"️ Error geocodificando '{direccion_completa}': {e}")
     return None, None
 
 def calcular_distancia_haversine(lat1, lon1, lat2, lon2):
@@ -470,7 +470,7 @@ def api_calcular_precio():
         destino_completo = f"{direccion_destino}, Jalisco, Mexico"
         
         print(f"📍 Origen: {origen_completo}")
-        print(f" Destino: {destino_completo}")
+        print(f"📍 Destino: {destino_completo}")
 
         # 4. Obtener coordenadas de ambos puntos
         lat_origen, lon_origen = obtener_coordenadas(origen_completo)
@@ -489,33 +489,48 @@ def api_calcular_precio():
 
         # 5. Redondear HACIA ABAJO (floor) según lógica de tabla
         km_cobrar = math.floor(km_reales)
-        print(f" KM a cobrar (floor): {km_cobrar}")
+        print(f"💰 KM a cobrar (floor): {km_cobrar}")
 
-        # 6. Determinar tabla de tarifas
-        tabla_tarifas = 'tarifa_premium' if marca in MARCAS_PREMIUM else 'tarifa_general'
+        # 6. Determinar tabla de tarifas (nombres con espacios)
+        tabla_tarifas = 'tarifas premium' if marca in MARCAS_PREMIUM else 'tarifas generales'
+        print(f"📊 Tabla de tarifas: '{tabla_tarifas}'")
         
         # 7. Buscar precio en la tabla correspondiente
         precio_encontrado = 50
         
         try:
-            response = supabase.table(tabla_tarifas).select('km, precio').order('km', desc=False).execute()
+            # ✅ SIN order() de Supabase - ordenamos en Python porque km es texto
+            response = supabase.table(tabla_tarifas).select('km, precio').execute()
+            print(f"📋 Tarifas encontradas: {len(response.data) if response.data else 0}")
+            
             if response.data:
                 tarifas = []
                 for t in response.data:
                     try:
-                        tarifas.append({'km': float(t.get('km', 0)), 'precio': float(t.get('precio', 0))})
-                    except:
+                        # ✅ Convertir a float (la columna km es texto en la BD)
+                        km_valor = float(t.get('km', 0))
+                        precio_valor = float(t.get('precio', 0))
+                        tarifas.append({'km': km_valor, 'precio': precio_valor})
+                    except Exception as e:
+                        print(f"️ Error convirtiendo tarifa: {t} - {e}")
                         continue
                 
+                # ✅ ORDENAR EN PYTHON por km ascendente (numérico, no alfabético)
                 tarifas.sort(key=lambda x: x['km'])
+                print(f" Tarifas ordenadas: {[(t['km'], t['precio']) for t in tarifas[:5]]}...")
+                
+                # ✅ Buscar la tarifa correcta
+                precio_encontrado = tarifas[0]['precio']  # Precio mínimo por defecto
                 
                 for t in tarifas:
                     if t['km'] <= km_cobrar:
                         precio_encontrado = t['precio']
+                        print(f"   ✅ km={t['km']} <= {km_cobrar} → precio=${t['precio']}")
                     else:
+                        print(f"   ⛔ km={t['km']} > {km_cobrar} → break")
                         break
                         
-                print(f"✅ Precio final encontrado: ${precio_encontrado} para {km_cobrar} KM")
+                print(f"✅ Precio final: ${precio_encontrado} para {km_cobrar} KM")
         except Exception as e:
             print(f"⚠️ Error consultando tarifas: {e}")
 
@@ -642,7 +657,7 @@ def service_worker():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print(" LUNA DELIVERY BACKEND")
-    print(f"📍 Puerto: {port}")
+    print("🚀 LUNA DELIVERY BACKEND")
+    print(f" Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
