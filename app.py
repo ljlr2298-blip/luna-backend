@@ -18,7 +18,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supaba
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
 print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
-print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
+print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else ' NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -419,7 +419,7 @@ def obtener_coordenadas(direccion_completa):
         if data and len(data) > 0:
             return float(data[0]['lat']), float(data[0]['lon'])
     except Exception as e:
-        print(f"️ Error geocodificando '{direccion_completa}': {e}")
+        print(f"⚠️ Error geocodificando '{direccion_completa}': {e}")
     return None, None
 
 def calcular_distancia_haversine(lat1, lon1, lat2, lon2):
@@ -451,6 +451,7 @@ def api_calcular_precio():
         cp_destino = request.args.get('arg3', '')
         
         print(f"🔍 calcularPrecio: marca='{marca}', destino='{direccion_destino}'")
+        print("✅ NUEVA VERSIÓN DEL CÓDIGO - 2026-10-01")  # ← Este log confirma que el nuevo código está corriendo
         
         # 1. Verificar precio fijo
         if marca in MARCAS_PRECIO_FIJO:
@@ -464,7 +465,7 @@ def api_calcular_precio():
                 m = marca_response.data[0]
                 origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
         except Exception as e:
-            print(f"⚠️ Error obteniendo datos de marca: {e}")
+            print(f"️ Error obteniendo datos de marca: {e}")
 
         # 3. Construir dirección completa del DESTINO
         destino_completo = f"{direccion_destino}, Jalisco, Mexico"
@@ -482,7 +483,7 @@ def api_calcular_precio():
             km_reales = calcular_distancia_haversine(lat_origen, lon_origen, lat_destino, lon_destino)
             print(f"📏 Distancia REAL calculada: {km_reales:.2f} KM")
         else:
-            print("⚠️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
+            print("️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
             municipio_origen = origen_completo.split(',')[-2].strip() if origen_completo else ""
             municipio_destino = direccion_destino.split(',')[-1].strip() if direccion_destino else ""
             km_reales = 5.0 if municipio_origen == municipio_destino else 15.0
@@ -491,36 +492,34 @@ def api_calcular_precio():
         km_cobrar = math.floor(km_reales)
         print(f"💰 KM a cobrar (floor): {km_cobrar}")
 
-        # 6. Determinar tabla de tarifas (nombres con espacios)
-        tabla_tarifas = 'tarifas premium' if marca in MARCAS_PREMIUM else 'tarifas generales'
+        # 6. ✅ CORREGIDO: Nombres exactos de las tablas (con error de ortografía en "premiun")
+        tabla_tarifas = 'tarifas premiun' if marca in MARCAS_PREMIUM else 'tarifas generales'
         print(f"📊 Tabla de tarifas: '{tabla_tarifas}'")
         
         # 7. Buscar precio en la tabla correspondiente
         precio_encontrado = 50
         
         try:
-            # ✅ SIN order() de Supabase - ordenamos en Python porque km es texto
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
-            print(f"📋 Tarifas encontradas: {len(response.data) if response.data else 0}")
+            print(f" Tarifas encontradas: {len(response.data) if response.data else 0}")
             
             if response.data:
                 tarifas = []
                 for t in response.data:
                     try:
-                        # ✅ Convertir a float (la columna km es texto en la BD)
                         km_valor = float(t.get('km', 0))
                         precio_valor = float(t.get('precio', 0))
                         tarifas.append({'km': km_valor, 'precio': precio_valor})
                     except Exception as e:
-                        print(f"️ Error convirtiendo tarifa: {t} - {e}")
+                        print(f"⚠️ Error convirtiendo tarifa: {t} - {e}")
                         continue
                 
-                # ✅ ORDENAR EN PYTHON por km ascendente (numérico, no alfabético)
+                # Ordenar numéricamente
                 tarifas.sort(key=lambda x: x['km'])
-                print(f" Tarifas ordenadas: {[(t['km'], t['precio']) for t in tarifas[:5]]}...")
+                print(f"📋 Tarifas ordenadas: {[(t['km'], t['precio']) for t in tarifas[:5]]}...")
                 
-                # ✅ Buscar la tarifa correcta
-                precio_encontrado = tarifas[0]['precio']  # Precio mínimo por defecto
+                # Buscar el precio correcto
+                precio_encontrado = tarifas[0]['precio']
                 
                 for t in tarifas:
                     if t['km'] <= km_cobrar:
@@ -541,7 +540,8 @@ def api_calcular_precio():
             "origen": origen_completo,
             "destino": destino_completo,
             "tarifaEspecial": False,
-            "tipoTarifa": tabla_tarifas
+            "tipoTarifa": tabla_tarifas,
+            "version": "2026-10-01"  # ← Esto confirma la versión en el frontend
         })
             
     except Exception as e:
@@ -575,7 +575,7 @@ def api_get_colonias():
     print(f"🔍 getColonias: cp='{cp}'")
     try:
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        print(f"📊 Resultados: {len(response.data)} registros")
+        print(f" Resultados: {len(response.data)} registros")
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         print(f"✅ Colonias encontradas: {colonias[:5]}...")
         return jsonify({"result": colonias})
@@ -658,6 +658,6 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
     print("🚀 LUNA DELIVERY BACKEND")
-    print(f" Puerto: {port}")
+    print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
