@@ -419,11 +419,35 @@ def obtener_coordenadas(direccion_completa):
         if data and len(data) > 0:
             return float(data[0]['lat']), float(data[0]['lon'])
     except Exception as e:
-        print(f"⚠️ Error geocodificando '{direccion_completa}': {e}")
+        print(f"️ Error geocodificando '{direccion_completa}': {e}")
     return None, None
 
+def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino):
+    """
+    Calcula la distancia REAL por carretera usando OSRM (Gratis, sin API key).
+    Si OSRM falla, usa Haversine como fallback.
+    """
+    try:
+        url = f"http://router.project-osrm.org/route/v1/driving/{lon_origen},{lat_origen};{lon_destino},{lat_destino}?overview=false"
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        
+        if data.get('code') == 'Ok' and 'routes' in data and len(data['routes']) > 0:
+            distancia_metros = data['routes'][0]['distance']
+            distancia_km = distancia_metros / 1000.0
+            print(f"🛣️ Distancia por carretera (OSRM): {distancia_km:.2f} KM")
+            return distancia_km
+        else:
+            print(f"️ OSRM respondió sin ruta válida: {data.get('code')}")
+    except Exception as e:
+        print(f"️ Error con OSRM: {e}")
+    
+    # Fallback a Haversine si OSRM falla
+    print("⚠️ Usando Haversine como fallback")
+    return calcular_distancia_haversine(lat_origen, lon_origen, lat_destino, lon_destino)
+
 def calcular_distancia_haversine(lat1, lon1, lat2, lon2):
-    """Calcula la distancia real en KM entre dos coordenadas"""
+    """Calcula la distancia en línea recta (fallback)"""
     R = 6371.0
     lat1_rad = math.radians(lat1)
     lon1_rad = math.radians(lon1)
@@ -439,7 +463,7 @@ def calcular_distancia_haversine(lat1, lon1, lat2, lon2):
     return R * c
 
 # ==========================================
-# API DE CÁLCULO DE PRECIO - SIN FALLBACK SILENCIOSO
+# API DE CÁLCULO DE PRECIO CON DISTANCIA POR CARRETERA
 # ==========================================
 @app.route('/api/calcularPrecio', methods=['GET'])
 def api_calcular_precio():
@@ -474,15 +498,16 @@ def api_calcular_precio():
         print(f"📍 Origen: {origen_completo}")
         print(f"📍 Destino: {destino_completo}")
 
-        # 3. Calcular distancia real
+        # 3. Obtener coordenadas
         lat_origen, lon_origen = obtener_coordenadas(origen_completo)
         lat_destino, lon_destino = obtener_coordenadas(destino_completo)
 
         km_reales = 10.0
 
         if lat_origen and lat_destino:
-            km_reales = calcular_distancia_haversine(lat_origen, lon_origen, lat_destino, lon_destino)
-            print(f"📏 Distancia REAL calculada: {km_reales:.2f} KM")
+            # ✅ USAR OSRM (distancia por carretera) en lugar de Haversine (línea recta)
+            km_reales = calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino)
+            print(f" Distancia final a usar: {km_reales:.2f} KM")
         else:
             print("⚠️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
             municipio_origen = origen_completo.split(',')[-2].strip() if origen_completo else ""
@@ -496,14 +521,13 @@ def api_calcular_precio():
         tabla_tarifas = 'tarifas premiun' if marca in MARCAS_PREMIUM else 'tarifas generales'
         print(f"📊 Tabla de tarifas: '{tabla_tarifas}'")
         
-        # 5. Buscar precio en la tabla - SIN FALLBACK SILENCIOSO
+        # 5. Buscar precio en la tabla
         try:
             print(f"🔍 Consultando tabla: {tabla_tarifas}")
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
             print(f"📋 Respuesta de Supabase: {len(response.data) if response.data else 0} registros")
             
             if not response.data:
-                # ❌ FALLA VISIBLE: No hay datos en la tabla
                 error_msg = f"La tabla '{tabla_tarifas}' está vacía o no existe"
                 print(f"❌ {error_msg}")
                 return jsonify({
@@ -514,7 +538,6 @@ def api_calcular_precio():
                     "debug": "Tabla vacía"
                 }), 500
             
-            # Convertir y ordenar tarifas
             tarifas = []
             for t in response.data:
                 try:
@@ -528,7 +551,6 @@ def api_calcular_precio():
             tarifas.sort(key=lambda x: x['km'])
             print(f" Tarifas ordenadas: {[(t['km'], t['precio']) for t in tarifas[:5]]}...")
             
-            # Buscar el precio correcto
             precio_encontrado = None
             
             for t in tarifas:
@@ -540,7 +562,6 @@ def api_calcular_precio():
                     break
             
             if precio_encontrado is None:
-                # ❌ FALLA VISIBLE: No se encontró precio
                 error_msg = f"No se encontró tarifa para {km_cobrar} KM en tabla '{tabla_tarifas}'"
                 print(f"❌ {error_msg}")
                 return jsonify({
@@ -566,9 +587,8 @@ def api_calcular_precio():
             })
             
         except Exception as e:
-            # ❌ FALLA VISIBLE: Error consultando la tabla
             error_msg = f"Error consultando tabla '{tabla_tarifas}': {str(e)}"
-            print(f"❌ {error_msg}")
+            print(f" {error_msg}")
             return jsonify({
                 "error": error_msg,
                 "precio": 0,
@@ -590,7 +610,7 @@ def api_get_municipios():
 def api_get_cps():
     if not supabase: return jsonify({"result": []}), 500
     municipio = request.args.get('arg0', '')
-    print(f"🔍 getCPs: municipio='{municipio}'")
+    print(f" getCPs: municipio='{municipio}'")
     try:
         response = supabase.table('colonias').select('cp').eq('municipio', municipio).execute()
         print(f"📊 Resultados: {len(response.data)} registros")
@@ -598,7 +618,7 @@ def api_get_cps():
         print(f"✅ CPs encontrados: {cps[:5]}...")
         return jsonify({"result": cps})
     except Exception as e:
-        print(f"❌ Error getCPs: {e}")
+        print(f" Error getCPs: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/getColonias', methods=['GET'])
@@ -608,7 +628,7 @@ def api_get_colonias():
     print(f"🔍 getColonias: cp='{cp}'")
     try:
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        print(f" Resultados: {len(response.data)} registros")
+        print(f"📊 Resultados: {len(response.data)} registros")
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         print(f"✅ Colonias encontradas: {colonias[:5]}...")
         return jsonify({"result": colonias})
@@ -690,7 +710,7 @@ def service_worker():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print("🚀 LUNA DELIVERY BACKEND")
+    print(" LUNA DELIVERY BACKEND")
     print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
