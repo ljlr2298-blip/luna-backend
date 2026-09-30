@@ -17,8 +17,8 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
-print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else ' NO'}")
+print(f" SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -27,7 +27,7 @@ if SUPABASE_URL and SUPABASE_KEY:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("✅ Conectado a Supabase exitosamente")
     except Exception as e:
-        print(f"⚠️ Error conectando a Supabase: {e}")
+        print(f"️ Error conectando a Supabase: {e}")
 else:
     print("⚠️ Supabase no configurado. La app iniciará pero sin base de datos.")
 
@@ -465,13 +465,13 @@ def api_calcular_precio():
                 m = marca_response.data[0]
                 origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
         except Exception as e:
-            print(f"️ Error obteniendo datos de marca: {e}")
+            print(f"⚠️ Error obteniendo datos de marca: {e}")
 
         # 3. Construir dirección completa del DESTINO
         destino_completo = f"{direccion_destino}, Jalisco, Mexico"
         
         print(f"📍 Origen: {origen_completo}")
-        print(f"📍 Destino: {destino_completo}")
+        print(f" Destino: {destino_completo}")
 
         # 4. Obtener coordenadas de ambos puntos
         lat_origen, lon_origen = obtener_coordenadas(origen_completo)
@@ -481,9 +481,9 @@ def api_calcular_precio():
 
         if lat_origen and lat_destino:
             km_reales = calcular_distancia_haversine(lat_origen, lon_origen, lat_destino, lon_destino)
-            print(f"📏 Distancia REAL calculada: {km_reales:.2f} KM")
+            print(f" Distancia REAL calculada: {km_reales:.2f} KM")
         else:
-            print("️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
+            print("⚠️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
             municipio_origen = origen_completo.split(',')[-2].strip() if origen_completo else ""
             municipio_destino = direccion_destino.split(',')[-1].strip() if direccion_destino else ""
             km_reales = 5.0 if municipio_origen == municipio_destino else 15.0
@@ -501,7 +501,7 @@ def api_calcular_precio():
         
         try:
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
-            print(f" Tarifas encontradas: {len(response.data) if response.data else 0}")
+            print(f"📋 Tarifas encontradas: {len(response.data) if response.data else 0}")
             
             if response.data:
                 tarifas = []
@@ -531,7 +531,7 @@ def api_calcular_precio():
                         
                 print(f"✅ Precio final: ${precio_encontrado} para {km_cobrar} KM")
         except Exception as e:
-            print(f"⚠️ Error consultando tarifas: {e}")
+            print(f"️ Error consultando tarifas: {e}")
 
         return jsonify({
             "precio": precio_encontrado,
@@ -575,7 +575,7 @@ def api_get_colonias():
     print(f"🔍 getColonias: cp='{cp}'")
     try:
         response = supabase.table('colonias').select('colonia').eq('cp', cp).execute()
-        print(f" Resultados: {len(response.data)} registros")
+        print(f"📊 Resultados: {len(response.data)} registros")
         colonias = sorted(list(set([row['colonia'] for row in response.data if row.get('colonia')])))
         print(f"✅ Colonias encontradas: {colonias[:5]}...")
         return jsonify({"result": colonias})
