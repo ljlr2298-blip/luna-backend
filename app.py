@@ -2,6 +2,7 @@ import os
 import json
 import random
 import math
+import requests
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
@@ -405,102 +406,131 @@ def api_obtener_resumen_rango():
 # 8. APIs DE PERFIL, ZONAS Y CALCULO DE PRECIOS
 # ==========================================
 
-# ✅ FUNCIÓN CALCULAR PRECIO CON MATH.FLOOR() - LÓGICA CORRECTA
+# ==========================================
+# FUNCIONES AUXILIARES PARA CÁLCULO REAL
+# ==========================================
+def obtener_coordenadas(direccion_completa):
+    """Obtiene latitud y longitud usando OpenStreetMap (Gratis)"""
+    url = f"https://nominatim.openstreetmap.org/search?format=json&q={direccion_completa}&countrycodes=mx&limit=1"
+    headers = {'User-Agent': 'LunaDeliveryApp/1.0'}
+    try:
+        response = requests.get(url, headers=headers, timeout=5)
+        data = response.json()
+        if data and len(data) > 0:
+            return float(data[0]['lat']), float(data[0]['lon'])
+    except Exception as e:
+        print(f"⚠️ Error geocodificando '{direccion_completa}': {e}")
+    return None, None
+
+def calcular_distancia_haversine(lat1, lon1, lat2, lon2):
+    """Calcula la distancia real en KM entre dos coordenadas"""
+    R = 6371.0
+    lat1_rad = math.radians(lat1)
+    lon1_rad = math.radians(lon1)
+    lat2_rad = math.radians(lat2)
+    lon2_rad = math.radians(lon2)
+    
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+    
+    a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    
+    return R * c
+
+# ==========================================
+# API DE CÁLCULO DE PRECIO CON DISTANCIA REAL
+# ==========================================
 @app.route('/api/calcularPrecio', methods=['GET'])
 def api_calcular_precio():
     if not supabase: return jsonify({"error": "Supabase no configurado"}), 500
     try:
-        direccion = request.args.get('arg0', '')
+        direccion_destino = request.args.get('arg0', '')
         marca = request.args.get('arg1', '')
         tipo_origen = request.args.get('arg2', 'marca')
-        cp = request.args.get('arg3', '')
+        cp_destino = request.args.get('arg3', '')
         
-        print(f"🔍 calcularPrecio: marca='{marca}', direccion='{direccion}', cp='{cp}'")
+        print(f"🔍 calcularPrecio: marca='{marca}', destino='{direccion_destino}'")
         
         # 1. Verificar precio fijo
         if marca in MARCAS_PRECIO_FIJO:
             return jsonify({"precio": MARCAS_PRECIO_FIJO[marca], "km": 0, "origen": "Fijo", "tarifaEspecial": True})
         
-        # 2. Extraer municipio destino de la dirección
-        partes = direccion.split(',')
-        municipio_destino = partes[-1].strip() if len(partes) >= 3 else ""
-        print(f"📍 Municipio destino: '{municipio_destino}'")
+        # 2. Obtener dirección completa del ORIGEN (desde la tabla marcas)
+        origen_completo = ""
+        try:
+            marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
+            if marca_response.data:
+                m = marca_response.data[0]
+                origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
+        except Exception as e:
+            print(f"⚠️ Error obteniendo datos de marca: {e}")
+
+        # 3. Construir dirección completa del DESTINO
+        destino_completo = f"{direccion_destino}, Jalisco, Mexico"
         
-        # 3. Obtener municipio origen de la marca
-        municipio_origen = ""
-        if supabase:
-            try:
-                marca_response = supabase.table('marcas').select('municipio').ilike('nombre', marca).execute()
-                if marca_response.data:
-                    municipio_origen = marca_response.data[0].get('municipio', '')
-            except Exception as e:
-                print(f"️ Error obteniendo marca: {e}")
-        
-        print(f"📍 Municipio origen: '{municipio_origen}'")
-        
-        # 4. Calcular KM estimado
-        if municipio_origen == municipio_destino:
-            km_estimado = 5.0
+        print(f"📍 Origen: {origen_completo}")
+        print(f" Destino: {destino_completo}")
+
+        # 4. Obtener coordenadas de ambos puntos
+        lat_origen, lon_origen = obtener_coordenadas(origen_completo)
+        lat_destino, lon_destino = obtener_coordenadas(destino_completo)
+
+        km_reales = 10.0
+
+        if lat_origen and lat_destino:
+            km_reales = calcular_distancia_haversine(lat_origen, lon_origen, lat_destino, lon_destino)
+            print(f"📏 Distancia REAL calculada: {km_reales:.2f} KM")
         else:
-            km_estimado = 15.0
-        
-        # ✅ 5. REDONDEAR HACIA ABAJO (floor) - Lógica según tu tabla
-        # 7.9 → 7, 15.8 → 15, 16.0 → 16
-        km_cobrar = math.floor(km_estimado)
-        print(f" KM estimados: {km_estimado} → Se cobra: {km_cobrar} KM")
-        
-        # 6. Determinar tabla según tipo de marca
+            print("⚠️ No se pudieron obtener coordenadas. Usando estimación por municipio.")
+            municipio_origen = origen_completo.split(',')[-2].strip() if origen_completo else ""
+            municipio_destino = direccion_destino.split(',')[-1].strip() if direccion_destino else ""
+            km_reales = 5.0 if municipio_origen == municipio_destino else 15.0
+
+        # 5. Redondear HACIA ABAJO (floor) según lógica de tabla
+        km_cobrar = math.floor(km_reales)
+        print(f" KM a cobrar (floor): {km_cobrar}")
+
+        # 6. Determinar tabla de tarifas
         tabla_tarifas = 'tarifa_premium' if marca in MARCAS_PREMIUM else 'tarifa_general'
-        print(f"💰 Tabla de tarifas: {tabla_tarifas}")
         
-        # 7. Buscar tarifa en Supabase
-        precio_encontrado = 50  # Precio mínimo por defecto
+        # 7. Buscar precio en la tabla correspondiente
+        precio_encontrado = 50
         
-        if supabase:
-            try:
-                response = supabase.table(tabla_tarifas).select('km, precio').order('km', desc=False).execute()
-                print(f"📊 Tarifas encontradas: {len(response.data) if response.data else 0}")
+        try:
+            response = supabase.table(tabla_tarifas).select('km, precio').order('km', desc=False).execute()
+            if response.data:
+                tarifas = []
+                for t in response.data:
+                    try:
+                        tarifas.append({'km': float(t.get('km', 0)), 'precio': float(t.get('precio', 0))})
+                    except:
+                        continue
                 
-                if response.data:
-                    # Convertir km a número (puede venir como texto)
-                    tarifas = []
-                    for t in response.data:
-                        try:
-                            km_valor = float(t.get('km', 0))
-                            tarifas.append({'km': km_valor, 'precio': float(t.get('precio', 0))})
-                        except:
-                            continue
-                    
-                    # Ordenar por km ascendente
-                    tarifas.sort(key=lambda x: x['km'])
-                    print(f"📋 Tarifas ordenadas: {tarifas[:5]}...")
-                    
-                    # ✅ Buscar el precio donde km_tabla <= km_cobrar (el mayor que cumpla)
-                    precio_encontrado = tarifas[0]['precio']  # Precio mínimo por defecto
-                    
-                    for t in tarifas:
-                        if t['km'] <= km_cobrar:
-                            precio_encontrado = t['precio']
-                        else:
-                            break  # Ya pasamos el km_cobrar, salir
-                    
-                    print(f"✅ Precio final: ${precio_encontrado} para {km_cobrar} KM")
-            except Exception as e:
-                print(f"⚠️ Error consultando tarifas: {e}")
-                precio_encontrado = 50
-        
+                tarifas.sort(key=lambda x: x['km'])
+                
+                for t in tarifas:
+                    if t['km'] <= km_cobrar:
+                        precio_encontrado = t['precio']
+                    else:
+                        break
+                        
+                print(f"✅ Precio final encontrado: ${precio_encontrado} para {km_cobrar} KM")
+        except Exception as e:
+            print(f"⚠️ Error consultando tarifas: {e}")
+
         return jsonify({
             "precio": precio_encontrado,
             "km": km_cobrar,
-            "km_reales": km_estimado,
-            "origen": municipio_origen,
-            "destino": municipio_destino,
+            "km_reales": round(km_reales, 2),
+            "origen": origen_completo,
+            "destino": destino_completo,
             "tarifaEspecial": False,
             "tipoTarifa": tabla_tarifas
         })
             
     except Exception as e:
-        print(f" Error calcularPrecio: {e}")
+        print(f"❌ Error crítico en calcularPrecio: {e}")
         return jsonify({"precio": 50, "km": 7, "origen": "Error", "destino": "Error", "tarifaEspecial": True, "error": str(e)}), 200
 
 @app.route('/api/getMunicipios', methods=['GET'])
@@ -612,7 +642,7 @@ def service_worker():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print("🚀 LUNA DELIVERY BACKEND")
-    print(f" Puerto: {port}")
+    print(" LUNA DELIVERY BACKEND")
+    print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
