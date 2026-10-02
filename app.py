@@ -3,7 +3,7 @@ import json
 import random
 import math
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
 
@@ -18,7 +18,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supaba
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
 print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
-print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
+print(f" SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -97,19 +97,47 @@ def api_registrar_marca():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/actualizarPassword', methods=['GET'])
+def api_actualizar_password():
+    if not supabase: return jsonify({"result": {"exito": False}}), 500
+    marca, pass_actual, pass_nueva = request.args.get('arg0', ''), request.args.get('arg1', ''), request.args.get('arg2', '')
+    try:
+        response = supabase.table('marcas').select('*').ilike('nombre', marca).execute()
+        if not response.data:
+            return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
+        if str(response.data[0].get('password_hash', '')).strip() != str(pass_actual).strip():
+            return jsonify({"result": {"exito": False, "mensaje": "Contraseña actual incorrecta"}})
+        if len(pass_nueva) < 6:
+            return jsonify({"result": {"exito": False, "mensaje": "Mínimo 6 caracteres"}})
+        supabase.table('marcas').update({"password_hash": pass_nueva}).eq('id', response.data[0]['id']).execute()
+        return jsonify({"result": {"exito": True, "mensaje": "Contraseña actualizada"}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "mensaje": str(e)}})
+
+@app.route('/api/recuperarPassword', methods=['GET'])
+def api_recuperar_password():
+    if not supabase: return jsonify({"result": {"exito": False}}), 500
+    marca, telefono = request.args.get('arg0', ''), request.args.get('arg1', '')
+    try:
+        response = supabase.table('marcas').select('*').ilike('nombre', marca).execute()
+        if response.data and str(response.data[0].get('telefono', '')).strip() == str(telefono).strip():
+            return jsonify({"result": {"exito": True, "mensaje": "Tu contraseña es: " + response.data[0].get('password_hash', '')}})
+        return jsonify({"result": {"exito": False, "mensaje": "Marca o teléfono no coinciden"}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "mensaje": str(e)}})
+
 # ==========================================
-# 4. APIs DE PEDIDOS (CON FILTRO DESDE SUPABASE)
+# 4. APIs DE PEDIDOS
 # ==========================================
 @app.route('/api/getPedidos', methods=['GET'])
 def api_get_pedidos():
     if not supabase: return jsonify({"result": [], "error": "Supabase no configurado"}), 500
     marca = request.args.get('arg0', '')
     modo = request.args.get('arg1', 'cliente')
-    status_filtro = request.args.get('arg2', '')  # ✅ NUEVO: filtro desde Supabase
+    status_filtro = request.args.get('arg2', '')
     
     try:
         if modo == 'admin':
-            # ✅ FILTRAR DESDE SUPABASE: solo traer lo necesario
             query = supabase.table('pedidos').select('*')
             
             if status_filtro == 'Entregado':
@@ -117,7 +145,6 @@ def api_get_pedidos():
             elif status_filtro == 'Cancelado':
                 query = query.eq('status', 'Cancelado')
             else:
-                # ✅ Por defecto: SOLO pedidos activos (no entregados ni cancelados)
                 query = query.neq('status', 'Entregado').neq('status', 'Cancelado')
             
             response = query.order('creado_en', desc=True).limit(5000).execute()
@@ -134,7 +161,7 @@ def api_get_pedidos():
         for row in response.data:
             nombre_marca = marcas_dict.get(str(row.get('marca_id')), 'Desconocida')
             
-            # ✅ Normalización estricta del día
+            # Normalización estricta del día
             raw_dia = str(row.get('dia_programado', '')).strip()
             if not raw_dia or raw_dia.lower() == 'por asignar':
                 dia_value = 'Por asignar'
@@ -219,7 +246,7 @@ def api_actualizar_dia():
     fila, letra = request.args.get('arg0', ''), request.args.get('arg1', '')
     mapa = {'L': 'Lunes', 'M': 'Martes', 'MI': 'Miércoles', 'J': 'Jueves', 'V': 'Viernes', 'S': 'Sábado'}
     try:
-        supabase.table('pedidos').update({"dia_programado": mapa.get(letra.upper().replace('MI', 'Mi'), 'Por asignar')}).eq('id', int(fila)).execute()
+        supabase.table('pedidos').update({"dia_programado": mapa.get(letra.upper(), 'Por asignar')}).eq('id', int(fila)).execute()
         return jsonify({"result": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -353,8 +380,8 @@ def api_obtener_pedidos_pendientes():
     filtro_marca = request.args.get('arg0', 'todas')
     try:
         query = supabase.table('pedidos').select('*').eq('estado_pago', 'Pendiente').neq('status', 'Cancelado')
-        if filtro_marca != 'todas':
-            marca_response = supabase.table('marcas').select('id').ilike('nombre', filtro_marca).execute()
+        if filtro_marca and filtro_marca != 'todas':
+            marca_response = supabase.table('marcas').select('id, nombre').ilike('nombre', filtro_marca).execute()
             if marca_response.data: query = query.eq('marca_id', marca_response.data[0]['id'])
         response = query.execute()
         marcas_response = supabase.table('marcas').select('id, nombre, telefono').execute()
@@ -387,23 +414,166 @@ def api_marcar_pagos_masivo():
 @app.route('/api/obtenerResumenSemana', methods=['GET'])
 def api_obtener_resumen_semana():
     if not supabase: return jsonify({"result": {"exito": False}}), 500
+    fecha_referencia_str = request.args.get('arg0', '')
+    
     try:
-        response = supabase.table('pedidos').select('*').execute()
+        if fecha_referencia_str:
+            fecha_ref = datetime.fromisoformat(fecha_referencia_str.replace('Z', '+00:00'))
+        else:
+            fecha_ref = datetime.now()
+        
+        # Ajuste: si es domingo (6), retroceder 6 días para llegar al lunes
+        ajuste = 6 if fecha_ref.weekday() == 6 else fecha_ref.weekday()
+        inicio_semana = fecha_ref.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=ajuste)
+        fin_semana = inicio_semana + timedelta(days=6, hours=23, minutes=59, seconds=59)
+        
+        inicio_str = inicio_semana.strftime('%Y-%m-%dT%H:%M:%S')
+        fin_str = fin_semana.strftime('%Y-%m-%dT%H:%M:%S')
+        
+        print(f"📊 Semana: {inicio_str} a {fin_str}")
+        
+        response = supabase.table('pedidos').select('*').gte('creado_en', inicio_str).lte('creado_en', fin_str).neq('status', 'Cancelado').execute()
         pedidos = response.data
-        return jsonify({"result": {"exito": True, "totalPedidos": len(pedidos), "totalIngresos": sum(float(p.get('precio', 0) or 0) for p in pedidos), "totalPagado": sum(float(p.get('precio', 0) or 0) for p in pedidos if p.get('estado_pago') == 'Pagado'), "totalPendiente": sum(float(p.get('precio', 0) or 0) for p in pedidos if p.get('estado_pago') == 'Pendiente'), "rangoTexto": "Semana actual", "porDia": {}}})
+        
+        print(f" Pedidos encontrados en semana: {len(pedidos)}")
+        
+        dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+        por_dia = {}
+        for d in dias_semana:
+            por_dia[d] = {"fecha": "", "pedidos": 0, "pagado": 0, "pendiente": 0, "total": 0, "pedidosLista": []}
+        
+        total_pedidos = 0
+        total_ingresos = 0.0
+        total_pagado = 0.0
+        total_pendiente = 0.0
+        
+        for p in pedidos:
+            fecha_pedido = p.get('creado_en', '')
+            if not fecha_pedido:
+                continue
+            
+            try:
+                if 'T' in str(fecha_pedido):
+                    f_pedido = datetime.fromisoformat(str(fecha_pedido).replace('Z', '+00:00'))
+                else:
+                    f_pedido = datetime.strptime(str(fecha_pedido)[:19], '%Y-%m-%d %H:%M:%S')
+            except:
+                continue
+            
+            dia_idx = f_pedido.weekday()
+            dia_nombre = dias_semana[dia_idx]
+            
+            estado_pago = p.get('estado_pago', 'Pendiente')
+            precio = float(p.get('precio', 0) or 0)
+            
+            total_pedidos += 1
+            total_ingresos += precio
+            
+            if estado_pago == 'Pagado':
+                total_pagado += precio
+            else:
+                total_pendiente += precio
+            
+            if not por_dia[dia_nombre]["fecha"]:
+                por_dia[dia_nombre]["fecha"] = f_pedido.strftime('%d %b')
+            
+            por_dia[dia_nombre]["pedidos"] += 1
+            por_dia[dia_nombre]["total"] += precio
+            
+            if estado_pago == 'Pagado':
+                por_dia[dia_nombre]["pagado"] += precio
+            else:
+                por_dia[dia_nombre]["pendiente"] += precio
+            
+            por_dia[dia_nombre]["pedidosLista"].append({
+                "fila": p.get('id'),
+                "id": p.get('token', ''),
+                "marca": p.get('marca_id', ''),
+                "recibe": p.get('recibe_nombre', ''),
+                "precio": precio,
+                "estadoPago": estado_pago
+            })
+        
+        rango_texto = f"{inicio_semana.strftime('%d %b')} - {fin_semana.strftime('%d %b %Y')}"
+        
+        return jsonify({"result": {
+            "exito": True,
+            "rangoTexto": rango_texto,
+            "totalPedidos": total_pedidos,
+            "totalIngresos": total_ingresos,
+            "totalPagado": total_pagado,
+            "totalPendiente": total_pendiente,
+            "porDia": por_dia
+        }})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"❌ Error en resumen semana: {e}")
+        return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
 @app.route('/api/obtenerResumenRango', methods=['GET'])
 def api_obtener_resumen_rango():
     if not supabase: return jsonify({"result": {"exito": False}}), 500
-    fecha_inicio, fecha_fin = request.args.get('arg0', ''), request.args.get('arg1', '')
+    fecha_inicio = request.args.get('arg0', '')
+    fecha_fin = request.args.get('arg1', '')
+    
     try:
-        response = supabase.table('pedidos').select('*').gte('creado_en', fecha_inicio).lte('creado_en', fecha_fin).execute()
+        inicio_str = f"{fecha_inicio}T00:00:00"
+        fin_str = f"{fecha_fin}T23:59:59"
+        
+        response = supabase.table('pedidos').select('*').gte('creado_en', inicio_str).lte('creado_en', fin_str).neq('status', 'Cancelado').execute()
         pedidos = response.data
-        return jsonify({"result": {"exito": True, "totalPedidos": len(pedidos), "totalIngresos": sum(float(p.get('precio', 0) or 0) for p in pedidos), "totalPagado": sum(float(p.get('precio', 0) or 0) for p in pedidos if p.get('estado_pago') == 'Pagado'), "totalPendiente": sum(float(p.get('precio', 0) or 0) for p in pedidos if p.get('estado_pago') == 'Pendiente'), "rangoTexto": f"{fecha_inicio} a {fecha_fin}", "pedidos": []}})
+        
+        total_pedidos = 0
+        total_ingresos = 0.0
+        total_pagado = 0.0
+        total_pendiente = 0.0
+        pedidos_lista = []
+        
+        for p in pedidos:
+            estado_pago = p.get('estado_pago', 'Pendiente')
+            precio = float(p.get('precio', 0) or 0)
+            fecha_pedido = p.get('creado_en', '')
+            
+            try:
+                if 'T' in str(fecha_pedido):
+                    f_pedido = datetime.fromisoformat(str(fecha_pedido).replace('Z', '+00:00'))
+                else:
+                    f_pedido = datetime.strptime(str(fecha_pedido)[:19], '%Y-%m-%d %H:%M:%S')
+                fecha_formateada = f_pedido.strftime('%d/%m/%Y')
+            except:
+                fecha_formateada = str(fecha_pedido)[:10]
+            
+            total_pedidos += 1
+            total_ingresos += precio
+            
+            if estado_pago == 'Pagado':
+                total_pagado += precio
+            else:
+                total_pendiente += precio
+            
+            pedidos_lista.append({
+                "fila": p.get('id'),
+                "id": p.get('token', ''),
+                "marca": p.get('marca_id', ''),
+                "recibe": p.get('recibe_nombre', ''),
+                "destino": p.get('destino', ''),
+                "precio": precio,
+                "estadoPago": estado_pago,
+                "fecha": fecha_formateada
+            })
+        
+        rango_texto = f"{fecha_inicio} a {fecha_fin}"
+        
+        return jsonify({"result": {
+            "exito": True,
+            "rangoTexto": rango_texto,
+            "totalPedidos": total_pedidos,
+            "totalIngresos": total_ingresos,
+            "totalPagado": total_pagado,
+            "totalPendiente": total_pendiente,
+            "pedidos": pedidos_lista
+        }})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
 # ==========================================
 # 8. FUNCIONES AUXILIARES PARA CÁLCULO REAL (OSRM)
@@ -430,7 +600,7 @@ def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_de
             print(f"🛣️ Distancia por carretera (OSRM): {distancia_km:.2f} KM")
             return distancia_km
     except Exception as e:
-        print(f"⚠️ Error con OSRM: {e}")
+        print(f"️ Error con OSRM: {e}")
     
     R = 6371.0
     lat1_rad, lon1_rad = math.radians(lat_origen), math.radians(lon_origen)
@@ -549,6 +719,44 @@ def api_obtener_perfil():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/guardarPerfilMarca', methods=['GET'])
+def api_guardar_perfil():
+    if not supabase: return jsonify({"result": {"exito": False}}), 500
+    try:
+        marca = request.args.get('arg0', '')
+        logo_base64 = request.args.get('arg1', '')
+        mime = request.args.get('arg2', 'image/jpeg')
+        slogan = request.args.get('arg3', '')
+        
+        response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
+        if not response.data:
+            return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
+        
+        update_data = {}
+        if slogan:
+            update_data["slogan"] = slogan
+        
+        if logo_base64:
+            update_data["logo_url"] = f"data:{mime};base64,{logo_base64}"
+        
+        supabase.table('marcas').update(update_data).eq('id', response.data[0]['id']).execute()
+        return jsonify({"result": {"exito": True, "logo": update_data.get("logo_url", ""), "mensaje": "Perfil actualizado"}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "mensaje": str(e)}})
+
+@app.route('/api/quitarLogoMarca', methods=['GET'])
+def api_quitar_logo():
+    if not supabase: return jsonify({"result": {"exito": False}}), 500
+    try:
+        marca = request.args.get('arg0', '')
+        response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
+        if not response.data:
+            return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
+        supabase.table('marcas').update({"logo_url": ""}).eq('id', response.data[0]['id']).execute()
+        return jsonify({"result": {"exito": True, "mensaje": "Logo eliminado"}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "mensaje": str(e)}})
+
 @app.route('/api/getProveedoresFrecuentes', methods=['GET'])
 def api_get_proveedores():
     if not supabase: return jsonify({"result": []}), 500
@@ -558,6 +766,30 @@ def api_get_proveedores():
         response = supabase.table('proveedores').select('*').eq('marca_id', marca_response.data[0]['id']).order('nombre').execute()
         return jsonify({"result": response.data})
     except: return jsonify({"result": []})
+
+@app.route('/api/guardarProveedorFrecuente', methods=['GET'])
+def api_guardar_proveedor():
+    if not supabase: return jsonify({"result": {"exito": False}}), 500
+    try:
+        marca = request.args.get('arg0', '')
+        datos = json.loads(request.args.get('arg1', '{}'))
+        marca_response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
+        if not marca_response.data: return jsonify({"result": {"exito": False}})
+        
+        supabase.table('proveedores').insert({
+            "marca_id": marca_response.data[0]['id'],
+            "nombre": datos.get('nombre', ''),
+            "calle": datos.get('calle', ''),
+            "num_ext": datos.get('numExt', ''),
+            "num_int": datos.get('numInt', ''),
+            "colonia": datos.get('colonia', ''),
+            "municipio": datos.get('municipio', ''),
+            "cp": datos.get('cp', ''),
+            "celular": datos.get('celular', '')
+        }).execute()
+        return jsonify({"result": {"exito": True, "mensaje": "Proveedor guardado"}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "error": str(e)}})
 
 @app.route('/api/getDireccionTienda', methods=['GET'])
 def api_get_direccion_tienda():
@@ -585,6 +817,37 @@ def api_get_destinatarios():
         return jsonify({"result": destinatarios})
     except: return jsonify({"result": []})
 
+@app.route('/api/obtenerDatosDestinatario', methods=['GET'])
+def api_obtener_datos_destinatario():
+    if not supabase: return jsonify({"result": {"error": "Supabase no configurado"}}), 500
+    destinatario = request.args.get('arg0', '')
+    try:
+        response = supabase.table('pedidos').select('destino, recibe_celular').eq('recibe_nombre', destinatario).neq('status', 'Cancelado').order('creado_en', desc=True).limit(1).execute()
+        if response.data:
+            destino = response.data[0].get('destino', '')
+            partes = destino.split(',')
+            resultado = {
+                "municipio": partes[-1].strip() if len(partes) > 0 else "",
+                "colonia": partes[-2].strip() if len(partes) > 1 else "",
+                "cp": ""
+            }
+            return jsonify({"result": resultado})
+        return jsonify({"result": {"error": "Destinatario no encontrado"}})
+    except Exception as e:
+        return jsonify({"result": {"error": str(e)}})
+
+@app.route('/api/obtenerDireccionesOptimizadas', methods=['GET'])
+def api_obtener_direcciones_optimizadas():
+    if not supabase: return jsonify({"result": []}), 500
+    try:
+        pedidos_data = json.loads(request.args.get('arg0', '[]'))
+        direcciones = []
+        for p in pedidos_data:
+            destino = p.get('destino', '')
+            direcciones.append(f"{destino}, Jalisco, Mexico")
+        return jsonify({"result": direcciones})
+    except: return jsonify({"result": []})
+
 @app.route('/api/obtenerUrlApp', methods=['GET'])
 def api_obtener_url():
     return jsonify({"result": request.host_url})
@@ -595,6 +858,9 @@ def manifest(): return send_from_directory('.', 'manifest.json', mimetype='appli
 @app.route('/service-worker.js')
 def service_worker(): return send_from_directory('.', 'service-worker.js', mimetype='application/javascript')
 
+# ==========================================
+# 10. INICIAR SERVIDOR
+# ==========================================
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
