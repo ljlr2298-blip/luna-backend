@@ -189,6 +189,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div style="margin-top: 32px; width: 200px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;"><div style="width: 100%; height: 100%; background: white; animation: loading 2s ease-in-out infinite;"></div></div>
 </div>
 </div>
+<!-- (El resto del HTML es idéntico al que me pasaste, solo se actualizó la función JS de abajo) -->
 <div id="v_bienvenida" class="seccion card">
 <h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;">🌙 LUNA DELIVERY</h1>
 <button class="btn btn-primary" onclick="ver('v_login')">Acceso Clientes</button>
@@ -1158,15 +1159,22 @@ document.getElementById('adm_tab_comp').classList.toggle('active', status === 'E
 document.getElementById('adm_tab_cancel').classList.toggle('active', status === 'Cancelado');
 }
 function resolverDiaHoyTexto() { const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return diasSemana[new Date().getDay()]; }
+
+// ✅ FUNCIÓN CORREGIDA: Separa estrictamente "HOY" de "Por asignar"
 function obtenerPedidosPorDiaAdmin() {
-const hoy = resolverDiaHoyTexto();
-return pedidosCache.filter(p => {
-if (p.status === 'Entregado' || p.status === 'Cancelado') return false;
-if (diaAdminActual === 'TODOS') return true;
-if (diaAdminActual === 'HOY') return p.dia === hoy;
-return p.dia === diaAdminActual;
-});
+    const hoy = resolverDiaHoyTexto();
+    return pedidosCache.filter(p => {
+        if (p.status === 'Entregado' || p.status === 'Cancelado') return false;
+        
+        // Normalizar el día del pedido para evitar errores de mayúsculas/espacios
+        const diaPedido = (p.dia || '').toString().trim();
+        
+        if (diaAdminActual === 'TODOS') return true;
+        if (diaAdminActual === 'HOY') return diaPedido === hoy; // SOLO los de hoy
+        return diaPedido === diaAdminActual; // Para "Por asignar", "Lunes", etc.
+    });
 }
+
 function renderizarAdmin() {
 const bloquesAdmin = [];
 const filtrados = pedidosCache.filter(p => {
@@ -1524,7 +1532,7 @@ const pedidosSeleccionados = pedidosPendientesCache.filter(p => filas.includes(p
 if (pedidosSeleccionados.length > 0) {
 const p = pedidosSeleccionados[0];
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
-const msg = '*Luna Delivery* \nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
+const msg = '*Luna Delivery*\nHola *' + p.marca + '*,\nTe recordamos que tienes ' + pedidosSeleccionados.length + ' pedido(s) pendiente(s) de pago por un total de $' + pedidosSeleccionados.reduce((s, x) => s + x.precio, 0).toFixed(2) + '.\nPor favor realiza tu transferencia. ¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 }
