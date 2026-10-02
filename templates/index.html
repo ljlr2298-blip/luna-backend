@@ -1104,7 +1104,20 @@ else { document.getElementById('c_dir').value = primeraParte; document.getElemen
 }
 loading(false); ver('v_cot');
 }
-async function cargarAdmin() { loading(true); try { pedidosCache = await gs('getPedidos', "", "admin"); calcularContadoresRutas(); renderizarAdmin(); generarBotonesRuta(); loading(false); } catch (e) { loading(false); showToast('Error al cargar panel', 'error'); } }
+async function cargarAdmin() { 
+    loading(true); 
+    try { 
+        // ✅ Enviar status_filtro al backend para filtrar desde Supabase
+        pedidosCache = await gs('getPedidos', "", "admin", statusAdminActual); 
+        calcularContadoresRutas(); 
+        renderizarAdmin(); 
+        generarBotonesRuta(); 
+        loading(false); 
+    } catch (e) { 
+        loading(false); 
+        showToast('Error al cargar panel', 'error'); 
+    } 
+}
 function calcularContadoresRutas() {
 const hoy = resolverDiaHoyTexto();
 const counts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
@@ -1150,13 +1163,16 @@ if (activeBtn) activeBtn.classList.add('active');
 closeDaysPanel(); renderizarAdmin(); generarBotonesRuta();
 }
 function cambiarEstatusAdmin(status) {
-statusAdminActual = status; renderizarAdmin();
-const selectorContainer = document.getElementById('selector_fecha_admin');
-if (status === 'Entregado' || status === 'Cancelado') selectorContainer.style.display = 'block';
-else { selectorContainer.style.display = 'none'; fechaFiltroAdmin = null; }
-document.getElementById('adm_tab_pend').classList.toggle('active', status === 'Pendiente');
-document.getElementById('adm_tab_comp').classList.toggle('active', status === 'Entregado');
-document.getElementById('adm_tab_cancel').classList.toggle('active', status === 'Cancelado');
+    statusAdminActual = status;
+    const selectorContainer = document.getElementById('selector_fecha_admin');
+    if (status === 'Entregado' || status === 'Cancelado') selectorContainer.style.display = 'block';
+    else { selectorContainer.style.display = 'none'; fechaFiltroAdmin = null; }
+    document.getElementById('adm_tab_pend').classList.toggle('active', status === 'Pendiente');
+    document.getElementById('adm_tab_comp').classList.toggle('active', status === 'Entregado');
+    document.getElementById('adm_tab_cancel').classList.toggle('active', status === 'Cancelado');
+    
+    // ✅ Recargar datos desde el backend con el nuevo filtro
+    cargarAdmin();
 }
 function resolverDiaHoyTexto() { const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return diasSemana[new Date().getDay()]; }
 
