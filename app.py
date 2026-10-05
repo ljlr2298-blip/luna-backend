@@ -17,8 +17,8 @@ app = Flask(__name__, static_folder='templates')
 SUPABASE_URL = os.getenv("SUPABASE_URL") or "https://kcwkyhfargaijkvucpeh.supabase.co"
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg"
 
-print(f"🔍 SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
-print(f" SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
+print(f" SUPABASE_URL detectada: {'✅ SÍ' if SUPABASE_URL else '❌ NO'}")
+print(f"🔑 SUPABASE_KEY detectada: {'✅ SÍ' if SUPABASE_KEY else '❌ NO'}")
 
 supabase = None
 if SUPABASE_URL and SUPABASE_KEY:
@@ -27,7 +27,7 @@ if SUPABASE_URL and SUPABASE_KEY:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("✅ Conectado a Supabase exitosamente")
     except Exception as e:
-        print(f"⚠️ Error conectando a Supabase: {e}")
+        print(f"️ Error conectando a Supabase: {e}")
 else:
     print("⚠️ Supabase no configurado.")
 
@@ -161,7 +161,6 @@ def api_get_pedidos():
         for row in response.data:
             nombre_marca = marcas_dict.get(str(row.get('marca_id')), 'Desconocida')
             
-            # Normalización estricta del día
             raw_dia = str(row.get('dia_programado', '')).strip()
             if not raw_dia or raw_dia.lower() == 'por asignar':
                 dia_value = 'Por asignar'
@@ -422,7 +421,6 @@ def api_obtener_resumen_semana():
         else:
             fecha_ref = datetime.now()
         
-        # Ajuste: si es domingo (6), retroceder 6 días para llegar al lunes
         ajuste = 6 if fecha_ref.weekday() == 6 else fecha_ref.weekday()
         inicio_semana = fecha_ref.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=ajuste)
         fin_semana = inicio_semana + timedelta(days=6, hours=23, minutes=59, seconds=59)
@@ -435,7 +433,7 @@ def api_obtener_resumen_semana():
         response = supabase.table('pedidos').select('*').gte('creado_en', inicio_str).lte('creado_en', fin_str).neq('status', 'Cancelado').execute()
         pedidos = response.data
         
-        print(f" Pedidos encontrados en semana: {len(pedidos)}")
+        print(f"📦 Pedidos encontrados en semana: {len(pedidos)}")
         
         dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
         por_dia = {}
@@ -597,10 +595,10 @@ def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_de
         data = response.json()
         if data.get('code') == 'Ok' and 'routes' in data and len(data['routes']) > 0:
             distancia_km = data['routes'][0]['distance'] / 1000.0
-            print(f"🛣️ Distancia por carretera (OSRM): {distancia_km:.2f} KM")
+            print(f"️ Distancia por carretera (OSRM): {distancia_km:.2f} KM")
             return distancia_km
     except Exception as e:
-        print(f"️ Error con OSRM: {e}")
+        print(f"⚠️ Error con OSRM: {e}")
     
     R = 6371.0
     lat1_rad, lon1_rad = math.radians(lat_origen), math.radians(lon_origen)
@@ -864,7 +862,7 @@ def service_worker(): return send_from_directory('.', 'service-worker.js', mimet
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print("=" * 50)
-    print("🚀 LUNA DELIVERY BACKEND")
+    print(" LUNA DELIVERY BACKEND")
     print(f"📍 Puerto: {port}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
