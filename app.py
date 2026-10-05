@@ -195,12 +195,16 @@ def api_guardar_pedido():
         marca_id = marca_response.data[0]['id'] if marca_response.data else None
         token = data.get('marca', 'PED')[:3].upper() + str(random.randint(1000, 9999))
         
-        supabase.table('pedidos').insert({
-            "token": token, "marca_id": marca_id, "tipo_servicio": data.get('tipoServicio', 'enviar'),
-            "origen": data.get('origen'), "destino": data.get('destino'), "precio": data.get('precio'),
-            "recibe_nombre": data.get('recibe'), "recibe_celular": data.get('celular'),
-            "comentarios": data.get('coments'), "km": data.get('km'), "estado_pago": "Pendiente", "dia_programado": "Por asignar"
-        }).execute()
+from datetime import datetime
+
+supabase.table('pedidos').insert({
+    "token": token, "marca_id": marca_id, "tipo_servicio": data.get('tipoServicio', 'enviar'),
+    "origen": data.get('origen'), "destino": data.get('destino'), "precio": data.get('precio'),
+    "recibe_nombre": data.get('recibe'), "recibe_celular": data.get('celular'),
+    "comentarios": data.get('coments'), "km": data.get('km'), "estado_pago": "Pendiente", 
+    "dia_programado": "Por asignar",
+    "creado_en": datetime.now().isoformat()  # ✅ Agregar fecha actual
+}).execute()
         return jsonify({"result": token})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
