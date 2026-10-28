@@ -1085,18 +1085,23 @@ async function guardar() {
         if (!document.getElementById('c_col_origen').value) camposFaltantes.push('Colonia Origen');
     }
     
-    // Validar teléfono receptor (obligatorio en ambos tipos de servicio)
+    // Validar teléfono receptor (obligatorio en ambos casos)
     const telReceptor = document.getElementById('c_tel').value.trim();
     if (!telReceptor) {
         camposFaltantes.push('Teléfono Receptor');
     }
     
+    // Validar teléfono receptor (obligatorio)
+const telReceptor = document.getElementById('c_tel').value.trim();
+if (!telReceptor) {
+    camposFaltantes.push('Teléfono Receptor');
+}
     // Si hay campos faltantes, mostrar modal y detener
     if (camposFaltantes.length > 0) {
         const listaHtml = camposFaltantes.map(campo => '<li>• ' + campo + '</li>').join('');
         document.getElementById('lista_campos_faltantes').innerHTML = listaHtml;
         document.getElementById('modal_error_validacion').classList.add('active');
-        return;
+        return; // ← DETIENE la ejecución
     }
     
     // Si todo está bien, continuar con el guardado
