@@ -1077,9 +1077,10 @@ async function guardar() {
     }
     
     // Validar teléfono receptor (obligatorio) - SOLO UNA VEZ
-    const telReceptor = document.getElementById('c_tel').value.trim();
-    if (!telReceptor) {
-        camposFaltantes.push('Teléfono Receptor');
+const telReceptor = document.getElementById('c_tel').value.trim();
+if (!telReceptor) {
+    camposFaltantes.push('Teléfono Receptor');
+}
     }
     
     // Si hay campos faltantes, mostrar modal y detener
