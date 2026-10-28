@@ -1085,7 +1085,7 @@ async function guardar() {
         if (!document.getElementById('c_col_origen').value) camposFaltantes.push('Colonia Origen');
     }
     
-    // Validar teléfono receptor (obligatorio en ambos casos) - SOLO UNA VEZ
+    // Validar teléfono receptor (obligatorio) - SOLO UNA VEZ
     const telReceptor = document.getElementById('c_tel').value.trim();
     if (!telReceptor) {
         camposFaltantes.push('Teléfono Receptor');
