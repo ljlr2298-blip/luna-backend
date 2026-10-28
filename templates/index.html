@@ -356,7 +356,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div class="form-group"><label>Teléfono Receptor</label><input type="tel" id="c_tel"></div>
 <div class="form-group"><label>Comentarios</label><textarea id="c_com" rows="2"></textarea></div>
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-<button class="btn btn-success" id="btn_g" onclick="guardar()" disabled>Confirmar</button>
+<button class="btn btn-success" id="btn_g" onclick="guardar()">Confirmar</button>
 <button class="btn btn-outline" onclick="limpiarCot()">Nueva Cotización</button>
 </div>
 <button class="btn btn-outline" onclick="volverAlMenu()">Atrás</button>
@@ -1085,10 +1085,16 @@ async function guardar() {
         if (!document.getElementById('c_col_origen').value) camposFaltantes.push('Colonia Origen');
     }
     
-    // Validar teléfono receptor (obligatorio) - SOLO UNA VEZ
+    // Validar teléfono receptor (obligatorio)
     const telReceptor = document.getElementById('c_tel').value.trim();
     if (!telReceptor) {
         camposFaltantes.push('Teléfono Receptor');
+    }
+    
+    // Validar que se haya calculado el precio
+    const precioTexto = document.getElementById('box_precio').innerText;
+    if (precioTexto === 'Costo: —' || precioTexto.includes('Error')) {
+        camposFaltantes.push('Calcular precio (completa la dirección primero)');
     }
     
     // Si hay campos faltantes, mostrar modal y detener
@@ -1101,7 +1107,7 @@ async function guardar() {
     
     // Si todo está bien, continuar con el guardado
     loading(true);
-    const match = document.getElementById('box_precio').innerText.match(/\d+/);
+    const match = precioTexto.match(/\d+/);
     const rawPrecio = match ? match[0] : 0;
     let destinoFinal;
     if (tipoServicioActual === 'enviar') {
