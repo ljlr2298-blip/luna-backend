@@ -1091,11 +1091,6 @@ async function guardar() {
         camposFaltantes.push('Teléfono Receptor');
     }
     
-    // Validar teléfono receptor (obligatorio)
-const telReceptor = document.getElementById('c_tel').value.trim();
-if (!telReceptor) {
-    camposFaltantes.push('Teléfono Receptor');
-}
     // Si hay campos faltantes, mostrar modal y detener
     if (camposFaltantes.length > 0) {
         const listaHtml = camposFaltantes.map(campo => '<li>• ' + campo + '</li>').join('');
