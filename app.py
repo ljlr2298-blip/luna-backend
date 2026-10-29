@@ -661,18 +661,15 @@ def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_de
 @app.route('/api/calcularPrecio', methods=['GET'])
 def api_calcular_precio():
     try:
-        # arg0 = dirección completa del destino/origen según tipo
-        # arg1 = nombre de la marca
-        # arg2 = tipo de servicio (enviar, recibir, hub)
-        # arg3 = código postal del destino
         destino_input = request.args.get('arg0', '').strip()
         marca = request.args.get('arg1', '').strip()
         tipo_origen = request.args.get('arg2', 'marca')
         cp_destino = request.args.get('arg3', '')
         
+        print(f" CALCULAR PRECIO - Marca: '{marca}', Tipo: '{tipo_origen}', Destino: '{destino_input}'")
+        
         marca_norm = marca.lower().replace('&', 'and').replace(' ', '')
         
-        # Tarifa especial fija para Hane Beauty
         if 'hane' in marca_norm and 'beauty' in marca_norm:
             return jsonify({"result": {"precio": 90, "km": 0, "origen": "Fijo", "tarifaEspecial": True}})
             
@@ -680,77 +677,85 @@ def api_calcular_precio():
         destino_completo = ""
         
         if tipo_origen == "recibir":
-            # ORIGEN: Dirección del proveedor (viene en destino_input)
-            # DESTINO: Dirección de la tienda de la marca
             origen_completo = destino_input + ", Jalisco, Mexico"
-            
             marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
             if marca_response.data:
                 m = marca_response.data[0]
                 destino_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
             else:
                 return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
-                
         elif tipo_origen == "hub":
-            # ORIGEN: Centro físico Luna
-            # DESTINO: Dirección del cliente
             origen_completo = "Manuel M. Dieguez 236, Jocotan, Zapopan, Jalisco, Mexico"
             destino_completo = destino_input + ", Jalisco, Mexico"
-            
-            # Tarifa fija para CPs cercanos al hub
             if cp_destino in ['45000', '45010', '45020']:
                 return jsonify({"result": {"precio": 75, "km": "N/A (Fijo)", "origen": origen_completo}})
         else:
-            # TIPO "ENVIAR" (normal)
-            # ORIGEN: Dirección de la tienda de la marca
-            # DESTINO: Dirección del cliente (viene en destino_input)
             marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
             if marca_response.data:
                 m = marca_response.data[0]
                 origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
             else:
                 return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
-            
             destino_completo = destino_input + ", Jalisco, Mexico"
 
-        # Geocodificación de ambas direcciones
         lat_origen, lon_origen = obtener_coordenadas(origen_completo)
         lat_destino, lon_destino = obtener_coordenadas(destino_completo)
         
-        # Calcular distancia real por carretera (o usar Haversine como respaldo)
         km_reales = 10.0
         if lat_origen and lat_destino:
             km_reales = calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino)
         else:
             km_reales = 15.0
             
-        # Redondear hacia abajo (18.9 km = 18 km para cobro)
         km_cobrar = math.floor(km_reales)
+        print(f"📏 KM Reales: {km_reales}, KM Cobrar: {km_cobrar}")
         
-        # Determinar tabla de tarifas según tipo de marca
         es_premium = any(p in marca_norm for p in ['vsbeauty', 'aleayala', 'alejoyeria'])
         tabla_tarifas = 'tarifas_premiun' if es_premium else 'tarifas_generales'
+        print(f"💰 Tabla a usar: {tabla_tarifas}")
         
         try:
-            # Buscar precio en la tabla correspondiente
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
+            print(f"📋 Registros encontrados: {len(response.data)}")
+            
             if not response.data:
-                return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": "Tabla vacía"}})
+                print(f"⚠️ Tabla {tabla_tarifas} está vacía")
+                return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": "Tabla vacía", "tabla": tabla_tarifas}})
             
-            # Ordenar tarifas por km (menor a mayor)
-            tarifas = sorted([{'km': float(t.get('km', 0)), 'precio': float(t.get('precio', 0))} for t in response.data], key=lambda x: x['km'])
+            # Mostrar primeros 3 registros para debug
+            print(f"🔎 Primeros registros: {response.data[:3]}")
+            
+            tarifas = []
+            for t in response.data:
+                try:
+                    # Conversión robusta: limpiar espacios y convertir
+                    km_str = str(t.get('km', '0')).strip()
+                    precio_str = str(t.get('precio', '0')).strip()
+                    
+                    km_val = float(km_str) if km_str else 0.0
+                    precio_val = float(precio_str) if precio_str else 0.0
+                    
+                    tarifas.append({'km': km_val, 'precio': precio_val})
+                except Exception as e:
+                    print(f"️ Error convirtiendo registro: {t} - {e}")
+            
+            tarifas.sort(key=lambda x: x['km'])
+            print(f"✅ Tarifas ordenadas: {len(tarifas)} registros válidos")
+            
             precio_encontrado = None
-            
-            # Buscar el tramo que corresponda (menor o igual a km_cobrar)
             for t in tarifas:
                 if t['km'] <= km_cobrar:
                     precio_encontrado = t['precio']
+                    print(f"   ✓ {t['km']} km <= {km_cobrar} → Precio: ${t['precio']}")
                 else:
+                    print(f"   ✗ {t['km']} km > {km_cobrar} → Break")
                     break
                     
-            # Si no encontró, usar el último tramo disponible
             if precio_encontrado is None:
                 precio_encontrado = tarifas[-1]['precio'] if tarifas else 0
+                print(f"️ No se encontró tramo exacto, usando último: ${precio_encontrado}")
+            
+            print(f"💵 PRECIO FINAL: ${precio_encontrado}")
                 
             return jsonify({"result": {
                 "precio": precio_encontrado, 
@@ -762,10 +767,13 @@ def api_calcular_precio():
                 "tipoTarifa": tabla_tarifas
             }})
         except Exception as e:
+            print(f"❌ Error en consulta de tarifas: {e}")
+            import traceback
+            traceback.print_exc()
             return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": str(e)}})
     except Exception as e:
+        print(f"❌ Error general: {e}")
         return jsonify({"result": {"error": str(e), "precio": 0, "km": 0}}), 500
-
 # ==========================================
 # 10. APIs DE PERFIL Y ZONAS
 # ==========================================
