@@ -129,6 +129,14 @@ def api_recuperar_password():
     except Exception as e:
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
 
+@app.route('/prueba-pwa')
+def prueba_pwa():
+    return render_template('index_pwa.html')
+
+@app.route('/prueba-rastreo')
+def prueba_rastreo():
+    return render_template('rastreo_vivo.html')
+
 # ==========================================
 # 5. APIs DE PEDIDOS
 # ==========================================
@@ -653,73 +661,104 @@ def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_de
 @app.route('/api/calcularPrecio', methods=['GET'])
 def api_calcular_precio():
     try:
-        destino = request.args.get('arg0', '').strip()
+        # arg0 = dirección completa del destino/origen según tipo
+        # arg1 = nombre de la marca
+        # arg2 = tipo de servicio (enviar, recibir, hub)
+        # arg3 = código postal del destino
+        destino_input = request.args.get('arg0', '').strip()
         marca = request.args.get('arg1', '').strip()
         tipo_origen = request.args.get('arg2', 'marca')
         cp_destino = request.args.get('arg3', '')
         
         marca_norm = marca.lower().replace('&', 'and').replace(' ', '')
         
+        # Tarifa especial fija para Hane Beauty
         if 'hane' in marca_norm and 'beauty' in marca_norm:
             return jsonify({"result": {"precio": 90, "km": 0, "origen": "Fijo", "tarifaEspecial": True}})
             
         origen_completo = ""
+        destino_completo = ""
+        
         if tipo_origen == "recibir":
+            # ORIGEN: Dirección del proveedor (viene en destino_input)
+            # DESTINO: Dirección de la tienda de la marca
+            origen_completo = destino_input + ", Jalisco, Mexico"
+            
             marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
             if marca_response.data:
                 m = marca_response.data[0]
-                destino = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
-                origen_completo = destino
+                destino_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
             else:
                 return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
+                
         elif tipo_origen == "hub":
+            # ORIGEN: Centro físico Luna
+            # DESTINO: Dirección del cliente
             origen_completo = "Manuel M. Dieguez 236, Jocotan, Zapopan, Jalisco, Mexico"
+            destino_completo = destino_input + ", Jalisco, Mexico"
+            
+            # Tarifa fija para CPs cercanos al hub
             if cp_destino in ['45000', '45010', '45020']:
                 return jsonify({"result": {"precio": 75, "km": "N/A (Fijo)", "origen": origen_completo}})
         else:
+            # TIPO "ENVIAR" (normal)
+            # ORIGEN: Dirección de la tienda de la marca
+            # DESTINO: Dirección del cliente (viene en destino_input)
             marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
             if marca_response.data:
                 m = marca_response.data[0]
                 origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
             else:
                 return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
+            
+            destino_completo = destino_input + ", Jalisco, Mexico"
 
-        destino_completo = destino + (", Jalisco, Mexico" if "Jalisco" not in destino else "")
-        
+        # Geocodificación de ambas direcciones
         lat_origen, lon_origen = obtener_coordenadas(origen_completo)
         lat_destino, lon_destino = obtener_coordenadas(destino_completo)
         
+        # Calcular distancia real por carretera (o usar Haversine como respaldo)
         km_reales = 10.0
         if lat_origen and lat_destino:
             km_reales = calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino)
         else:
             km_reales = 15.0
             
+        # Redondear hacia abajo (18.9 km = 18 km para cobro)
         km_cobrar = math.floor(km_reales)
         
+        # Determinar tabla de tarifas según tipo de marca
         es_premium = any(p in marca_norm for p in ['vsbeauty', 'aleayala', 'alejoyeria'])
         tabla_tarifas = 'tarifas_premiun' if es_premium else 'tarifas_generales'
         
         try:
+            # Buscar precio en la tabla correspondiente
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
             if not response.data:
                 return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": "Tabla vacía"}})
             
+            # Ordenar tarifas por km (menor a mayor)
             tarifas = sorted([{'km': float(t.get('km', 0)), 'precio': float(t.get('precio', 0))} for t in response.data], key=lambda x: x['km'])
             precio_encontrado = None
             
+            # Buscar el tramo que corresponda (menor o igual a km_cobrar)
             for t in tarifas:
                 if t['km'] <= km_cobrar:
                     precio_encontrado = t['precio']
                 else:
                     break
                     
+            # Si no encontró, usar el último tramo disponible
             if precio_encontrado is None:
                 precio_encontrado = tarifas[-1]['precio'] if tarifas else 0
                 
             return jsonify({"result": {
-                "precio": precio_encontrado, "km": km_cobrar, "km_reales": round(km_reales, 2),
-                "origen": origen_completo, "destino": destino_completo, "tarifaEspecial": False,
+                "precio": precio_encontrado, 
+                "km": km_cobrar, 
+                "km_reales": round(km_reales, 2),
+                "origen": origen_completo, 
+                "destino": destino_completo, 
+                "tarifaEspecial": False,
                 "tipoTarifa": tabla_tarifas
             }})
         except Exception as e:
