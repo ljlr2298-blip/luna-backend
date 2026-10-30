@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+{% if modo == 'admin' %}
+<link rel="manifest" href="/manifest-admin.json">
+<meta name="theme-color" content="#10b981">
+<meta name="apple-mobile-web-app-title" content="Luna Admin">
+{% else %}
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-title" content="Luna Delivery">
+{% endif %}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Luna Delivery">
 <base target="_top">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -22,6 +28,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; back
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } }
 @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 @keyframes slideInRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
 .btn { width: 100%; padding: 16px; border-radius: var(--radius-md); border: none; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 14px; margin-bottom: 10px; position: relative; overflow: hidden; letter-spacing: 0.3px; -webkit-user-select: none; user-select: none; }
 .btn:active { transform: scale(0.96); opacity: 0.9; }
@@ -181,14 +188,19 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </head>
 <body>
 <div id="modo_arranque_servidor" data-modo="{{ modo|default('cliente') }}" data-token="{{ token|default('') }}" style="display:none;"></div>
+
+<!-- ============ SPLASH SCREEN SIN PIXELADO (CSS PURO + EMOJI) ============ -->
 <div id="loader">
-<div style="position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); z-index:9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-<img src="https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w1000" style="width: 120px; height: 120px; margin-bottom: 24px; animation: pulse 2s infinite;">
-<h1 style="color: white; font-size: 28px; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -1px; background:none; -webkit-text-fill-color:white;">LUNA DELIVERY</h1>
-<p style="color: rgba(255,255,255,0.9); font-size: 14px; margin: 0;">Cargando sistema...</p>
-<div style="margin-top: 32px; width: 200px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;"><div style="width: 100%; height: 100%; background: white; animation: loading 2s ease-in-out infinite;"></div></div>
+  <div style="position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); z-index:9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="font-size: 80px; margin-bottom: 16px; animation: float 3s ease-in-out infinite;">🌙</div>
+    <h1 style="color: white; font-size: 32px; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -1px; background:none; -webkit-text-fill-color:white; font-family: 'Inter', sans-serif;">LUNA DELIVERY</h1>
+    <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin: 0 0 32px 0; font-weight: 500;">Cargando sistema...</p>
+    <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;">
+      <div style="width: 100%; height: 100%; background: white; animation: loading 2s ease-in-out infinite;"></div>
+    </div>
+  </div>
 </div>
-</div>
+
 <div id="v_bienvenida" class="seccion card">
 <h1 style="font-weight: 900; letter-spacing: -1px; margin-bottom:32px; font-size: 32px;">🌙 LUNA DELIVERY</h1>
 <button class="btn btn-primary" onclick="ver('v_login')">Acceso Clientes</button>
@@ -196,6 +208,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-outline" onclick="ver('v_consulta_id')">🔍 Consultar Pedido</button>
 <button class="btn btn-outline" onclick="ver('v_recuperar_password')">🔑 Recuperar Contraseña</button>
 </div>
+
 <div id="v_recuperar_password" class="seccion card">
 <h2 style="font-weight:800; margin-bottom: 24px;">🔑 Recuperar Contraseña</h2>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">Ingresa los datos de tu marca y te mostraremos tu contraseña.</p>
@@ -204,6 +217,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-primary" onclick="recuperarPassword()">📲 Recuperar</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida')">Regresar</button>
 </div>
+
 <div id="v_consulta_id" class="seccion card">
 <h3 style="font-weight:800; font-size: 20px;">Consultar mi Pedido</h3>
 <p style="font-size:12px; color:var(--text-muted); margin-bottom:18px;">Ingresa tu ID de pedido para conocer el estatus.</p>
@@ -211,6 +225,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-primary" onclick="consultarID()">Buscar Pedido</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida')">Regresar</button>
 </div>
+
 <div id="v_login" class="seccion card">
 <form id="form_login" autocomplete="on" onsubmit="entrar(event); return false;">
 <h2 style="font-weight:800; margin-bottom: 24px;">Iniciar Sesión</h2>
@@ -220,6 +235,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button type="button" class="btn btn-outline" onclick="ver('v_bienvenida')">Regresar</button>
 </form>
 </div>
+
 <div id="v_reg" class="seccion card">
 <form id="form_registro" autocomplete="on" onsubmit="ejecutarRegistro(event); return false;">
 <h3 style="font-weight:800; font-size: 20px; margin-bottom: 20px;">Alta de Nueva Marca</h3>
@@ -234,6 +250,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button type="button" class="btn btn-outline" onclick="ver('v_bienvenida')">Cancelar</button>
 </form>
 </div>
+
 <div id="v_cambiar_password" class="seccion card">
 <h2 style="font-weight:900; font-size: 22px; margin-bottom: 24px;">🔑 Cambiar Contraseña</h2>
 <div class="form-group"><label for="cp_actual">Contraseña Actual</label><div class="password-wrapper"><input type="password" id="cp_actual"><span class="toggle-password" onclick="togglePasswordCP()"><svg viewBox="0 0 24 24" id="iconEyeCP"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span></div></div>
@@ -242,6 +259,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-success" onclick="cambiarPassword()">🔑 Actualizar Contraseña</button>
 <button class="btn btn-outline" onclick="volverAlMenu()">← Regresar</button>
 </div>
+
 <div id="v_menu" class="seccion">
 <div class="menu-container">
 <div class="menu-header">
@@ -271,9 +289,10 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="action-card" onclick="ver('v_cambiar_password')"><div class="action-icon">🔑</div><div class="action-content"><span class="action-title">Seguridad</span><span class="action-subtitle">Cambiar contraseña</span></div><div class="action-arrow">→</div></button>
 <button class="action-card" onclick="ver('v_consulta_id')"><div class="action-icon">🔍</div><div class="action-content"><span class="action-title">Rastrear</span><span class="action-subtitle">Consultar pedido</span></div><div class="action-arrow">→</div></button>
 </div>
-<button class="btn-logout" onclick="location.reload()"><span>🚪</span><span>Cerrar Sesión</span></button>
+<button class="btn-logout" onclick="cerrarSesion()"><span>🚪</span><span>Cerrar Sesión</span></button>
 </div>
 </div>
+
 <div id="v_perfil" class="seccion card">
 <h2 style="font-weight:900; font-size: 22px; margin-bottom: 20px;">🎨 Mi Perfil</h2>
 <div style="text-align:center; margin-bottom:20px;">
@@ -289,6 +308,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn btn-outline" style="margin:0;" onclick="volverAlMenu()">← Regresar</button>
 </div>
 </div>
+
 <div id="v_cot" class="seccion card">
 <h3 id="form_title" style="font-weight:900; font-size: 22px; margin-bottom: 20px;">Solicitar Envío</h3>
 <input type="hidden" id="c_fila">
@@ -361,6 +381,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <button class="btn btn-outline" onclick="volverAlMenu()">Atrás</button>
 </div>
+
 <div id="v_pedidos" class="seccion">
 <div class="card" style="margin-bottom:18px; padding:18px;">
 <button class="btn btn-primary" onclick="volverAlMenu()" style="margin-bottom:18px;">← Volver</button>
@@ -381,6 +402,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <div id="list_c" style="max-width:480px; margin:auto;"></div>
 </div>
+
 <div id="v_admin" class="seccion">
 <div id="tab_pedidos" class="tab-content active">
 <div class="admin-header-card">
@@ -476,7 +498,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
 <div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
 <button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
-<button class="btn btn-outline" onclick="ver('v_bienvenida'); location.reload();">🚪 Cerrar Sesión</button>
+<button class="btn btn-outline" onclick="cerrarSesion()">🚪 Cerrar Sesión</button>
 </div>
 </div>
 <div class="bottom-tabs bottom-nav-modern">
@@ -529,6 +551,7 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 </div>
 </div>
+
 <div id="v_rastreo" class="seccion card">
 <h2 style="font-weight:900; letter-spacing:-0.5px; margin-bottom:6px; font-size: 22px;">🛰️ Rastreo de Envío</h2>
 <button class="btn btn-outline" style="margin-bottom:18px;" onclick="ver('v_consulta_id')">← Buscar otro pedido</button>
@@ -565,37 +588,37 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 
 <!-- ============ MODAL BLOQUEO POR ADEUDO > 3 DÍAS ============ -->
 <div id="modal_bloqueo_deuda" class="modal-overlay">
-    <div class="modal-content" style="text-align: center; border-top: 5px solid var(--danger);">
-        <div style="font-size: 64px; margin-bottom: 16px;">⚠️</div>
-        <h2 style="font-weight: 900; color: var(--danger); margin-bottom: 12px; font-size: 24px;">ACCESO RESTRINGIDO</h2>
-        <p style="font-size: 14px; color: var(--text); margin-bottom: 16px; line-height: 1.6;">
-            Tienes pedidos pendientes de pago con <strong id="dias_deuda_bloqueo">0 días</strong> de antigüedad.
-        </p>
-        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
-            <p style="margin: 0 0 8px 0; font-size: 12px; color: #92400e; font-weight: 700;">MONTO PENDIENTE:</p>
-            <p style="margin: 0; font-size: 32px; font-weight: 900; color: #92400e;">$<span id="monto_deuda_bloqueo">0.00</span></p>
-        </div>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
-            Para crear nuevos envíos, es necesario regularizar tu cuenta.
-        </p>
-        <button class="btn btn-primary" onclick="cerrarModalBloqueo()" style="margin-bottom: 10px;">ENTENDIDO</button>
-    </div>
+<div class="modal-content" style="text-align: center; border-top: 5px solid var(--danger);">
+<div style="font-size: 64px; margin-bottom: 16px;">⚠️</div>
+<h2 style="font-weight: 900; color: var(--danger); margin-bottom: 12px; font-size: 24px;">ACCESO RESTRINGIDO</h2>
+<p style="font-size: 14px; color: var(--text); margin-bottom: 16px; line-height: 1.6;">
+Tienes pedidos pendientes de pago con <strong id="dias_deuda_bloqueo">0 días</strong> de antigüedad.
+</p>
+<div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+<p style="margin: 0 0 8px 0; font-size: 12px; color: #92400e; font-weight: 700;">MONTO PENDIENTE:</p>
+<p style="margin: 0; font-size: 32px; font-weight: 900; color: #92400e;">$<span id="monto_deuda_bloqueo">0.00</span></p>
+</div>
+<p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+Para crear nuevos envíos, es necesario regularizar tu cuenta.
+</p>
+<button class="btn btn-primary" onclick="cerrarModalBloqueo()" style="margin-bottom: 10px;">ENTENDIDO</button>
+</div>
 </div>
 
 <!-- ============ MODAL ERROR VALIDACIÓN CAMPOS OBLIGATORIOS ============ -->
 <div id="modal_error_validacion" class="modal-overlay">
-    <div class="modal-content" style="text-align: center; border-top: 5px solid var(--warning);">
-        <div style="font-size: 64px; margin-bottom: 16px;">⚠️</div>
-        <h2 style="font-weight: 900; color: var(--warning); margin-bottom: 12px; font-size: 24px;">DATOS INCOMPLETOS</h2>
-        <p style="font-size: 14px; color: var(--text); margin-bottom: 20px; line-height: 1.6;">
-            Para confirmar el pedido es necesario completar los siguientes campos obligatorios:
-        </p>
-        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px; text-align: left;">
-            <p style="margin: 0 0 8px 0; font-size: 13px; color: #92400e; font-weight: 700;">📋 Campos requeridos:</p>
-            <ul id="lista_campos_faltantes" style="margin: 0; padding-left: 20px; font-size: 12px; color: #92400e; line-height: 1.8;"></ul>
-        </div>
-        <button class="btn btn-primary" onclick="cerrarModalErrorValidacion()" style="margin-bottom: 10px;">ENTENDIDO</button>
-    </div>
+<div class="modal-content" style="text-align: center; border-top: 5px solid var(--warning);">
+<div style="font-size: 64px; margin-bottom: 16px;">⚠️</div>
+<h2 style="font-weight: 900; color: var(--warning); margin-bottom: 12px; font-size: 24px;">DATOS INCOMPLETOS</h2>
+<p style="font-size: 14px; color: var(--text); margin-bottom: 20px; line-height: 1.6;">
+Para confirmar el pedido es necesario completar los siguientes campos obligatorios:
+</p>
+<div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px; text-align: left;">
+<p style="margin: 0 0 8px 0; font-size: 13px; color: #92400e; font-weight: 700;">📋 Campos requeridos:</p>
+<ul id="lista_campos_faltantes" style="margin: 0; padding-left: 20px; font-size: 12px; color: #92400e; line-height: 1.8;"></ul>
+</div>
+<button class="btn btn-primary" onclick="cerrarModalErrorValidacion()" style="margin-bottom: 10px;">ENTENDIDO</button>
+</div>
 </div>
 
 <script>
@@ -663,6 +686,60 @@ function destruirMapa() {
     const mapDiv = document.getElementById('map');
     if (mapDiv) mapDiv.innerHTML = '';
 }
+
+// ==========================================
+// ✅ PERSISTENCIA DE SESIÓN - FUNCIÓN entrar
+// ==========================================
+async function entrar(event) {
+    if (event) event.preventDefault();
+    marca = document.getElementById('l_m').value;
+    if (!marca) { showToast('Ingresa tu marca', 'warning'); return; }
+    loading(true);
+    try {
+        const ok = await gs('validarAccAccess', marca, document.getElementById('l_p').value);
+        if (ok) {
+            // ✅ GUARDAR SESIÓN EN LOCALSTORAGE
+            localStorage.setItem('luna_marca', marca);
+            localStorage.setItem('luna_sesion_activa', 'true');
+            localStorage.setItem('luna_fecha_login', new Date().toISOString());
+            
+            document.getElementById('tag_marca').innerText = marca;
+            cargarPerfilMenu();
+            await refrescarDeuda();
+            const muns = await gs('getMunicipios');
+            fill('c_mun', muns);
+            loading(false); 
+            ver('v_menu');
+        } else { 
+            loading(false); 
+            showToast('Credenciales incorrectas', 'error'); 
+        }
+    } catch (e) { 
+        loading(false); 
+        showToast('Error de conexión', 'error'); 
+    }
+}
+
+// ==========================================
+// ✅ CERRAR SESIÓN LIMPIANDO LOCALSTORAGE
+// ==========================================
+function cerrarSesion() {
+    localStorage.removeItem('luna_marca');
+    localStorage.removeItem('luna_sesion_activa');
+    localStorage.removeItem('luna_fecha_login');
+    
+    marca = "";
+    tokenClienteActual = "";
+    pedidosCache = [];
+    pedidosPendientesCache = [];
+    perfilCache = null;
+    repartidoresCache = [];
+    marcasCobrosCache = [];
+    
+    ver('v_bienvenida');
+    showToast('👋 Sesión cerrada', 'info');
+}
+
 function abrirPerfil() {
     loading(true);
     gs('obtenerPerfilMarca', marca).then(function(res) {
@@ -830,13 +907,24 @@ function cambiarTab(tabNombre) {
     if (index >= 0 && botones[index]) botones[index].classList.add('active');
 }
 function obtenerDiaSemanaActualFront() { const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return dias[new Date().getDay()]; }
+
+// ==========================================
+// ✅ DETECCIÓN DE SESIÓN AL CARGAR LA APP
+// ==========================================
 window.addEventListener("DOMContentLoaded", function() {
     console.log('🚀 DOMContentLoaded iniciado');
     try {
         const box = document.getElementById('modo_arranque_servidor');
         const modo = box ? box.getAttribute('data-modo') : 'cliente';
         tokenClienteActual = box ? box.getAttribute('data-token') : '';
+        
+        // ✅ VERIFICAR SI HAY UNA SESIÓN GUARDADA
+        const sesionGuardada = localStorage.getItem('luna_sesion_activa');
+        const marcaGuardada = localStorage.getItem('luna_marca');
+        
         console.log('Modo detectado:', modo);
+        console.log('Sesión guardada:', sesionGuardada, 'Marca:', marcaGuardada);
+        
         if (modo === "rastreo") {
             ver('v_rastreo');
             ejecutarRastreoClienteLoop();
@@ -847,6 +935,27 @@ window.addEventListener("DOMContentLoaded", function() {
             try { cambiarTab('pedidos'); } catch(e) { console.error('❌ Error cambiarTab:', e); }
             try { verificarGPSAlCargar(); } catch(e) { console.error('❌ Error GPS:', e); }
         }
+        else if (sesionGuardada === 'true' && marcaGuardada) {
+            // ✅ RESTAURAR SESIÓN AUTOMÁTICAMENTE
+            console.log('✅ Restaurando sesión de:', marcaGuardada);
+            marca = marcaGuardada;
+            document.getElementById('tag_marca').innerText = marca;
+            document.getElementById('l_m').value = marca;
+            
+            loading(true);
+            cargarPerfilMenu();
+            refrescarDeuda().then(() => {
+                gs('getMunicipios').then(muns => {
+                    fill('c_mun', muns);
+                    loading(false);
+                    ver('v_menu');
+                    showToast('👋 Bienvenido de vuelta, ' + marca, 'success');
+                }).catch(() => {
+                    loading(false);
+                    ver('v_login');
+                });
+            });
+        }
         else {
             ver('v_bienvenida');
         }
@@ -856,10 +965,12 @@ window.addEventListener("DOMContentLoaded", function() {
     loading(false);
     console.log('✅ Loader ocultado');
 });
+
 setTimeout(function() {
     loading(false);
     console.log('⏰ Loader forzado a ocultar por timeout');
 }, 3000);
+
 async function ejecutarRastreoClienteLoop() {
     if (!tokenClienteActual) return;
     try {
@@ -895,23 +1006,6 @@ function inicializarMapaRastreo(lat, lng) {
     mapaCliente = L.map('map').setView([lat, lng], 17);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapaCliente);
     marcadorMoto = L.marker([lat, lng]).addTo(mapaCliente).bindPopup('Moto de Luna Delivery 🛵').openPopup();
-}
-async function entrar(event) {
-    if (event) event.preventDefault();
-    marca = document.getElementById('l_m').value;
-    if (!marca) { showToast('Ingresa tu marca', 'warning'); return; }
-    loading(true);
-    try {
-        const ok = await gs('validarAccAccess', marca, document.getElementById('l_p').value);
-        if (ok) {
-            document.getElementById('tag_marca').innerText = marca;
-            cargarPerfilMenu();
-            await refrescarDeuda();
-            const muns = await gs('getMunicipios');
-            fill('c_mun', muns);
-            loading(false); ver('v_menu');
-        } else { loading(false); showToast('Credenciales incorrectas', 'error'); }
-    } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
 async function abrirReg() { loading(true); try { const d = await gs('getMunicipios'); fill('r_mun', d); loading(false); ver('v_reg'); } catch (e) { loading(false); showToast('Error al cargar municipios', 'error'); } }
 async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
@@ -976,9 +1070,6 @@ async function seleccionarProveedor() {
 function limpiarCamposDireccion() { document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; limpiarCamposOrigen(); }
 function limpiarCamposOrigen() { document.getElementById('c_mun_origen').value = ""; document.getElementById('c_cp_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_col_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir_origen').value = ""; document.getElementById('c_ext_origen').value = ""; document.getElementById('c_int_origen').value = ""; }
 
-// ==========================================
-// FUNCIÓN abrirNuevo CON BLOQUEO POR DEUDA
-// ==========================================
 async function abrirNuevo() {
     try {
         const deudaInfo = await gs('obtenerDeudaCliente', marca);
@@ -1008,15 +1099,12 @@ async function abrirNuevo() {
         showToast('Error al abrir formulario', 'error');
     }
 }
-
 function cerrarModalBloqueo() {
     document.getElementById('modal_bloqueo_deuda').classList.remove('active');
 }
-
 function cerrarModalErrorValidacion() {
     document.getElementById('modal_error_validacion').classList.remove('active');
 }
-
 function limpiarCot() {
     document.getElementById('c_fila').value = ""; document.getElementById('c_origen_tipo').value = "marca"; document.getElementById('c_mun').value = ""; document.getElementById('c_cp').innerHTML = '<option value="">...</option>'; document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('c_dir').value = ""; document.getElementById('c_ext').value = ""; document.getElementById('c_int').value = ""; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('c_rec').value = ""; document.getElementById('c_tel').value = ""; document.getElementById('c_com').value = ""; document.getElementById('btn_g').disabled = false; document.getElementById('chk_guardar_proveedor').checked = false; document.getElementById('grupo_nombre_proveedor').style.display = 'none'; document.getElementById('nombre_proveedor_nuevo').value = "";
     const selDest = document.getElementById('c_destinatario'); if (selDest) selDest.value = "";
@@ -1063,9 +1151,7 @@ async function calc() {
 // FUNCIÓN guardar CON VALIDACIÓN COMPLETA
 // ==========================================
 async function guardar() {
-    // 🔒 VALIDACIÓN DE CAMPOS OBLIGATORIOS
     const camposFaltantes = [];
-    
     if (tipoServicioActual === 'enviar') {
         if (!document.getElementById('c_mun').value) camposFaltantes.push('Municipio Destino');
         if (!document.getElementById('c_cp').value) camposFaltantes.push('CP Destino');
@@ -1075,22 +1161,16 @@ async function guardar() {
         if (!document.getElementById('c_cp_origen').value) camposFaltantes.push('CP Origen');
         if (!document.getElementById('c_col_origen').value) camposFaltantes.push('Colonia Origen');
     }
-    
-    // Validar teléfono receptor (obligatorio)
     const telReceptor = document.getElementById('c_tel').value.trim();
     if (!telReceptor) {
         camposFaltantes.push('Teléfono Receptor');
     }
-    
-    // Si hay campos faltantes, mostrar modal y detener
     if (camposFaltantes.length > 0) {
         const listaHtml = camposFaltantes.map(campo => '<li>• ' + campo + '</li>').join('');
         document.getElementById('lista_campos_faltantes').innerHTML = listaHtml;
         document.getElementById('modal_error_validacion').classList.add('active');
         return;
     }
-    
-    // Si todo está bien, continuar con el guardado
     loading(true);
     const match = document.getElementById('box_precio').innerText.match(/\d+/);
     const rawPrecio = match ? match[0] : 0;
@@ -1824,8 +1904,10 @@ async function reasignarPedido(fila, nuevoId) {
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('✅ Service Worker registrado'))
+    const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
+    const swFile = modo === 'admin' ? '/service-worker-admin.js' : '/service-worker.js';
+    navigator.serviceWorker.register(swFile)
+        .then(reg => console.log('✅ Service Worker registrado:', swFile))
         .catch(err => console.log('❌ Error SW:', err));
 }
 </script>

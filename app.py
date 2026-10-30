@@ -61,6 +61,14 @@ def manifest():
 def service_worker():
     return send_from_directory('templates', 'service-worker.js', mimetype='application/javascript')
 
+@app.route('/manifest-admin.json')
+def manifest_admin():
+    return send_from_directory('templates', 'manifest-admin.json', mimetype='application/json')
+
+@app.route('/service-worker-admin.js')
+def service_worker_admin():
+    return send_from_directory('templates', 'service-worker-admin.js', mimetype='application/javascript')
+
 # ==========================================
 # 3. UTILIDAD PARA ACORTAR URLs
 # ==========================================
