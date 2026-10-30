@@ -1,0 +1,10 @@
+{
+  "name": "Luna Delivery",
+  "short_name": "Luna",
+  "description": "Sistema de gestión de envíos Luna Delivery",
+  "start_url": "/prueba-pwa",
+  "display": "standalone",
+  "background_color": "#6366f1",
+  "theme_color": "#6366f1",
+  "orientation": "portrait"
+}

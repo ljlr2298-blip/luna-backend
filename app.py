@@ -43,12 +43,22 @@ def rastreo_publico(token):
 def rastreo_corto(token):
     return render_template('index.html', modo='rastreo', token=token)
 
+# Rutas de prueba PWA
+@app.route('/prueba-pwa')
+def prueba_pwa():
+    return render_template('index_pwa.html')
+
+@app.route('/prueba-rastreo')
+def prueba_rastreo():
+    return render_template('rastreo_vivo.html')
+
+# Rutas para servir archivos estáticos de PWA (¡SOLO UNA VEZ!)
 @app.route('/manifest.json')
-def manifest(): 
+def manifest():
     return send_from_directory('templates', 'manifest.json', mimetype='application/json')
 
 @app.route('/service-worker.js')
-def service_worker(): 
+def service_worker():
     return send_from_directory('templates', 'service-worker.js', mimetype='application/javascript')
 
 # ==========================================
@@ -128,14 +138,6 @@ def api_recuperar_password():
         return jsonify({"result": {"exito": False, "mensaje": "Marca o teléfono no coinciden"}})
     except Exception as e:
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
-
-@app.route('/prueba-pwa')
-def prueba_pwa():
-    return render_template('index_pwa.html')
-
-@app.route('/prueba-rastreo')
-def prueba_rastreo():
-    return render_template('rastreo_vivo.html')
 
 # ==========================================
 # 5. APIs DE PEDIDOS
@@ -388,28 +390,22 @@ def api_quitar_asignacion():
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
 
 # ==========================================
-# 8. APIs DE FINANZAS Y COBROS (CON MANEJO SEGURO DE ERRORES)
+# 8. APIs DE FINANZAS Y COBROS
 # ==========================================
 @app.route('/api/obtenerDeudaCliente', methods=['GET'])
 def api_obtener_deuda():
-    """
-    Calcula la deuda de una marca.
-    IMPORTANTE: Si hay error, devuelve error dentro de result para que el frontend lo detecte.
-    """
     marca = request.args.get('arg0', '').strip()
     print(f"🔍 [BACKEND] Buscando deuda para: '{marca}'")
     
     try:
-        # 1. Obtener ID de la marca
         marca_response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
         if not marca_response.data:
-            print(f"️ [BACKEND] Marca '{marca}' no encontrada")
+            print(f"⚠️ [BACKEND] Marca '{marca}' no encontrada")
             return jsonify({"result": {"pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}})
         
         marca_id = marca_response.data[0]['id']
         print(f"✅ [BACKEND] ID de marca encontrado: {marca_id}")
         
-        # 2. Obtener pedidos
         response = supabase.table('pedidos').select('precio, creado_en, estado_pago, status').eq('marca_id', marca_id).execute()
         print(f"📦 [BACKEND] Total pedidos en BD: {len(response.data)}")
         
@@ -418,7 +414,6 @@ def api_obtener_deuda():
         fecha_mas_antigua = None
         hoy = datetime.now()
         
-        # 3. Filtrar manualmente (case-insensitive)
         for p in response.data:
             estado_pago = str(p.get('estado_pago', 'Pendiente')).strip().lower()
             status = str(p.get('status', '')).strip()
@@ -440,7 +435,6 @@ def api_obtener_deuda():
                     except Exception as e:
                         print(f"⚠️ Error parseando fecha {p['creado_en']}: {e}")
         
-        # 4. Calcular días
         dias_mas_antiguo = 0
         if fecha_mas_antigua:
             diff_tiempo = hoy - fecha_mas_antigua
@@ -448,7 +442,6 @@ def api_obtener_deuda():
         
         print(f"✅ [BACKEND] RESULTADO -> Pedidos: {pedidos_pendientes}, Deuda: ${deuda}, Días: {dias_mas_antiguo}")
         
-        # ✅ RETORNO SEGURO: siempre dentro de "result"
         return jsonify({"result": {
             "pedidosPendientes": pedidos_pendientes,
             "deuda": deuda,
@@ -456,10 +449,9 @@ def api_obtener_deuda():
         }})
         
     except Exception as e:
-        print(f" [BACKEND] ERROR en obtenerDeudaCliente: {e}")
+        print(f"❌ [BACKEND] ERROR en obtenerDeudaCliente: {e}")
         import traceback
         traceback.print_exc()
-        # ⚠️ IMPORTANTE: Devolver error dentro de result para que gs() lo detecte
         return jsonify({"result": {"error": str(e), "pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}}), 500
 
 @app.route('/api/marcarPago', methods=['GET'])
@@ -666,8 +658,6 @@ def api_calcular_precio():
         tipo_origen = request.args.get('arg2', 'marca')
         cp_destino = request.args.get('arg3', '')
         
-        print(f" CALCULAR PRECIO - Marca: '{marca}', Tipo: '{tipo_origen}', Destino: '{destino_input}'")
-        
         marca_norm = marca.lower().replace('&', 'and').replace(' ', '')
         
         if 'hane' in marca_norm and 'beauty' in marca_norm:
@@ -708,54 +698,35 @@ def api_calcular_precio():
             km_reales = 15.0
             
         km_cobrar = math.floor(km_reales)
-        print(f"📏 KM Reales: {km_reales}, KM Cobrar: {km_cobrar}")
         
         es_premium = any(p in marca_norm for p in ['vsbeauty', 'aleayala', 'alejoyeria'])
         tabla_tarifas = 'tarifas_premiun' if es_premium else 'tarifas_generales'
-        print(f"💰 Tabla a usar: {tabla_tarifas}")
         
         try:
             response = supabase.table(tabla_tarifas).select('km, precio').execute()
-            print(f"📋 Registros encontrados: {len(response.data)}")
-            
             if not response.data:
-                print(f"⚠️ Tabla {tabla_tarifas} está vacía")
                 return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": "Tabla vacía", "tabla": tabla_tarifas}})
-            
-            # Mostrar primeros 3 registros para debug
-            print(f"🔎 Primeros registros: {response.data[:3]}")
             
             tarifas = []
             for t in response.data:
                 try:
-                    # Conversión robusta: limpiar espacios y convertir
-                    km_str = str(t.get('km', '0')).strip()
-                    precio_str = str(t.get('precio', '0')).strip()
-                    
-                    km_val = float(km_str) if km_str else 0.0
-                    precio_val = float(precio_str) if precio_str else 0.0
-                    
+                    km_val = float(str(t.get('km', '0')).strip()) if str(t.get('km', '0')).strip() else 0.0
+                    precio_val = float(str(t.get('precio', '0')).strip()) if str(t.get('precio', '0')).strip() else 0.0
                     tarifas.append({'km': km_val, 'precio': precio_val})
                 except Exception as e:
-                    print(f"️ Error convirtiendo registro: {t} - {e}")
+                    print(f"⚠️ Error convirtiendo registro: {t} - {e}")
             
             tarifas.sort(key=lambda x: x['km'])
-            print(f"✅ Tarifas ordenadas: {len(tarifas)} registros válidos")
-            
             precio_encontrado = None
+            
             for t in tarifas:
                 if t['km'] <= km_cobrar:
                     precio_encontrado = t['precio']
-                    print(f"   ✓ {t['km']} km <= {km_cobrar} → Precio: ${t['precio']}")
                 else:
-                    print(f"   ✗ {t['km']} km > {km_cobrar} → Break")
                     break
                     
             if precio_encontrado is None:
                 precio_encontrado = tarifas[-1]['precio'] if tarifas else 0
-                print(f"️ No se encontró tramo exacto, usando último: ${precio_encontrado}")
-            
-            print(f"💵 PRECIO FINAL: ${precio_encontrado}")
                 
             return jsonify({"result": {
                 "precio": precio_encontrado, 
@@ -768,12 +739,11 @@ def api_calcular_precio():
             }})
         except Exception as e:
             print(f"❌ Error en consulta de tarifas: {e}")
-            import traceback
-            traceback.print_exc()
             return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": str(e)}})
     except Exception as e:
         print(f"❌ Error general: {e}")
         return jsonify({"result": {"error": str(e), "precio": 0, "km": 0}}), 500
+
 # ==========================================
 # 10. APIs DE PERFIL Y ZONAS
 # ==========================================

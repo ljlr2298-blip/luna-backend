@@ -1,12 +1,333 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Luna PWA - Prueba</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Luna Delivery PWA</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Luna Delivery">
+<link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w192">
+<link rel="apple-touch-icon" href="https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w192">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #6366f1;
+  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --bg: #fafbfc;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px 15px 40px;
+}
+.container { max-width: 480px; margin: 0 auto; }
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+  animation: slideUp 0.4s ease-out;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.header {
+  background: var(--accent-gradient);
+  color: white;
+  padding: 32px 24px;
+  border-radius: var(--radius);
+  text-align: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+}
+.header h1 { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 14px; }
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 12px;
+}
+.badge-success { background: rgba(16, 185, 129, 0.2); color: #166534; }
+.badge-warning { background: rgba(245, 158, 11, 0.2); color: #92400e; }
+.badge-info { background: rgba(99, 102, 241, 0.2); color: #3730a3; }
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.status-item {
+  background: var(--bg);
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.status-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.status-value {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+.status-value.ok { color: var(--success); }
+.status-value.error { color: var(--danger); }
+.status-value.warn { color: var(--warning); }
+.btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--accent-gradient);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text);
+}
+.btn-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+.hidden { display: none !important; }
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+.feature-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+.feature-list li:last-child { border-bottom: none; }
+.feature-icon {
+  font-size: 20px;
+  width: 32px;
+  text-align: center;
+}
+.log-box {
+  background: #0f172a;
+  color: #10b981;
+  padding: 16px;
+  border-radius: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+.log-box .log-entry { margin-bottom: 4px; }
+.log-box .log-error { color: #ef4444; }
+.log-box .log-warn { color: #f59e0b; }
+</style>
 </head>
 <body>
-    <h1>✅ PWA de prueba funcionando</h1>
-    <p>Si ves esto, el archivo se cargó correctamente.</p>
-    <a href="/">← Volver a la app principal</a>
+<div class="container">
+  <div class="header">
+    <h1>🌙 Luna Delivery</h1>
+    <p>Progressive Web App</p>
+    <div id="install-badge" class="badge badge-warning">Verificando...</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">📊 Estado del Sistema</h2>
+    <div class="status-grid">
+      <div class="status-item">
+        <div class="status-label">📱 PWA</div>
+        <div class="status-value" id="pwa-status">Verificando...</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">🛰️ GPS</div>
+        <div class="status-value" id="gps-status">Desactivado</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">📡 Conexión</div>
+        <div class="status-value ok" id="net-status">Online</div>
+      </div>
+      <div class="status-item">
+        <div class="status-label">💾 Caché</div>
+        <div class="status-value" id="cache-status">Sin caché</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;"> Características PWA</h2>
+    <ul class="feature-list">
+      <li><span class="feature-icon">📲</span> Instalable en celular</li>
+      <li><span class="feature-icon">⚡</span> Funciona offline</li>
+      <li><span class="feature-icon"></span> Notificaciones push</li>
+      <li><span class="feature-icon">️</span> GPS en tiempo real</li>
+      <li><span class="feature-icon">💾</span> Caché inteligente</li>
+    </ul>
+  </div>
+
+  <button id="installBtn" class="btn btn-primary hidden" onclick="instalarApp()">
+    📲 Instalar App en mi dispositivo
+  </button>
+
+  <button class="btn btn-success" onclick="window.location.href='/'">
+    🏠 Ir a la app principal
+  </button>
+
+  <button class="btn btn-outline" onclick="window.location.href='/prueba-rastreo'">
+    🗺️ Probar rastreo en vivo
+  </button>
+
+  <div class="card">
+    <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">📋 Registro de actividad</h2>
+    <div id="log-box" class="log-box"></div>
+  </div>
+</div>
+
+<script>
+// Sistema de logs
+function log(msg, type = 'info') {
+  const logBox = document.getElementById('log-box');
+  const entry = document.createElement('div');
+  entry.className = 'log-entry' + (type === 'error' ? ' log-error' : type === 'warn' ? ' log-warn' : '');
+  const time = new Date().toLocaleTimeString();
+  entry.textContent = `[${time}] ${msg}`;
+  logBox.appendChild(entry);
+  logBox.scrollTop = logBox.scrollHeight;
+  console.log(msg);
+}
+
+// Detectar si es instalable
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBtn').classList.remove('hidden');
+  document.getElementById('install-badge').textContent = '✅ Lista para instalar';
+  document.getElementById('install-badge').className = 'badge badge-success';
+  document.getElementById('pwa-status').textContent = 'Lista';
+  document.getElementById('pwa-status').className = 'status-value ok';
+  log('🎉 PWA instalable detectada');
+});
+
+// Verificar si ya está instalada
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  document.getElementById('install-badge').textContent = '✅ Ya instalada';
+  document.getElementById('install-badge').className = 'badge badge-success';
+  document.getElementById('pwa-status').textContent = 'Instalada';
+  document.getElementById('pwa-status').className = 'status-value ok';
+  log('✅ App ya está instalada en modo standalone');
+} else if (window.navigator.standalone === true) {
+  document.getElementById('install-badge').textContent = '✅ En iOS';
+  document.getElementById('install-badge').className = 'badge badge-success';
+  document.getElementById('pwa-status').textContent = 'iOS App';
+  document.getElementById('pwa-status').className = 'status-value ok';
+  log('✅ Detectada en iOS');
+}
+
+// Detectar conexión
+function updateNetworkStatus() {
+  const netStatus = document.getElementById('net-status');
+  if (navigator.onLine) {
+    netStatus.textContent = '✅ Online';
+    netStatus.className = 'status-value ok';
+  } else {
+    netStatus.textContent = '❌ Offline';
+    netStatus.className = 'status-value error';
+    log('⚠️ Sin conexión a internet', 'warn');
+  }
+}
+window.addEventListener('online', updateNetworkStatus);
+window.addEventListener('offline', updateNetworkStatus);
+updateNetworkStatus();
+
+// Verificar Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => {
+      log('✅ Service Worker registrado: ' + reg.scope);
+      document.getElementById('cache-status').textContent = '✅ Activo';
+      document.getElementById('cache-status').className = 'status-value ok';
+      
+      // Verificar caches
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          log(' Caches encontrados: ' + names.join(', '));
+        });
+      }
+    })
+    .catch(err => {
+      log('❌ Error SW: ' + err.message, 'error');
+      document.getElementById('cache-status').textContent = '❌ Error';
+      document.getElementById('cache-status').className = 'status-value error';
+    });
+} else {
+  log('⚠️ Service Workers no soportados', 'warn');
+  document.getElementById('cache-status').textContent = '⚠️ No soportado';
+  document.getElementById('cache-status').className = 'status-value warn';
+}
+
+// Función para instalar
+async function instalarApp() {
+  if (!deferredPrompt) {
+    log('️ No se puede instalar en este momento', 'warn');
+    alert('Para instalar:\n\n📱 Android: Menú Chrome → "Instalar aplicación"\n🍎 iOS: Compartir → "Agregar a inicio"');
+    return;
+  }
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+  if (choice.outcome === 'accepted') {
+    log('✅ ¡App instalada exitosamente!');
+    alert('🎉 ¡Luna Delivery instalada! Búscala en tu pantalla de inicio.');
+  } else {
+    log('❌ Instalación cancelada por el usuario', 'warn');
+  }
+  deferredPrompt = null;
+  document.getElementById('installBtn').classList.add('hidden');
+}
+
+// Verificar soporte de notificaciones
+if ('Notification' in window) {
+  if (Notification.permission === 'granted') {
+    log('🔔 Notificaciones permitidas');
+  } else if (Notification.permission !== 'denied') {
+    log('🔔 Notificaciones disponibles (pendiente permiso)');
+  }
+}
+
+log('🚀 Luna PWA cargada correctamente');
+</script>
 </body>
 </html>
