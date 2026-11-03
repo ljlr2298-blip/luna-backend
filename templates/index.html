@@ -182,7 +182,6 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 .toast-warning { background: var(--warning-gradient); }
 .toast-info { background: var(--accent-gradient); }
 .busca-box { margin-top: 16px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: left; }
-/* NUEVO: Indicador de última actualización */
 .live-indicator { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #10b981; border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 8px; font-size: 11px; font-weight: 700; color: #166534; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
 @media (max-width: 480px) { .admin-status-filters { gap: 6px; } .status-filter-btn { padding: 10px 4px; font-size: 9px; } .filter-icon { font-size: 16px; } .card.pedido-admin { padding: 12px; margin-bottom: 8px; } .fab-refresh { width: 48px; height: 48px; } }
@@ -551,7 +550,6 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 </div>
 <p style="font-size:11px; color:var(--success); font-weight:700; margin:18px 0 8px 0; text-align:center;">🛰️ Ubicación del repartidor en vivo:</p>
 <div id="map"></div>
-<!-- NUEVO: Indicador de última actualización -->
 <div id="live-indicator" class="live-indicator" style="display:none;">
 <span class="live-dot"></span>
 <span>📍 Última actualización: <span id="last-update-time">hace 0 seg</span></span>
@@ -618,8 +616,8 @@ let fechaFiltroAdmin = null, deferredPrompt, repartidoresCache = [];
 let perfilCache = null, logoBase64Pendiente = null, logoMimePendiente = 'image/jpeg';
 let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
 let marcasCobrosCache = [];
-let ultimaActualizacion = null; // NUEVO: Para el indicador de última actualización
-let intervaloActualizacion = null; // NUEVO: Para actualizar el texto de tiempo
+let ultimaActualizacion = null;
+let intervaloActualizacion = null;
 
 function gs(func, ...args) {
 let url = '/api/' + func;
@@ -849,7 +847,7 @@ console.log('Modo detectado:', modo);
 if (modo === "rastreo") {
 ver('v_rastreo');
 ejecutarRastreoClienteLoop();
-intervaloRastreo = setInterval(ejecutarRastreoClienteLoop, 5000); // CAMBIADO: 30000 → 5000
+intervaloRastreo = setInterval(ejecutarRastreoClienteLoop, 5000);
 }
 else if (modo === "admin") {
 ver('v_admin');
@@ -900,24 +898,20 @@ document.getElementById('espera_destino').innerText = res.destino || ''; documen
 } catch (e) { console.error(e); }
 }
 function inicializarMapaRastreo(lat, lng) {
-if (mapaCliente && marcadorMoto) { 
-const nuevaPos = new L.LatLng(lat, lng); 
-// Animación suave del marcador
+if (mapaCliente && marcadorMoto) {
+const nuevaPos = new L.LatLng(lat, lng);
 if (marcadorMoto._icon) {
 marcadorMoto._icon.style.transition = 'all 1s ease-out';
 }
-marcadorMoto.setLatLng(nuevaPos); 
-mapaCliente.setView(nuevaPos, 17); 
-// Actualizar indicador de tiempo
+marcadorMoto.setLatLng(nuevaPos);
+mapaCliente.setView(nuevaPos, 17);
 ultimaActualizacion = new Date();
 document.getElementById('live-indicator').style.display = 'flex';
-return; 
+return;
 }
 mapaCliente = L.map('map').setView([lat, lng], 17);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapaCliente);
-// Marcador con efecto pulse
 marcadorMoto = L.marker([lat, lng]).addTo(mapaCliente).bindPopup('Moto de Luna Delivery 🛵').openPopup();
-// Agregar círculo animado alrededor del marcador
 L.circleMarker([lat, lng], {
 radius: 15,
 color: '#10b981',
@@ -927,11 +921,9 @@ className: 'pulse-ring'
 }).addTo(mapaCliente);
 ultimaActualizacion = new Date();
 document.getElementById('live-indicator').style.display = 'flex';
-// Iniciar contador de tiempo
 if (intervaloActualizacion) clearInterval(intervaloActualizacion);
 intervaloActualizacion = setInterval(actualizarTiempoTranscurrido, 1000);
 }
-// NUEVO: Función para actualizar el texto de tiempo transcurrido
 function actualizarTiempoTranscurrido() {
 if (!ultimaActualizacion) return;
 const ahora = new Date();
@@ -1335,7 +1327,6 @@ const idParaMostrar = p.idPedido || p.token || "Sin ID";
 const estadoPago = p.estadoPago || "Pendiente";
 const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
-// CAMBIO 1: Botón dual - Iniciar/Detener Entrega
 let btnIniciar;
 if (p.status === "En Entrega") {
 btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" onclick="detenerEntrega(' + p.fila + ')">⏸️ Detener Entrega</button>';
@@ -1370,7 +1361,6 @@ document.getElementById('lista_admin').innerHTML = bloquesAdmin.join('') || "<p 
 async function guardarPrioridad(fila, valor) { await gs('actualizarPrioridad', fila, valor); cargarAdmin(); }
 async function cambiarDiaDirecto(fila, letraDia) { await gs('actualizarDiaUnico', fila, letraDia); cargarAdmin(); }
 async function setSt(f, s) { loading(true); await gs('actualizarStatus', f, s); cargarAdmin(); }
-// NUEVO: Función para detener entrega
 async function detenerEntrega(fila) {
 const ok = await showConfirm("⚠️ ¿Detener la entrega? El GPS se desactivará y el pedido regresará a 'Pendiente'. El cliente ya no podrá ver tu ubicación.");
 if (!ok) return;
@@ -1480,7 +1470,6 @@ document.getElementById('rastreo_destino').innerText = res.destino || ''; docume
 document.getElementById('rastreo_activo').style.display = 'block'; document.getElementById('rastreo_espera').style.display = 'none'; document.getElementById('rastreo_entregado').style.display = 'none';
 inicializarMapaRastreo(res.moto.lat, res.moto.lng);
 tokenClienteActual = id;
-// CAMBIO 2: Intervalo de 30s a 5s
 intervaloRastreo = setInterval(() => actualizarRastreoEnVivo(id), 5000);
 } else {
 document.getElementById('espera_marca').innerText = res.marca || ''; document.getElementById('espera_recibe').innerText = res.recibe || '';
@@ -1500,15 +1489,13 @@ if (res.marca) document.getElementById('rastreo_marca').innerText = res.marca;
 if (res.recibe) document.getElementById('rastreo_recibe').innerText = res.recibe;
 if (res.destino) document.getElementById('rastreo_destino').innerText = res.destino;
 if (res.status) document.getElementById('rastreo_status').innerText = res.status;
-if (mapaCliente && marcadorMoto) { 
-const np = new L.LatLng(res.moto.lat, res.moto.lng); 
-// Animación suave
+if (mapaCliente && marcadorMoto) {
+const np = new L.LatLng(res.moto.lat, res.moto.lng);
 if (marcadorMoto._icon) {
 marcadorMoto._icon.style.transition = 'all 1s ease-out';
 }
-marcadorMoto.setLatLng(np); 
+marcadorMoto.setLatLng(np);
 mapaCliente.setView(np, 17);
-// Actualizar tiempo
 ultimaActualizacion = new Date();
 document.getElementById('live-indicator').style.display = 'flex';
 }
@@ -1538,7 +1525,7 @@ async function activarGPSGlobal() {
 if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
 document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando ubicación cada 5 seg'; document.getElementById('gps_status').style.color = 'var(--success)';
-enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 5000); // CAMBIADO: 30000 → 5000
+enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 5000);
 showToast('✅ GPS Global activado', 'success');
 }
 function desactivarGPSGlobal() {
@@ -1567,7 +1554,7 @@ function verificarGPSAlCargar() {
 if (localStorage.getItem('gpsActivo') === 'true') {
 setTimeout(() => {
 actualizarBotonGPS(true); document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Reanudando...'; document.getElementById('gps_status').style.color = 'var(--success)';
-enviarGPSGlobal(); gpsIntervalo = setInterval(enviarGPSGlobal, 5000); // CAMBIADO: 30000 → 5000
+enviarGPSGlobal(); gpsIntervalo = setInterval(enviarGPSGlobal, 5000);
 }, 1500);
 }
 }
@@ -1908,159 +1895,90 @@ navigator.serviceWorker.register(swFile)
 // LÓGICA DE NOTIFICACIONES PUSH (SOLO ADMIN)
 // ==========================================
 const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
-
 if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
-    // Tu CLAVE PÚBLICA VAPID (la que generamos en el Paso 1)
-    // Nota: A veces necesita relleno de '=' al final para funcionar en el navegador
-    const VAPID_PUBLIC_KEY = 'BO0yu9iehSkS-ZU6BhqTnMaRm6cZW9VsHPZDj3tMCLJrGqmx9esVlLsyXXl79Ui_QrMIca_QX0HUwxxxX1rY7EQ=='; 
+const VAPID_PUBLIC_KEY = 'BO0yu9iehSkS-ZU6BhqTnMaRm6cZW9VsHPZDj3tMCLJrGqmx9esVlLsyXXl79Ui_QrMIca_QX0HUwxxxX1rY7EQ==';
 
-    function urlBase64ToUint8Array(base64String) {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-    }
+// ✅ FUNCIÓN CORREGIDA PARA MANEJAR BASE64URL CORRECTAMENTE
+function urlBase64ToUint8Array(base64String) {
+const cleanString = base64String.replace(/=+$/, '');
+const padding = (4 - cleanString.length % 4) % 4;
+const paddedString = cleanString + '='.repeat(padding);
+const base64 = paddedString.replace(/-/g, '+').replace(/_/g, '/');
+try {
+const rawData = window.atob(base64);
+const outputArray = new Uint8Array(rawData.length);
+for (let i = 0; i < rawData.length; ++i) {
+outputArray[i] = rawData.charCodeAt(i);
+}
+return outputArray;
+} catch (e) {
+console.error('❌ Error al decodificar Base64:', e);
+throw e;
+}
+}
 
-    async function solicitarPermisoNotificaciones() {
-        try {
-            const permission = await Notification.requestPermission();
-            console.log('Permiso de notificación:', permission);
-            
-            if (permission === 'granted') {
-                console.log('✅ Permiso concedido. Registrando suscripción...');
-                const registration = await navigator.serviceWorker.ready;
-                
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-                });
-                
-                // Enviar la suscripción al backend para guardarla
-                const subData = subscription.toJSON();
-                console.log('Suscripción generada:', subData);
-                
-                await fetch('/api/guardarSuscripcionPush', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        endpoint: subData.endpoint,
-                        p256dh: subData.keys.p256dh,
-                        auth: subData.keys.auth
-                    })
-                });
-                console.log('✅ Suscripción guardada en el servidor.');
-            } else {
-                console.log('⚠️ Permiso de notificaciones denegado.');
-            }
-        } catch (error) {
-            console.error('❌ Error al configurar notificaciones push:', error);
-        }
-    }
-
-    // Ejecutar la solicitud de permiso al cargar la página (o puedes ponerlo en un botón)
-    // Para probar, lo ejecutamos automáticamente si es admin:
-    setTimeout(solicitarPermisoNotificaciones, 2000); 
+async function solicitarPermisoNotificaciones() {
+try {
+const permission = await Notification.requestPermission();
+console.log('Permiso de notificación:', permission);
+if (permission === 'granted') {
+console.log('✅ Permiso concedido. Registrando suscripción...');
+const registration = await navigator.serviceWorker.ready;
+const subscription = await registration.pushManager.subscribe({
+userVisibleOnly: true,
+applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+});
+const subData = subscription.toJSON();
+console.log('Suscripción generada:', subData);
+await fetch('/api/guardarSuscripcionPush', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+endpoint: subData.endpoint,
+p256dh: subData.keys.p256dh,
+auth: subData.keys.auth
+})
+});
+console.log('✅ Suscripción guardada en el servidor.');
+} else {
+console.log('⚠️ Permiso de notificaciones denegado.');
+}
+} catch (error) {
+console.error('❌ Error al configurar notificaciones push:', error);
+}
+}
+setTimeout(solicitarPermisoNotificaciones, 2000);
 }
 </script>
-<!-- Botón de prueba de notificaciones (solo visible en modo admin) -->
 <div id="btn-test-notif" style="display:none; position:fixed; bottom:80px; right:20px; z-index:9998;">
-  <button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
+<button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
 </div>
-
 <script>
-// Mostrar botón solo en modo admin
 if (document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') === 'admin') {
-    document.getElementById('btn-test-notif').style.display = 'block';
+document.getElementById('btn-test-notif').style.display = 'block';
 }
-
 async function probarNotificacion() {
-    try {
-        // 1. Pedir permiso si no lo tiene
-        const permiso = await Notification.requestPermission();
-        console.log('Permiso:', permiso);
-        
-        if (permiso !== 'granted') {
-            alert('⚠️ Necesitas aceptar el permiso de notificaciones. Revisa la configuración de tu navegador.');
-            return;
-        }
-        
-        // 2. Mostrar notificación de prueba local
-        if ('serviceWorker' in navigator) {
-            const reg = await navigator.serviceWorker.ready;
-            await reg.showNotification('🔔 ¡Prueba exitosa!', {
-                body: 'Si ves esto, las notificaciones funcionan correctamente',
-                icon: '/manifest-admin.json',
-                vibrate: [200, 100, 200]
-            });
-            alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
-        } else {
-            alert('❌ Tu navegador no soporta Service Workers');
-        }
-    } catch (error) {
-        alert('❌ Error: ' + error.message);
-    }
+try {
+const permiso = await Notification.requestPermission();
+console.log('Permiso:', permiso);
+if (permiso !== 'granted') {
+alert('⚠️ Necesitas aceptar el permiso de notificaciones. Revisa la configuración de tu navegador.');
+return;
 }
-</script>
-<script>
-// ==========================================
-// LÓGICA DE NOTIFICACIONES PUSH (SOLO ADMIN)
-// ==========================================
-const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
-
-if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
-    const VAPID_PUBLIC_KEY = 'BO0yu9iehSkS-ZU6BhqTnMaRm6cZW9VsHPZDj3tMCLJrGqmx9esVlLsyXXl79Ui_QrMIca_QX0HUwxxxX1rY7EQ==';
-
-    function urlBase64ToUint8Array(base64String) {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-        const rawData = window.atob(base64);
-        const outputArray = new Uint8Array(rawData.length);
-        for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
-        }
-        return outputArray;
-    }
-
-    async function solicitarPermisoNotificaciones() {
-        try {
-            const permission = await Notification.requestPermission();
-            console.log('Permiso de notificación:', permission);
-            
-            if (permission === 'granted') {
-                console.log('✅ Permiso concedido. Registrando suscripción...');
-                const registration = await navigator.serviceWorker.ready;
-                
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-                });
-                
-                const subData = subscription.toJSON();
-                console.log('Suscripción generada:', subData);
-                
-                await fetch('/api/guardarSuscripcionPush', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        endpoint: subData.endpoint,
-                        p256dh: subData.keys.p256dh,
-                        auth: subData.keys.auth
-                    })
-                });
-                console.log('✅ Suscripción guardada en el servidor.');
-            } else {
-                console.log('⚠️ Permiso de notificaciones denegado.');
-            }
-        } catch (error) {
-            console.error('❌ Error al configurar notificaciones push:', error);
-        }
-    }
-
-    setTimeout(solicitarPermisoNotificaciones, 2000); 
+if ('serviceWorker' in navigator) {
+const reg = await navigator.serviceWorker.ready;
+await reg.showNotification('🔔 ¡Prueba exitosa!', {
+body: 'Si ves esto, las notificaciones funcionan correctamente',
+icon: '/manifest-admin.json',
+vibrate: [200, 100, 200]
+});
+alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
+} else {
+alert('❌ Tu navegador no soporta Service Workers');
+}
+} catch (error) {
+alert('❌ Error: ' + error.message);
+}
 }
 </script>
 </body>
