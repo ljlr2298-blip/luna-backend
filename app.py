@@ -157,12 +157,14 @@ def api_get_pedidos():
     status_filtro = request.args.get('arg2', '')
     
     try:
+        # Obtener TODAS las marcas primero
         marcas_response = supabase.table('marcas').select('id, nombre').execute()
         marcas_dict = {}
         
         for m in marcas_response.data:
             marca_id = m.get('id')
             if marca_id is not None:
+                # Guardar en ambos formatos (string e int)
                 marcas_dict[str(marca_id)] = m['nombre']
                 try:
                     marcas_dict[int(marca_id)] = m['nombre']
@@ -189,15 +191,25 @@ def api_get_pedidos():
         pedidos = []
         for row in response.data:
             marca_id_pedido = row.get('marca_id')
-            nombre_marca = 'Desconocida'
+            nombre_marca = 'Desconocida'  # Valor por defecto
             
-            if marca_id_pedido is not None:
+            # Intentar encontrar el nombre de la marca
+            if marca_id_pedido is not None and marca_id_pedido != '':
+                # Buscar en el diccionario
                 if str(marca_id_pedido) in marcas_dict:
                     nombre_marca = marcas_dict[str(marca_id_pedido)]
-                elif marca_id_pedido in marcas_dict:
+                elif isinstance(marca_id_pedido, int) and marca_id_pedido in marcas_dict:
                     nombre_marca = marcas_dict[marca_id_pedido]
-                elif isinstance(marca_id_pedido, str) and marca_id_pedido.lower() in {n.lower() for n in marcas_dict.values()}:
-                    nombre_marca = marca_id_pedido
+                else:
+                    # Si no está en el diccionario, buscar directamente en Supabase
+                    try:
+                        marca_busqueda = supabase.table('marcas').select('nombre').eq('id', marca_id_pedido).execute()
+                        if marca_busqueda.data and len(marca_busqueda.data) > 0:
+                            nombre_marca = marca_busqueda.data[0].get('nombre', 'Desconocida')
+                            # Agregar al diccionario para futuras consultas
+                            marcas_dict[str(marca_id_pedido)] = nombre_marca
+                    except Exception as e:
+                        print(f"️ Error buscando marca ID {marca_id_pedido}: {e}")
             
             raw_dia = str(row.get('dia_programado', '')).strip()
             dia_value = 'Por asignar' if not raw_dia or raw_dia.lower() == 'por asignar' else raw_dia
@@ -221,6 +233,8 @@ def api_get_pedidos():
         return jsonify({"result": pedidos})
     except Exception as e:
         print(f"❌ Error en getPedidos: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"result": {"error": str(e)}}), 500
 
 @app.route('/api/guardarPedido', methods=['GET'])
