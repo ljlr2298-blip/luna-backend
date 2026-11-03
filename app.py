@@ -43,7 +43,6 @@ def rastreo_publico(token):
 def rastreo_corto(token):
     return render_template('index.html', modo='rastreo', token=token)
 
-# Rutas de prueba PWA
 @app.route('/prueba-pwa')
 def prueba_pwa():
     return render_template('index_pwa.html')
@@ -52,7 +51,9 @@ def prueba_pwa():
 def prueba_rastreo():
     return render_template('rastreo_vivo.html')
 
-# Rutas para servir archivos estáticos de PWA (¡SOLO UNA VEZ!)
+# ==========================================
+# 3. RUTAS PARA ARCHIVOS ESTÁTICOS DE PWA
+# ==========================================
 @app.route('/manifest.json')
 def manifest():
     return send_from_directory('templates', 'manifest.json', mimetype='application/json')
@@ -70,7 +71,7 @@ def service_worker_admin():
     return send_from_directory('templates', 'service-worker-admin.js', mimetype='application/javascript')
 
 # ==========================================
-# 3. UTILIDAD PARA ACORTAR URLs
+# 4. UTILIDAD PARA ACORTAR URLs
 # ==========================================
 def acortar_url(url_larga):
     try:
@@ -82,7 +83,7 @@ def acortar_url(url_larga):
     return url_larga
 
 # ==========================================
-# 4. APIs DE AUTENTICACIÓN Y REGISTRO
+# 5. APIs DE AUTENTICACIÓN Y REGISTRO
 # ==========================================
 @app.route('/api/validarAccAccess', methods=['GET'])
 def api_validar_acc_access():
@@ -148,7 +149,7 @@ def api_recuperar_password():
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
 
 # ==========================================
-# 5. APIs DE PEDIDOS
+# 6. APIs DE PEDIDOS (CON FIX DE MARCAS)
 # ==========================================
 @app.route('/api/getPedidos', methods=['GET'])
 def api_get_pedidos():
@@ -157,20 +158,20 @@ def api_get_pedidos():
     status_filtro = request.args.get('arg2', '')
     
     try:
-        # Obtener TODAS las marcas primero
+        # 1. Obtener TODAS las marcas y crear un diccionario de búsqueda
         marcas_response = supabase.table('marcas').select('id, nombre').execute()
         marcas_dict = {}
         
         for m in marcas_response.data:
             marca_id = m.get('id')
             if marca_id is not None:
-                # Guardar en ambos formatos (string e int)
                 marcas_dict[str(marca_id)] = m['nombre']
                 try:
                     marcas_dict[int(marca_id)] = m['nombre']
                 except (ValueError, TypeError):
                     pass
         
+        # 2. Obtener pedidos según el modo
         if modo == 'admin':
             query = supabase.table('pedidos').select('*')
             if status_filtro == 'Entregado':
@@ -179,7 +180,6 @@ def api_get_pedidos():
                 query = query.eq('status', 'Cancelado')
             else:
                 query = query.neq('status', 'Entregado').neq('status', 'Cancelado')
-            
             response = query.order('creado_en', desc=True).limit(5000).execute()
         else:
             marca_response = supabase.table('marcas').select('id, nombre').ilike('nombre', marca).execute()
@@ -188,28 +188,27 @@ def api_get_pedidos():
             marca_id = marca_response.data[0]['id']
             response = supabase.table('pedidos').select('*').eq('marca_id', marca_id).order('creado_en', desc=True).limit(1000).execute()
         
+        # 3. Procesar pedidos y resolver nombres de marcas
         pedidos = []
         for row in response.data:
             marca_id_pedido = row.get('marca_id')
-            nombre_marca = 'Desconocida'  # Valor por defecto
+            nombre_marca = 'Desconocida'
             
-            # Intentar encontrar el nombre de la marca
-            if marca_id_pedido is not None and marca_id_pedido != '':
-                # Buscar en el diccionario
-                if str(marca_id_pedido) in marcas_dict:
-                    nombre_marca = marcas_dict[str(marca_id_pedido)]
-                elif isinstance(marca_id_pedido, int) and marca_id_pedido in marcas_dict:
-                    nombre_marca = marcas_dict[marca_id_pedido]
+            if marca_id_pedido is not None and str(marca_id_pedido).strip() != '':
+                str_id = str(marca_id_pedido)
+                
+                # Prioridad 1: Buscar en el diccionario en memoria
+                if str_id in marcas_dict:
+                    nombre_marca = marcas_dict[str_id]
                 else:
-                    # Si no está en el diccionario, buscar directamente en Supabase
+                    # Prioridad 2: Si falla, buscar directamente en Supabase (fallback)
                     try:
                         marca_busqueda = supabase.table('marcas').select('nombre').eq('id', marca_id_pedido).execute()
                         if marca_busqueda.data and len(marca_busqueda.data) > 0:
                             nombre_marca = marca_busqueda.data[0].get('nombre', 'Desconocida')
-                            # Agregar al diccionario para futuras consultas
-                            marcas_dict[str(marca_id_pedido)] = nombre_marca
+                            marcas_dict[str_id] = nombre_marca # Guardar en caché para la siguiente iteración
                     except Exception as e:
-                        print(f"️ Error buscando marca ID {marca_id_pedido}: {e}")
+                        print(f"⚠️ Error buscando marca ID {marca_id_pedido}: {e}")
             
             raw_dia = str(row.get('dia_programado', '')).strip()
             dia_value = 'Por asignar' if not raw_dia or raw_dia.lower() == 'por asignar' else raw_dia
@@ -241,18 +240,30 @@ def api_get_pedidos():
 def api_guardar_pedido():
     try:
         data = json.loads(request.args.get('arg0', '{}'))
-        marca_response = supabase.table('marcas').select('id').ilike('nombre', data.get('marca', '')).execute()
-        marca_id = marca_response.data[0]['id'] if marca_response.data else None
+        marca_nombre_input = data.get('marca', '').strip()
         
-        prefijo = data.get('marca', 'PED')[:3].upper()
+        # Buscar la marca por nombre para asegurar que obtenemos el ID correcto (UUID)
+        marca_response = supabase.table('marcas').select('id, nombre').ilike('nombre', marca_nombre_input).execute()
+        marca_id = marca_response.data[0]['id'] if marca_response.data else None
+        marca_nombre_real = marca_response.data[0]['nombre'] if marca_response.data else marca_nombre_input
+        
+        prefijo = marca_nombre_real[:3].upper() if marca_nombre_real else 'PED'
         token = prefijo + str(random.randint(1000, 9999))
         
         supabase.table('pedidos').insert({
-            "token": token, "marca_id": marca_id, "tipo_servicio": data.get('tipoServicio', 'enviar'),
-            "origen": data.get('origen'), "destino": data.get('destino'), "precio": data.get('precio'),
-            "recibe_nombre": data.get('recibe'), "recibe_celular": data.get('celular'),
-            "comentarios": data.get('coments'), "km": data.get('km'), "estado_pago": "Pendiente", 
-            "dia_programado": "Por asignar", "prioridad": 999,
+            "token": token, 
+            "marca_id": marca_id, 
+            "tipo_servicio": data.get('tipoServicio', 'enviar'),
+            "origen": data.get('origen'), 
+            "destino": data.get('destino'), 
+            "precio": data.get('precio'),
+            "recibe_nombre": data.get('recibe'), 
+            "recibe_celular": data.get('celular'),
+            "comentarios": data.get('coments'), 
+            "km": data.get('km'), 
+            "estado_pago": "Pendiente", 
+            "dia_programado": "Por asignar", 
+            "prioridad": 999,
             "creado_en": datetime.now().isoformat()
         }).execute()
         return jsonify({"result": token})
@@ -321,7 +332,7 @@ def api_actualizar_prioridad():
         return jsonify({"result": {"error": str(e)}}), 500
 
 # ==========================================
-# 6. APIs DE RASTREO Y GPS
+# 7. APIs DE RASTREO Y GPS
 # ==========================================
 @app.route('/api/obtenerDatosRastreoCliente', methods=['GET'])
 def api_obtener_datos_rastreo():
@@ -382,7 +393,7 @@ def api_actualizar_gps_global():
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
 # ==========================================
-# 7. APIs DE REPARTIDORES
+# 8. APIs DE REPARTIDORES
 # ==========================================
 @app.route('/api/getListaRepartidores', methods=['GET'])
 def api_get_lista_repartidores():
@@ -412,7 +423,7 @@ def api_quitar_asignacion():
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
 
 # ==========================================
-# 8. APIs DE FINANZAS Y COBROS
+# 9. APIs DE FINANZAS Y COBROS
 # ==========================================
 @app.route('/api/obtenerDeudaCliente', methods=['GET'])
 def api_obtener_deuda():
@@ -642,7 +653,7 @@ def api_obtener_resumen_rango():
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
 # ==========================================
-# 9. CÁLCULO DE PRECIO (OSRM)
+# 10. CÁLCULO DE PRECIO (OSRM)
 # ==========================================
 def obtener_coordenadas(direccion_completa):
     url = f"https://nominatim.openstreetmap.org/search?format=json&q={direccion_completa}&countrycodes=mx&limit=1"
@@ -767,7 +778,7 @@ def api_calcular_precio():
         return jsonify({"result": {"error": str(e), "precio": 0, "km": 0}}), 500
 
 # ==========================================
-# 10. APIs DE PERFIL Y ZONAS
+# 11. APIs DE PERFIL Y ZONAS
 # ==========================================
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
@@ -974,7 +985,7 @@ def api_get_marcas_con_deuda():
         return jsonify({"result": []})
 
 # ==========================================
-# 11. INICIAR SERVIDOR
+# 12. INICIAR SERVIDOR
 # ==========================================
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
