@@ -372,6 +372,19 @@ def api_iniciar_entrega_gps():
     except Exception as e:
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
+@app.route('/api/detenerEntrega', methods=['GET'])
+def api_detener_entrega():
+    fila = request.args.get('arg0', '')
+    try:
+        supabase.table('pedidos').update({
+            "status": "Pendiente",
+            "lat": None,
+            "lng": None
+        }).eq('id', int(fila)).execute()
+        return jsonify({"result": {"exito": True, "mensaje": "Entrega detenida. GPS desactivado."}})
+    except Exception as e:
+        return jsonify({"result": {"exito": False, "error": str(e)}}), 500    
+
 @app.route('/api/obtenerFilasEnEntrega', methods=['GET'])
 def api_obtener_filas_en_entrega():
     try:
