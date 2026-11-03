@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from pywebpush import webpush, WebPushException  # ✅ NUEVO: Librería para Push Notifications
 
 load_dotenv()
 
@@ -19,6 +20,64 @@ SUPABASE_URL = os.getenv("SUPABASE_URL", "https://kcwkyhfargaijkvucpeh.supabase.
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtjd2t5aGZhcmdhaWprdnVjcGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODkwMjEsImV4cCI6MjEwNTY2NTAyMX0.1R2rirPSit6I-YqO2tBN2FBgSxp5Iq31fDkXVbbTCNg")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# ==========================================
+# CONFIGURACIÓN NOTIFICACIONES PUSH (VAPID)
+# ==========================================
+VAPID_PRIVATE_KEY = "F4DQW6rSHKBn6jblnB2LAX64O5WSz16IEZeeH0YA44g"
+VAPID_CLAIMS = {
+    "sub": "mailto:admin@lunadelivery.com"  # Cambia este correo por el tuyo real si quieres
+}
+
+def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
+    """Función auxiliar para enviar notificaciones a todos los admins suscritos"""
+    try:
+        # 1. Obtener suscripciones guardadas en Supabase
+        suscripciones = supabase.table('admin_push_subscriptions').select('*').execute()
+        
+        if not suscripciones.data:
+            print("⚠️ No hay suscripciones de push guardadas en la BD.")
+            return
+        
+        print(f"📤 Enviando notificación a {len(suscripciones.data)} dispositivo(s)...")
+        
+        # 2. Iterar y enviar a cada dispositivo
+        for sub in suscripciones.data:
+            try:
+                subscription_info = {
+                    "endpoint": sub['endpoint'],
+                    "keys": {
+                        "p256dh": sub['p256dh'],
+                        "auth": sub['auth']
+                    }
+                }
+                
+                data_payload = json.dumps({
+                    "titulo": titulo,
+                    "mensaje": mensaje,
+                    "url": url_destino
+                })
+                
+                webpush(
+                    subscription_info=subscription_info,
+                    data=data_payload,
+                    vapid_private_key=VAPID_PRIVATE_KEY,
+                    vapid_claims=VAPID_CLAIMS
+                )
+                print(f"✅ Notificación enviada a: {sub['endpoint'][:50]}...")
+                
+            except WebPushException as e:
+                print(f"❌ Error al enviar a {sub['endpoint'][:50]}: {e}")
+                # Si la suscripción expiró o fue revocada (410 Gone), la eliminamos de la BD
+                if e.response and e.response.status_code == 410:
+                    supabase.table('admin_push_subscriptions').delete().eq('id', sub['id']).execute()
+                    print(f"🗑️ Suscripción obsoleta eliminada: {sub['id']}")
+            except Exception as e:
+                print(f"❌ Error inesperado en push: {e}")
+                
+    except Exception as e:
+        print(f"❌ Error general en enviar_notificacion_push: {e}")
+
 
 # ==========================================
 # 2. RUTAS DE VISTAS (Frontend)
@@ -149,7 +208,7 @@ def api_recuperar_password():
         return jsonify({"result": {"exito": False, "mensaje": str(e)}}), 500
 
 # ==========================================
-# 6. APIs DE PEDIDOS (CON FIX DE MARCAS)
+# 6. APIs DE PEDIDOS
 # ==========================================
 @app.route('/api/getPedidos', methods=['GET'])
 def api_get_pedidos():
@@ -158,7 +217,6 @@ def api_get_pedidos():
     status_filtro = request.args.get('arg2', '')
     
     try:
-        # 1. Obtener TODAS las marcas y crear un diccionario de búsqueda
         marcas_response = supabase.table('marcas').select('id, nombre').execute()
         marcas_dict = {}
         
@@ -171,7 +229,6 @@ def api_get_pedidos():
                 except (ValueError, TypeError):
                     pass
         
-        # 2. Obtener pedidos según el modo
         if modo == 'admin':
             query = supabase.table('pedidos').select('*')
             if status_filtro == 'Entregado':
@@ -188,7 +245,6 @@ def api_get_pedidos():
             marca_id = marca_response.data[0]['id']
             response = supabase.table('pedidos').select('*').eq('marca_id', marca_id).order('creado_en', desc=True).limit(1000).execute()
         
-        # 3. Procesar pedidos y resolver nombres de marcas
         pedidos = []
         for row in response.data:
             marca_id_pedido = row.get('marca_id')
@@ -196,23 +252,19 @@ def api_get_pedidos():
             
             if marca_id_pedido is not None and str(marca_id_pedido).strip() != '':
                 str_id = str(marca_id_pedido)
-                
-                # Prioridad 1: Buscar en el diccionario en memoria
                 if str_id in marcas_dict:
                     nombre_marca = marcas_dict[str_id]
                 else:
-                    # Prioridad 2: Si falla, buscar directamente en Supabase (fallback)
                     try:
                         marca_busqueda = supabase.table('marcas').select('nombre').eq('id', marca_id_pedido).execute()
                         if marca_busqueda.data and len(marca_busqueda.data) > 0:
                             nombre_marca = marca_busqueda.data[0].get('nombre', 'Desconocida')
-                            marcas_dict[str_id] = nombre_marca # Guardar en caché para la siguiente iteración
+                            marcas_dict[str_id] = nombre_marca
                     except Exception as e:
                         print(f"⚠️ Error buscando marca ID {marca_id_pedido}: {e}")
             
             raw_dia = str(row.get('dia_programado', '')).strip()
             dia_value = 'Por asignar' if not raw_dia or raw_dia.lower() == 'por asignar' else raw_dia
-            
             mapa_letras = {'Lunes': 'L', 'Martes': 'M', 'Miércoles': 'MI', 'Jueves': 'J', 'Viernes': 'V', 'Sábado': 'S', 'Por asignar': ''}
             dia_letra = mapa_letras.get(dia_value, '')
 
@@ -242,7 +294,6 @@ def api_guardar_pedido():
         data = json.loads(request.args.get('arg0', '{}'))
         marca_nombre_input = data.get('marca', '').strip()
         
-        # Buscar la marca por nombre para asegurar que obtenemos el ID correcto (UUID)
         marca_response = supabase.table('marcas').select('id, nombre').ilike('nombre', marca_nombre_input).execute()
         marca_id = marca_response.data[0]['id'] if marca_response.data else None
         marca_nombre_real = marca_response.data[0]['nombre'] if marca_response.data else marca_nombre_input
@@ -266,6 +317,16 @@ def api_guardar_pedido():
             "prioridad": 999,
             "creado_en": datetime.now().isoformat()
         }).execute()
+        
+        # ✅ NUEVO: DISPARAR NOTIFICACIÓN PUSH AL GUARDAR EL PEDIDO
+        try:
+            titulo = f"🚨 Nuevo Pedido: {token}"
+            mensaje = f"Marca: {marca_nombre_real}\nDestino: {data.get('destino', 'N/A')[:40]}"
+            enviar_notificacion_push(titulo, mensaje, "/admin")
+        except Exception as e:
+            # Si falla la notificación, no interrumpimos el guardado del pedido
+            print(f"⚠️ Falló el envío de notificación push, pero el pedido se guardó: {e}")
+        
         return jsonify({"result": token})
     except Exception as e:
         return jsonify({"result": {"error": str(e)}}), 500
@@ -363,7 +424,6 @@ def api_iniciar_entrega_gps():
     lat = request.args.get('arg1')
     lng = request.args.get('arg2')
     try:
-        # ✅ CORRECCIÓN: Validar si lat/lng son válidos antes de convertir
         lat_val = float(lat) if lat and lat != 'null' and lat != '' else None
         lng_val = float(lng) if lng and lng != 'null' and lng != '' else None
         
@@ -451,7 +511,7 @@ def api_obtener_deuda():
     try:
         marca_response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
         if not marca_response.data:
-            print(f"️ [BACKEND] Marca '{marca}' no encontrada")
+            print(f"⚠️ [BACKEND] Marca '{marca}' no encontrada")
             return jsonify({"result": {"pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}})
         
         marca_id = marca_response.data[0]['id']
@@ -500,7 +560,7 @@ def api_obtener_deuda():
         }})
         
     except Exception as e:
-        print(f" [BACKEND] ERROR en obtenerDeudaCliente: {e}")
+        print(f"❌ [BACKEND] ERROR en obtenerDeudaCliente: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({"result": {"error": str(e), "pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}}), 500
