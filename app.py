@@ -363,13 +363,18 @@ def api_iniciar_entrega_gps():
     lat = request.args.get('arg1')
     lng = request.args.get('arg2')
     try:
+        # ✅ CORRECCIÓN: Validar si lat/lng son válidos antes de convertir
+        lat_val = float(lat) if lat and lat != 'null' and lat != '' else None
+        lng_val = float(lng) if lng and lng != 'null' and lng != '' else None
+        
         supabase.table('pedidos').update({
             "status": "En Entrega", 
-            "lat": float(lat) if lat else None, 
-            "lng": float(lng) if lng else None
+            "lat": lat_val, 
+            "lng": lng_val
         }).eq('id', int(fila)).execute()
         return jsonify({"result": {"exito": True, "mensaje": "Entrega iniciada"}})
     except Exception as e:
+        print(f"❌ Error en iniciarEntregaConGPS: {e}")
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
 @app.route('/api/detenerEntrega', methods=['GET'])
@@ -446,7 +451,7 @@ def api_obtener_deuda():
     try:
         marca_response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
         if not marca_response.data:
-            print(f"⚠️ [BACKEND] Marca '{marca}' no encontrada")
+            print(f"️ [BACKEND] Marca '{marca}' no encontrada")
             return jsonify({"result": {"pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}})
         
         marca_id = marca_response.data[0]['id']
@@ -495,7 +500,7 @@ def api_obtener_deuda():
         }})
         
     except Exception as e:
-        print(f"❌ [BACKEND] ERROR en obtenerDeudaCliente: {e}")
+        print(f" [BACKEND] ERROR en obtenerDeudaCliente: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({"result": {"error": str(e), "pedidosPendientes": 0, "deuda": 0, "diasMasAntiguo": 0}}), 500
