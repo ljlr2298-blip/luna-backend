@@ -670,6 +670,29 @@ def api_obtener_resumen_rango():
     except Exception as e:
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
+@app.route('/api/guardarSuscripcionPush', methods=['POST'])
+def api_guardar_suscripcion_push():
+    try:
+        data = request.json
+        endpoint = data.get('endpoint')
+        p256dh = data.get('p256dh')
+        auth = data.get('auth')
+        
+        if not endpoint or not p256dh or not auth:
+            return jsonify({"error": "Datos de suscripción incompletos"}), 400
+            
+        # Guardar en Supabase
+        supabase.table('admin_push_subscriptions').insert({
+            "endpoint": endpoint,
+            "p256dh": p256dh,
+            "auth": auth
+        }).execute()
+        
+        return jsonify({"exito": True, "mensaje": "Suscripción guardada"})
+    except Exception as e:
+        print(f"❌ Error guardando suscripción push: {e}")
+        return jsonify({"error": str(e)}), 500    
+
 # ==========================================
 # 10. CÁLCULO DE PRECIO (OSRM)
 # ==========================================
