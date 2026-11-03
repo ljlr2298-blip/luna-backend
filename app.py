@@ -681,7 +681,6 @@ def api_guardar_suscripcion_push():
         if not endpoint or not p256dh or not auth:
             return jsonify({"error": "Datos de suscripción incompletos"}), 400
             
-        # Guardar en Supabase
         supabase.table('admin_push_subscriptions').insert({
             "endpoint": endpoint,
             "p256dh": p256dh,
