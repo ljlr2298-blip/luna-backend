@@ -618,6 +618,7 @@ let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles':
 let marcasCobrosCache = [];
 let ultimaActualizacion = null;
 let intervaloActualizacion = null;
+
 function gs(func, ...args) {
 let url = '/api/' + func;
 if (args.length > 0) {
@@ -1065,56 +1066,36 @@ async function getCP(m) { document.getElementById('c_cp').innerHTML = '<option v
 async function getCol(cp) { document.getElementById('c_col').innerHTML = '<option value="">...</option>'; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('c_col', d); loading(false); } catch (e) { loading(false); } }
 async function getCPOrigen(m) { document.getElementById('c_cp_origen').innerHTML = '<option value="">...</option>'; document.getElementById('c_col_origen').innerHTML = '<option value="">...</option>'; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('c_cp_origen', d); loading(false); } catch (e) { loading(false); } }
 async function getColOrigen(cp) { document.getElementById('c_col_origen').innerHTML = '<option value="">...</option>'; document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('c_col_origen', d); loading(false); } catch (e) { loading(false); } }
-
-// ✅ FUNCIÓN CALC ACTUALIZADA: DIRECCIÓN LIMPIA PARA GEOCODIFICACIÓN (SIN NÚMERO INTERIOR)
 async function calc() {
 if (tipoServicioActual === 'enviar') {
-    const calle = document.getElementById('c_dir').value.trim();
-    const ext = document.getElementById('c_ext').value.trim();
-    const c = document.getElementById('c_col').value;
-    const m = document.getElementById('c_mun').value;
-    const cp = document.getElementById('c_cp').value;
-    const tipoOrigen = document.getElementById('c_origen_tipo').value;
-    
-    // ✅ DIRECCIÓN LIMPIA PARA GEOCODIFICACIÓN (SIN NÚMERO INTERIOR)
-    let d_geo = calle; 
-    if (ext) d_geo += ' ' + ext;
-    
-    if (d_geo && c && m && cp) {
-        document.getElementById('box_precio').innerText = "Calculando tarifa...";
-        try {
-            const res = await gs('calcularPrecio', d_geo + ', ' + c + ', ' + m, marca, tipoOrigen, cp);
-            if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
-            else if (tipoOrigen === "hub" && res.precio === 75) document.getElementById('box_precio').innerText = '$75.00 (¡Tarifa Fija Hub!)';
-            else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
-            km = res.km; origen = res.origen;
-            if (!isNaN(res.precio) || res.precio == 75 || res.precio == 90) document.getElementById('btn_g').disabled = false;
-        } catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
-    }
+const calle = document.getElementById('c_dir').value.trim(), ext = document.getElementById('c_ext').value.trim(), interior = document.getElementById('c_int').value.trim(), c = document.getElementById('c_col').value, m = document.getElementById('c_mun').value, cp = document.getElementById('c_cp').value, tipoOrigen = document.getElementById('c_origen_tipo').value;
+let d = calle; if (ext) d += ' ' + ext; if (interior) d += ' Int. ' + interior;
+if (d && c && m && cp) {
+document.getElementById('box_precio').innerText = "Calculando tarifa...";
+try {
+const res = await gs('calcularPrecio', d + ', ' + c + ', ' + m, marca, tipoOrigen, cp);
+if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
+else if (tipoOrigen === "hub" && res.precio === 75) document.getElementById('box_precio').innerText = '$75.00 (¡Tarifa Fija Hub!)';
+else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
+km = res.km; origen = res.origen;
+if (!isNaN(res.precio) || res.precio == 75 || res.precio == 90) document.getElementById('btn_g').disabled = false;
+} catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
+}
 } else {
-    const calle = document.getElementById('c_dir_origen').value.trim();
-    const ext = document.getElementById('c_ext_origen').value.trim();
-    const c = document.getElementById('c_col_origen').value;
-    const m = document.getElementById('c_mun_origen').value;
-    const cp = document.getElementById('c_cp_origen').value;
-    
-    // ✅ DIRECCIÓN LIMPIA PARA GEOCODIFICACIÓN (SIN NÚMERO INTERIOR)
-    let d_geo = calle; 
-    if (ext) d_geo += ' ' + ext;
-    
-    if (d_geo && c && m && cp) {
-        document.getElementById('box_precio').innerText = "Calculando tarifa...";
-        try {
-            const res = await gs('calcularPrecio', d_geo + ', ' + c + ', ' + m, marca, "recibir", cp);
-            if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
-            else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
-            km = res.km; origen = d_geo + ', ' + c + ', ' + m;
-            if (!isNaN(res.precio) || res.precio == 90) document.getElementById('btn_g').disabled = false;
-        } catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
-    }
+const calle = document.getElementById('c_dir_origen').value.trim(), ext = document.getElementById('c_ext_origen').value.trim(), interior = document.getElementById('c_int_origen').value.trim(), c = document.getElementById('c_col_origen').value, m = document.getElementById('c_mun_origen').value, cp = document.getElementById('c_cp_origen').value;
+let d = calle; if (ext) d += ' ' + ext; if (interior) d += ' Int. ' + interior;
+if (d && c && m && cp) {
+document.getElementById('box_precio').innerText = "Calculando tarifa...";
+try {
+const res = await gs('calcularPrecio', d + ', ' + c + ', ' + m, marca, "recibir", cp);
+if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
+else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
+km = res.km; origen = d + ', ' + c + ', ' + m;
+if (!isNaN(res.precio) || res.precio == 90) document.getElementById('btn_g').disabled = false;
+} catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
 }
 }
-
+}
 async function guardar() {
 const camposFaltantes = [];
 if (tipoServicioActual === 'enviar') {
@@ -1141,7 +1122,6 @@ const match = document.getElementById('box_precio').innerText.match(/\d+/);
 const rawPrecio = match ? match[0] : 0;
 let destinoFinal;
 if (tipoServicioActual === 'enviar') {
-// ✅ AQUÍ SÍ SE INCLUYE EL NÚMERO INTERIOR PARA QUE EL REPARTIDOR LO VEA
 const calle = document.getElementById('c_dir').value.trim(), ext = document.getElementById('c_ext').value.trim(), interior = document.getElementById('c_int').value.trim(), colonia = document.getElementById('c_col').value, municipio = document.getElementById('c_mun').value;
 let dirComp = calle; if (ext) dirComp += ' ' + ext; if (interior) dirComp += ' Int. ' + interior;
 dirComp += ', ' + colonia + ', ' + municipio;
@@ -1903,13 +1883,14 @@ try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(fa
 </script>
 <script>
 if ('serviceWorker' in navigator) {
-const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
-const swFile = modo === 'admin' ? '/service-worker-admin.js' : '/service-worker.js';
-navigator.serviceWorker.register(swFile)
-.then(reg => console.log('✅ Service Worker registrado:', swFile))
-.catch(err => console.log('❌ Error SW:', err));
+    const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
+    const swFile = modo === 'admin' ? '/service-worker-admin.js' : '/service-worker.js';
+    navigator.serviceWorker.register(swFile)
+        .then(reg => console.log('✅ Service Worker registrado:', swFile))
+        .catch(err => console.log('❌ Error SW:', err));
 }
 </script>
+
 <script>
 // ==========================================
 // LÓGICA DE NOTIFICACIONES PUSH (SOLO ADMIN)
@@ -1917,7 +1898,7 @@ navigator.serviceWorker.register(swFile)
 const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
 
 if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
-    // ✅ CLAVE PÚBLICA VAPID ACTUALIZADA
+    // ✅ CLAVE PÚBLICA ACTUALIZADA
     const VAPID_PUBLIC_KEY = 'BFnCZ2Xk4P41E_DcTrXr4LiTGT5EtGS6Dwonf40bHraPRDr2VeiZy_NtkwLbpa1QkO_JfIPr1stu7Z_6phgrI6g';
 
     function urlBase64ToUint8Array(base64String) {
@@ -1939,14 +1920,6 @@ if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in w
             if (permission === 'granted') {
                 console.log('✅ Permiso concedido. Registrando suscripción...');
                 const registration = await navigator.serviceWorker.ready;
-                
-                // ✅ VERIFICAR SI YA EXISTE UNA SUSCRIPCIÓN Y ELIMINARLA
-                const existingSubscription = await registration.pushManager.getSubscription();
-                if (existingSubscription) {
-                    console.log('⚠️ Ya existe una suscripción previa. Eliminando...');
-                    await existingSubscription.unsubscribe();
-                    console.log('✅ Suscripción anterior eliminada');
-                }
                 
                 const subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
@@ -1974,39 +1947,50 @@ if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in w
         }
     }
 
+    // Ejecutar automáticamente al cargar si es admin
     setTimeout(solicitarPermisoNotificaciones, 2000);
 }
 </script>
+
+<!-- Botón de prueba de notificaciones (solo visible en modo admin) -->
 <div id="btn-test-notif" style="display:none; position:fixed; bottom:80px; right:20px; z-index:9998;">
-<button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
+    <button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
 </div>
+
 <script>
+// Mostrar botón solo en modo admin
 if (document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') === 'admin') {
-document.getElementById('btn-test-notif').style.display = 'block';
+    document.getElementById('btn-test-notif').style.display = 'block';
 }
+
 async function probarNotificacion() {
-try {
-const permiso = await Notification.requestPermission();
-console.log('Permiso:', permiso);
-if (permiso !== 'granted') {
-alert('⚠️ Necesitas aceptar el permiso de notificaciones.');
-return;
+    try {
+        const permiso = await Notification.requestPermission();
+        console.log('Permiso:', permiso);
+        
+        if (permiso !== 'granted') {
+            alert('⚠️ Necesitas aceptar el permiso de notificaciones. Revisa la configuración de tu navegador.');
+            return;
+        }
+        
+        if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.ready;
+            await reg.showNotification('🔔 ¡Prueba exitosa!', {
+                body: 'Si ves esto, las notificaciones funcionan correctamente',
+                icon: '/manifest-admin.json',
+                vibrate: [200, 100, 200]
+            });
+            alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
+        } else {
+            alert('❌ Tu navegador no soporta Service Workers');
+        }
+    } catch (error) {
+        alert('❌ Error: ' + error.message);
+    }
 }
-if ('serviceWorker' in navigator) {
-const reg = await navigator.serviceWorker.ready;
-await reg.showNotification('🔔 ¡Prueba exitosa!', {
-body: 'Si ves esto, las notificaciones funcionan correctamente',
-icon: '/manifest-admin.json',
-vibrate: [200, 100, 200]
-});
-alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
-} else {
-alert('❌ Tu navegador no soporta Service Workers');
-}
-} catch (error) {
-alert('❌ Error: ' + error.message);
-}
-}
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
