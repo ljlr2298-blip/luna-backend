@@ -1,30 +1,28 @@
-from py_vapid import Vapid
-from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 import base64
+from cryptography.hazmat.primitives.asymmetric import ec
 
-# Generar claves
-vapid = Vapid()
-vapid.generate_keys()
+# 1. Generar clave privada
+private_key = ec.generate_private_key(ec.SECP256R1())
 
-# Convertir clave pública a Base64 (formato URL-safe)
-public_key_bytes = vapid.public_key.public_bytes(Encoding.X962, PublicFormat.UncompressedPoint)
-public_key_b64 = base64.urlsafe_b64encode(public_key_bytes).rstrip(b'=').decode('utf-8')
+# 2. Obtener clave pública en formato no comprimido (0x04 + x + y)
+public_numbers = private_key.public_key().public_numbers()
+x = public_numbers.x.to_bytes(32, byteorder='big')
+y = public_numbers.y.to_bytes(32, byteorder='big')
+uncompressed_public_key = b'\x04' + x + y
 
-# Convertir clave privada a Base64 (formato URL-safe)
-private_key_int = vapid.private_key.private_numbers().private_value
+# 3. Codificar en base64url (sin padding) para el frontend
+public_key_b64 = base64.urlsafe_b64encode(uncompressed_public_key).rstrip(b'=').decode('utf-8')
+
+# 4. Obtener clave privada en formato base64url para el backend
+private_key_int = private_key.private_numbers().private_value
 private_key_bytes = private_key_int.to_bytes(32, byteorder='big')
 private_key_b64 = base64.urlsafe_b64encode(private_key_bytes).rstrip(b'=').decode('utf-8')
 
 print("=" * 60)
-print("🔑 CLAVES VAPID GENERADAS")
+print("✅ CLAVES VAPID GENERADAS CORRECTAMENTE")
 print("=" * 60)
-print()
-print("CLAVE PÚBLICA (va en el frontend):")
+print("\n📱 === CLAVE PÚBLICA (para index.html) ===")
 print(public_key_b64)
-print()
-print("CLAVE PRIVADA (va en el backend):")
+print("\n🔒 === CLAVE PRIVADA (para app.py) ===")
 print(private_key_b64)
-print()
-print("=" * 60)
-print("⚠️  GUARDA ESTAS CLAVES, LAS NECESITARÁS EN LOS SIGUIENTES PASOS")
 print("=" * 60)

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from dotenv import load_dotenv
 from supabase import create_client, Client
-from pywebpush import webpush, WebPushException  # ✅ NUEVO: Librería para Push Notifications
+from pywebpush import webpush, WebPushException
 
 load_dotenv()
 
@@ -24,15 +24,14 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # ==========================================
 # CONFIGURACIÓN NOTIFICACIONES PUSH (VAPID)
 # ==========================================
-VAPID_PRIVATE_KEY = "F4DQW6rSHKBn6jblnB2LAX64O5WSz16IEZeeH0YA44g"
+# ✅ CLAVE PRIVADA ACTUALIZADA
+VAPID_PRIVATE_KEY = "n1QI6VsRe8aGkhrxX3pMpEkCU6qUUfFuNMWRvpUPjqc"
 VAPID_CLAIMS = {
-    "sub": "mailto:admin@lunadelivery.com"  # Cambia este correo por el tuyo real si quieres
+    "sub": "mailto:admin@lunadelivery.com"
 }
 
 def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
-    """Función auxiliar para enviar notificaciones a todos los admins suscritos"""
     try:
-        # 1. Obtener suscripciones guardadas en Supabase
         suscripciones = supabase.table('admin_push_subscriptions').select('*').execute()
         
         if not suscripciones.data:
@@ -41,7 +40,6 @@ def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
         
         print(f"📤 Enviando notificación a {len(suscripciones.data)} dispositivo(s)...")
         
-        # 2. Iterar y enviar a cada dispositivo
         for sub in suscripciones.data:
             try:
                 subscription_info = {
@@ -68,7 +66,6 @@ def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
                 
             except WebPushException as e:
                 print(f"❌ Error al enviar a {sub['endpoint'][:50]}: {e}")
-                # Si la suscripción expiró o fue revocada (410 Gone), la eliminamos de la BD
                 if e.response and e.response.status_code == 410:
                     supabase.table('admin_push_subscriptions').delete().eq('id', sub['id']).execute()
                     print(f"🗑️ Suscripción obsoleta eliminada: {sub['id']}")
@@ -77,7 +74,6 @@ def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
                 
     except Exception as e:
         print(f"❌ Error general en enviar_notificacion_push: {e}")
-
 
 # ==========================================
 # 2. RUTAS DE VISTAS (Frontend)
@@ -318,13 +314,12 @@ def api_guardar_pedido():
             "creado_en": datetime.now().isoformat()
         }).execute()
         
-        # ✅ NUEVO: DISPARAR NOTIFICACIÓN PUSH AL GUARDAR EL PEDIDO
+        # ✅ DISPARAR NOTIFICACIÓN PUSH AL GUARDAR EL PEDIDO
         try:
             titulo = f"🚨 Nuevo Pedido: {token}"
             mensaje = f"Marca: {marca_nombre_real}\nDestino: {data.get('destino', 'N/A')[:40]}"
             enviar_notificacion_push(titulo, mensaje, "/admin")
         except Exception as e:
-            # Si falla la notificación, no interrumpimos el guardado del pedido
             print(f"⚠️ Falló el envío de notificación push, pero el pedido se guardó: {e}")
         
         return jsonify({"result": token})
@@ -730,30 +725,52 @@ def api_obtener_resumen_rango():
     except Exception as e:
         return jsonify({"result": {"exito": False, "error": str(e)}}), 500
 
+# ==========================================
+# 10. APIs DE SUSCRIPCIÓN PUSH
+# ==========================================
 @app.route('/api/guardarSuscripcionPush', methods=['POST'])
 def api_guardar_suscripcion_push():
     try:
-        data = request.json
-        endpoint = data.get('endpoint')
-        p256dh = data.get('p256dh')
-        auth = data.get('auth')
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({"error": "No se recibieron datos"}), 400
+        
+        endpoint = data.get('endpoint', '').strip()
+        p256dh = data.get('p256dh', '').strip()
+        auth = data.get('auth', '').strip()
+        
+        print(f"📥 Recibiendo suscripción: endpoint={endpoint[:50]}...")
         
         if not endpoint or not p256dh or not auth:
+            print(f"❌ Datos incompletos")
             return jsonify({"error": "Datos de suscripción incompletos"}), 400
-            
-        supabase.table('admin_push_subscriptions').insert({
+        
+        # Verificar si ya existe
+        existing = supabase.table('admin_push_subscriptions').select('id').eq('endpoint', endpoint).execute()
+        
+        if existing.data and len(existing.data) > 0:
+            print(f"⚠️ Suscripción ya existe")
+            return jsonify({"exito": True, "mensaje": "Ya registrada", "duplicado": True})
+        
+        # Guardar en Supabase
+        result = supabase.table('admin_push_subscriptions').insert({
             "endpoint": endpoint,
             "p256dh": p256dh,
             "auth": auth
         }).execute()
         
-        return jsonify({"exito": True, "mensaje": "Suscripción guardada"})
+        print(f"✅ Suscripción guardada: {result.data}")
+        return jsonify({"exito": True, "mensaje": "Guardada", "data": result.data})
+        
     except Exception as e:
-        print(f"❌ Error guardando suscripción push: {e}")
-        return jsonify({"error": str(e)}), 500    
+        print(f"❌ Error en guardarSuscripcionPush: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
 # ==========================================
-# 10. CÁLCULO DE PRECIO (OSRM)
+# 11. CÁLCULO DE PRECIO (OSRM)
 # ==========================================
 def obtener_coordenadas(direccion_completa):
     url = f"https://nominatim.openstreetmap.org/search?format=json&q={direccion_completa}&countrycodes=mx&limit=1"
@@ -878,7 +895,7 @@ def api_calcular_precio():
         return jsonify({"result": {"error": str(e), "precio": 0, "km": 0}}), 500
 
 # ==========================================
-# 11. APIs DE PERFIL Y ZONAS
+# 12. APIs DE PERFIL Y ZONAS
 # ==========================================
 @app.route('/api/getMunicipios', methods=['GET'])
 def api_get_municipios():
@@ -1085,7 +1102,7 @@ def api_get_marcas_con_deuda():
         return jsonify({"result": []})
 
 # ==========================================
-# 12. INICIAR SERVIDOR
+# 13. INICIAR SERVIDOR
 # ==========================================
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

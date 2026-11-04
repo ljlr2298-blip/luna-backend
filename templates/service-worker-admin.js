@@ -1,55 +1,42 @@
 // Service Worker para notificaciones push (Modo Admin)
-const CACHE_NAME = 'luna-admin-v1';
-const urlsToCache = [
-  '/',
-  '/manifest-admin.json'
-];
+const CACHE_NAME = 'luna-admin-v2';
 
-// Instalar Service Worker
+// Instalar
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-  );
+  self.skipWaiting();
 });
 
-// Activar Service Worker
+// Activar
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+  self.clients.claim();
 });
 
 // ==========================================
 // MANEJO DE NOTIFICACIONES PUSH
 // ==========================================
 self.addEventListener('push', event => {
-  console.log('🔔 Notificación push recibida:', event);
+  console.log('🔔 Push recibido:', event);
   
-  let datos = { titulo: 'Luna Delivery', mensaje: 'Nuevo evento' };
+  let datos = { 
+    titulo: 'Luna Delivery', 
+    mensaje: 'Nuevo evento',
+    url: '/admin'
+  };
   
   try {
     if (event.data) {
       datos = event.data.json();
     }
   } catch (e) {
-    console.error('Error al parsear datos push:', e);
+    console.error('Error parseando push:', e);
   }
   
   const opciones = {
-    body: datos.mensaje || 'Tienes una nueva notificación',
-    icon: '/static/icon-192x192.png', // Tu logo
-    badge: '/static/badge-72x72.png', // Badge pequeño
+    body: datos.mensaje,
+    icon: 'https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w192',
+    badge: 'https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w72',
     vibrate: [200, 100, 200],
-    tag: 'luna-delivery-notification',
+    tag: 'luna-notification',
     requireInteraction: true,
     data: {
       url: datos.url || '/admin'
@@ -57,48 +44,28 @@ self.addEventListener('push', event => {
   };
   
   event.waitUntil(
-    self.registration.showNotification(datos.titulo || 'Luna Delivery', opciones)
+    self.registration.showNotification(datos.titulo, opciones)
   );
 });
 
-// ==========================================
-// CUANDO SE HACE CLIC EN LA NOTIFICACIÓN
-// ==========================================
+// Click en notificación
 self.addEventListener('notificationclick', event => {
-  console.log('️ Click en notificación:', event);
-  
+  console.log('Click notificación');
   event.notification.close();
   
-  const urlParaAbrir = event.notification.data?.url || '/admin';
+  const url = event.notification.data?.url || '/admin';
   
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then(windowClients => {
-        // Verificar si ya hay una ventana abierta
-        for (let client of windowClients) {
-          if (client.url === urlParaAbrir && 'focus' in client) {
+      .then(clients => {
+        for (let client of clients) {
+          if (client.url.includes('admin') && 'focus' in client) {
             return client.focus();
           }
         }
-        // Si no, abrir una nueva ventana
         if (clients.openWindow) {
-          return clients.openWindow(urlParaAbrir);
+          return clients.openWindow(url);
         }
-      })
-  );
-});
-
-// ==========================================
-// MANEJO DE FETCH (opcional, para offline)
-// ==========================================
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
       })
   );
 });
