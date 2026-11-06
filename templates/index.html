@@ -605,6 +605,7 @@ Para confirmar el pedido es necesario completar los siguientes campos obligatori
 <button class="btn btn-primary" onclick="cerrarModalErrorValidacion()" style="margin-bottom: 10px;">ENTENDIDO</button>
 </div>
 </div>
+
 <script>
 let marca = "", km = 0, origen = "", pedidosCache = [], esEdicion = false;
 let statusAdminActual = 'Pendiente', diaAdminActual = 'HOY';
@@ -1901,6 +1902,7 @@ try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(fa
 }
 }
 </script>
+
 <script>
 if ('serviceWorker' in navigator) {
 const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
@@ -1910,6 +1912,7 @@ navigator.serviceWorker.register(swFile)
 .catch(err => console.log('❌ Error SW:', err));
 }
 </script>
+
 <script>
 // ==========================================
 // LÓGICA DE NOTIFICACIONES PUSH (SOLO ADMIN)
@@ -1917,7 +1920,7 @@ navigator.serviceWorker.register(swFile)
 const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
 
 if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
-    // ✅ CLAVE PÚBLICA VAPID ACTUALIZADA
+    // ✅ CLAVE PÚBLICA VAPID NUEVA (debe coincidir con la privada en app.py)
     const VAPID_PUBLIC_KEY = 'BFnCZ2Xk4P41E_DcTrXr4LiTGT5EtGS6Dwonf40bHraPRDr2VeiZy_NtkwLbpa1QkO_JfIPr1stu7Z_6phgrI6g';
 
     function urlBase64ToUint8Array(base64String) {
@@ -1977,36 +1980,42 @@ if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in w
     setTimeout(solicitarPermisoNotificaciones, 2000);
 }
 </script>
+
 <div id="btn-test-notif" style="display:none; position:fixed; bottom:80px; right:20px; z-index:9998;">
-<button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
+    <button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
 </div>
+
 <script>
 if (document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') === 'admin') {
-document.getElementById('btn-test-notif').style.display = 'block';
+    document.getElementById('btn-test-notif').style.display = 'block';
 }
+
 async function probarNotificacion() {
-try {
-const permiso = await Notification.requestPermission();
-console.log('Permiso:', permiso);
-if (permiso !== 'granted') {
-alert('⚠️ Necesitas aceptar el permiso de notificaciones.');
-return;
-}
-if ('serviceWorker' in navigator) {
-const reg = await navigator.serviceWorker.ready;
-await reg.showNotification('🔔 ¡Prueba exitosa!', {
-body: 'Si ves esto, las notificaciones funcionan correctamente',
-icon: '/manifest-admin.json',
-vibrate: [200, 100, 200]
-});
-alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
-} else {
-alert('❌ Tu navegador no soporta Service Workers');
-}
-} catch (error) {
-alert('❌ Error: ' + error.message);
-}
+    try {
+        const permiso = await Notification.requestPermission();
+        console.log('Permiso:', permiso);
+        
+        if (permiso !== 'granted') {
+            alert('⚠️ Necesitas aceptar el permiso de notificaciones.');
+            return;
+        }
+        
+        if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.ready;
+            await reg.showNotification('🔔 ¡Prueba exitosa!', {
+                body: 'Si ves esto, las notificaciones funcionan correctamente',
+                icon: '/manifest-admin.json',
+                vibrate: [200, 100, 200]
+            });
+            alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
+        } else {
+            alert('❌ Tu navegador no soporta Service Workers');
+        }
+    } catch (error) {
+        alert('❌ Error: ' + error.message);
+    }
 }
 </script>
+
 </body>
 </html>

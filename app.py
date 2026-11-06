@@ -24,7 +24,6 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # ==========================================
 # CONFIGURACIÓN NOTIFICACIONES PUSH (VAPID)
 # ==========================================
-# ✅ CLAVE PRIVADA ACTUALIZADA
 VAPID_PRIVATE_KEY = "n1QI6VsRe8aGkhrxX3pMpEkCU6qUUfFuNMWRvpUPjqc"
 VAPID_CLAIMS = {
     "sub": "mailto:admin@lunadelivery.com"
@@ -33,7 +32,6 @@ VAPID_CLAIMS = {
 def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
     try:
         suscripciones = supabase.table('admin_push_subscriptions').select('*').execute()
-        
         if not suscripciones.data:
             print("⚠️ No hay suscripciones de push guardadas en la BD.")
             return
@@ -314,7 +312,6 @@ def api_guardar_pedido():
             "creado_en": datetime.now().isoformat()
         }).execute()
         
-        # ✅ DISPARAR NOTIFICACIÓN PUSH AL GUARDAR EL PEDIDO
         try:
             titulo = f"🚨 Nuevo Pedido: {token}"
             mensaje = f"Marca: {marca_nombre_real}\nDestino: {data.get('destino', 'N/A')[:40]}"
@@ -732,7 +729,6 @@ def api_obtener_resumen_rango():
 def api_guardar_suscripcion_push():
     try:
         data = request.get_json()
-        
         if not data:
             return jsonify({"error": "No se recibieron datos"}), 400
         
@@ -746,14 +742,11 @@ def api_guardar_suscripcion_push():
             print(f"❌ Datos incompletos")
             return jsonify({"error": "Datos de suscripción incompletos"}), 400
         
-        # Verificar si ya existe
         existing = supabase.table('admin_push_subscriptions').select('id').eq('endpoint', endpoint).execute()
-        
         if existing.data and len(existing.data) > 0:
             print(f"⚠️ Suscripción ya existe")
             return jsonify({"exito": True, "mensaje": "Ya registrada", "duplicado": True})
         
-        # Guardar en Supabase
         result = supabase.table('admin_push_subscriptions').insert({
             "endpoint": endpoint,
             "p256dh": p256dh,
