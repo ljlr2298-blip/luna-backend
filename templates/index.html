@@ -605,7 +605,6 @@ Para confirmar el pedido es necesario completar los siguientes campos obligatori
 <button class="btn btn-primary" onclick="cerrarModalErrorValidacion()" style="margin-bottom: 10px;">ENTENDIDO</button>
 </div>
 </div>
-
 <script>
 let marca = "", km = 0, origen = "", pedidosCache = [], esEdicion = false;
 let statusAdminActual = 'Pendiente', diaAdminActual = 'HOY';
@@ -1902,7 +1901,6 @@ try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(fa
 }
 }
 </script>
-
 <script>
 if ('serviceWorker' in navigator) {
 const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
@@ -1912,7 +1910,6 @@ navigator.serviceWorker.register(swFile)
 .catch(err => console.log('❌ Error SW:', err));
 }
 </script>
-
 <script>
 // ==========================================
 // LÓGICA DE NOTIFICACIONES PUSH (SOLO ADMIN)
@@ -1920,7 +1917,7 @@ navigator.serviceWorker.register(swFile)
 const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
 
 if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
-    // ✅ CLAVE PÚBLICA VAPID NUEVA (debe coincidir con la privada en app.py)
+    // ✅ CLAVE PÚBLICA VAPID ACTUALIZADA
     const VAPID_PUBLIC_KEY = 'BFnCZ2Xk4P41E_DcTrXr4LiTGT5EtGS6Dwonf40bHraPRDr2VeiZy_NtkwLbpa1QkO_JfIPr1stu7Z_6phgrI6g';
 
     function urlBase64ToUint8Array(base64String) {
