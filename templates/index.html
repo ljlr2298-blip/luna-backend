@@ -1977,26 +1977,21 @@ if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in w
     setTimeout(solicitarPermisoNotificaciones, 2000);
 }
 </script>
-
 <div id="btn-test-notif" style="display:none; position:fixed; bottom:80px; right:20px; z-index:9998;">
     <button onclick="probarNotificacion()" style="background:#10b981; color:white; border:none; padding:12px 16px; border-radius:50px; font-weight:700; box-shadow:0 4px 12px rgba(0,0,0,0.2);">🔔 Probar Notificación</button>
 </div>
-
 <script>
 if (document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') === 'admin') {
     document.getElementById('btn-test-notif').style.display = 'block';
 }
-
 async function probarNotificacion() {
     try {
         const permiso = await Notification.requestPermission();
         console.log('Permiso:', permiso);
-        
         if (permiso !== 'granted') {
             alert('⚠️ Necesitas aceptar el permiso de notificaciones.');
             return;
         }
-        
         if ('serviceWorker' in navigator) {
             const reg = await navigator.serviceWorker.ready;
             await reg.showNotification('🔔 ¡Prueba exitosa!', {
@@ -2013,6 +2008,5 @@ async function probarNotificacion() {
     }
 }
 </script>
-
 </body>
 </html>
