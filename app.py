@@ -22,13 +22,63 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ==========================================
+# CONFIGURACIÓN MAPBOX
+# ==========================================
+MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN", "pk.eyJ1IjoibGpsci0yMjk4IiwiYSI6ImNtdzVoNW5mOTA4bGkyeHBwM2R2d3hrNzMifQ.s_08G28bphByeekVHTrXgA")
+
+# ==========================================
 # CONFIGURACIÓN NOTIFICACIONES PUSH (VAPID)
 # ==========================================
-VAPID_PRIVATE_KEY = "n1QI6VsRe8aGkhrxX3pMpEkCU6qUUfFuNMWRvpUPjqc"
+VAPID_PRIVATE_KEY = os.getenv("VAPID_PRIVATE_KEY", "n1QI6VsRe8aGkhrxX3pMpEkCU6qUUfFuNMWRvpUPjqc")
 VAPID_CLAIMS = {
     "sub": "mailto:admin@lunadelivery.com"
 }
 
+# ==========================================
+# FUNCIÓN HELPER: GEOCODIFICAR CON MAPBOX
+# ==========================================
+def geocodificar_con_mapbox(direccion_completa):
+    """
+    Convierte una dirección de texto en coordenadas GPS usando Mapbox
+    Retorna: (latitud, longitud) o (None, None) si falla
+    """
+    try:
+        direccion_limpia = direccion_completa.strip()
+        if not direccion_limpia:
+            return None, None
+        
+        if "jalisco" not in direccion_limpia.lower() and "mexico" not in direccion_limpia.lower():
+            direccion_limpia += ", Jalisco, Mexico"
+        
+        direccion_codificada = requests.utils.quote(direccion_limpia)
+        
+        url = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{direccion_codificada}.json"
+        params = {
+            "access_token": MAPBOX_TOKEN,
+            "limit": 1,
+            "country": "mx"
+        }
+        
+        response = requests.get(url, params=params, timeout=5)
+        data = response.json()
+        
+        if data.get("features") and len(data["features"]) > 0:
+            coordenadas = data["features"][0]["center"]
+            lng = float(coordenadas[0])
+            lat = float(coordenadas[1])
+            print(f"✅ Mapbox geocodificó: {direccion_limpia} → ({lat}, {lng})")
+            return lat, lng
+        else:
+            print(f"⚠️ Mapbox no encontró: {direccion_limpia}")
+            return None, None
+            
+    except Exception as e:
+        print(f"❌ Error geocodificando con Mapbox: {e}")
+        return None, None
+
+# ==========================================
+# FUNCIÓN: ENVIAR NOTIFICACIONES PUSH
+# ==========================================
 def enviar_notificacion_push(titulo, mensaje, url_destino="/admin"):
     try:
         suscripciones = supabase.table('admin_push_subscriptions').select('*').execute()
@@ -159,13 +209,35 @@ def api_validar_acc_access():
 def api_registrar_marca():
     try:
         data = json.loads(request.args.get('arg0', '{}'))
+        
+        # NUEVO: Si vienen coordenadas del frontend (Mapbox), usarlas directamente
+        lat = data.get('lat')
+        lng = data.get('lng')
+        direccion = data.get('direccion_completa', '')
+        
+        # Si NO vienen coordenadas, geocodificar la dirección (compatibilidad con marcas viejas)
+        if not lat or not lng:
+            if data.get('calle'):
+                direccion_completa = f"{data.get('calle', '')}, {data.get('colonia', '')}, CP {data.get('cp', '')}, {data.get('mun', '')}, Jalisco, Mexico"
+            else:
+                direccion_completa = direccion
+            lat, lng = geocodificar_con_mapbox(direccion_completa)
+        
         supabase.table('marcas').insert({
-            "nombre": data.get('m'), "municipio": data.get('mun'), "cp": data.get('cp'),
-            "colonia": data.get('col'), "calle": data.get('calle'), "telefono": data.get('tel'),
-            "password_hash": data.get('pass')
+            "nombre": data.get('m'),
+            "calle": direccion,
+            "municipio": data.get('mun', ''),
+            "cp": data.get('cp', ''),
+            "colonia": data.get('col', ''),
+            "telefono": data.get('tel'),
+            "password_hash": data.get('pass'),
+            "marca_lat": lat,
+            "marca_lng": lng
         }).execute()
+        
         return jsonify({"result": True})
     except Exception as e:
+        print(f"❌ Error en registrarMarca: {e}")
         return jsonify({"result": {"error": str(e)}}), 500
 
 @app.route('/api/actualizarPassword', methods=['GET'])
@@ -272,7 +344,9 @@ def api_get_pedidos():
                 "prioridad": int(row.get('prioridad', 999) or 999), "estadoPago": row.get('estado_pago', 'Pendiente'),
                 "tipoServicio": row.get('tipo_servicio', 'enviar'), "direccionProveedor": row.get('direccion_proveedor', ''),
                 "repartidor": row.get('repartidor_id', ''), "ordenEntrega": row.get('orden_entrega'),
-                "fila": row.get('id'), "fecha": row.get('creado_en'), "idPedido": row.get('token', '')
+                "fila": row.get('id'), "fecha": row.get('creado_en'), "idPedido": row.get('token', ''),
+                "destino_lat": row.get('destino_lat'), "destino_lng": row.get('destino_lng'),
+                "origen_lat": row.get('origen_lat'), "origen_lng": row.get('origen_lng')
             })
         
         return jsonify({"result": pedidos})
@@ -309,7 +383,12 @@ def api_guardar_pedido():
             "estado_pago": "Pendiente", 
             "dia_programado": "Por asignar", 
             "prioridad": 999,
-            "creado_en": datetime.now().isoformat()
+            "creado_en": datetime.now().isoformat(),
+            "destino_lat": data.get('destino_lat'),
+            "destino_lng": data.get('destino_lng'),
+            "origen_lat": data.get('origen_lat'),
+            "origen_lng": data.get('origen_lng'),
+            "direccion_proveedor": data.get('direccionProveedor', '')
         }).execute()
         
         try:
@@ -330,7 +409,9 @@ def api_actualizar_pedido():
         supabase.table('pedidos').update({
             "origen": data.get('origen'), "destino": data.get('destino'), "precio": data.get('precio'),
             "recibe_nombre": data.get('recibe'), "recibe_celular": data.get('celular'), "comentarios": data.get('coments'),
-            "km": data.get('km'), "tipo_servicio": data.get('tipoServicio'), "direccion_proveedor": data.get('direccionProveedor')
+            "km": data.get('km'), "tipo_servicio": data.get('tipoServicio'), "direccion_proveedor": data.get('direccionProveedor'),
+            "destino_lat": data.get('destino_lat'), "destino_lng": data.get('destino_lng'),
+            "origen_lat": data.get('origen_lat'), "origen_lng": data.get('origen_lng')
         }).eq('id', int(data.get('fila'))).execute()
         return jsonify({"result": True})
     except Exception as e:
@@ -763,20 +844,8 @@ def api_guardar_suscripcion_push():
         return jsonify({"error": str(e)}), 500
 
 # ==========================================
-# 11. CÁLCULO DE PRECIO (OSRM)
+# 11. CÁLCULO DE PRECIO (OSRM + COORDENADAS FIJAS)
 # ==========================================
-def obtener_coordenadas(direccion_completa):
-    url = f"https://nominatim.openstreetmap.org/search?format=json&q={direccion_completa}&countrycodes=mx&limit=1"
-    headers = {'User-Agent': 'LunaDeliveryApp/1.0'}
-    try:
-        response = requests.get(url, headers=headers, timeout=5)
-        data = response.json()
-        if data and len(data) > 0:
-            return float(data[0]['lat']), float(data[0]['lon'])
-    except Exception:
-        pass
-    return None, None
-
 def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino):
     try:
         url = f"http://router.project-osrm.org/route/v1/driving/{lon_origen},{lat_origen};{lon_destino},{lat_destino}?overview=false"
@@ -786,6 +855,8 @@ def calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_de
             return data['routes'][0]['distance'] / 1000.0
     except Exception:
         pass
+    
+    # Fallback: distancia en línea recta (Haversine)
     R = 6371.0
     lat1_rad, lon1_rad = math.radians(lat_origen), math.radians(lon_origen)
     lat2_rad, lon2_rad = math.radians(lat_destino), math.radians(lon_destino)
@@ -800,48 +871,122 @@ def api_calcular_precio():
         marca = request.args.get('arg1', '').strip()
         tipo_origen = request.args.get('arg2', 'marca')
         cp_destino = request.args.get('arg3', '')
+        lat_destino_input = request.args.get('arg4', '').strip()
+        lng_destino_input = request.args.get('arg5', '').strip()
         
         marca_norm = marca.lower().replace('&', 'and').replace(' ', '')
         
         if 'hane' in marca_norm and 'beauty' in marca_norm:
             return jsonify({"result": {"precio": 90, "km": 0, "origen": "Fijo", "tarifaEspecial": True}})
-            
-        origen_completo = ""
-        destino_completo = ""
         
-        if tipo_origen == "recibir":
-            origen_completo = destino_input + ", Jalisco, Mexico"
-            marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
-            if marca_response.data:
-                m = marca_response.data[0]
-                destino_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
-            else:
-                return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
-        elif tipo_origen == "hub":
-            origen_completo = "Manuel M. Dieguez 236, Jocotan, Zapopan, Jalisco, Mexico"
-            destino_completo = destino_input + ", Jalisco, Mexico"
+        # ==========================================
+        # OBTENER COORDENADAS DEL ORIGEN
+        # ==========================================
+        lat_origen = None
+        lng_origen = None
+        origen_texto = ""
+        lat_destino = None
+        lng_destino = None
+        destino_texto = ""
+        
+        if tipo_origen == "hub":
+            # Coordenadas fijas del Hub Luna
+            lat_origen = 20.6736
+            lng_origen = -103.3942
+            origen_texto = "Manuel M. Dieguez 236, Jocotan, Zapopan, Jalisco, Mexico"
+            
             if cp_destino in ['45000', '45010', '45020']:
-                return jsonify({"result": {"precio": 75, "km": "N/A (Fijo)", "origen": origen_completo}})
-        else:
-            marca_response = supabase.table('marcas').select('calle, colonia, cp, municipio').ilike('nombre', marca).execute()
+                return jsonify({"result": {"precio": 75, "km": "N/A (Fijo)", "origen": origen_texto}})
+            
+            destino_texto = destino_input + ", Jalisco, Mexico"
+        
+        elif tipo_origen == "recibir":
+            # Modo "Recibir": El origen es el proveedor (coordenadas del frontend)
+            if lat_destino_input and lng_destino_input:
+                lat_origen = float(lat_destino_input)
+                lng_origen = float(lng_destino_input)
+                origen_texto = destino_input
+            
+            # El destino es la tienda de la marca
+            marca_response = supabase.table('marcas').select('id, calle, colonia, cp, municipio, marca_lat, marca_lng').ilike('nombre', marca).execute()
             if marca_response.data:
                 m = marca_response.data[0]
-                origen_completo = f"{m.get('calle', '')}, {m.get('colonia', '')}, {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
+                destino_texto = f"{m.get('calle', '')}, {m.get('colonia', '')}, CP {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
+                
+                # Usar coordenadas guardadas de la marca
+                if m.get('marca_lat') and m.get('marca_lng'):
+                    lat_destino = float(m['marca_lat'])
+                    lng_destino = float(m['marca_lng'])
+                    print(f"✅ Usando coordenadas guardadas de la marca: ({lat_destino}, {lng_destino})")
+                else:
+                    # Geocodificar al vuelo y guardar
+                    lat_destino, lng_destino = geocodificar_con_mapbox(destino_texto)
+                    if lat_destino and lng_destino:
+                        supabase.table('marcas').update({
+                            "marca_lat": lat_destino,
+                            "marca_lng": lng_destino
+                        }).eq('id', m['id']).execute()
+                        print(f"✅ Coordenadas de marca geocodificadas y guardadas: ({lat_destino}, {lng_destino})")
             else:
                 return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
-            destino_completo = destino_input + ", Jalisco, Mexico"
-
-        lat_origen, lon_origen = obtener_coordenadas(origen_completo)
-        lat_destino, lon_destino = obtener_coordenadas(destino_completo)
         
-        km_reales = 10.0
-        if lat_origen and lat_destino:
-            km_reales = calcular_distancia_por_carretera(lat_origen, lon_origen, lat_destino, lon_destino)
-        else:
-            km_reales = 15.0
+        else:  # tipo_origen == "marca"
+            # Modo "Enviar": El origen es la tienda de la marca
+            marca_response = supabase.table('marcas').select('id, calle, colonia, cp, municipio, marca_lat, marca_lng').ilike('nombre', marca).execute()
+            if marca_response.data:
+                m = marca_response.data[0]
+                origen_texto = f"{m.get('calle', '')}, {m.get('colonia', '')}, CP {m.get('cp', '')}, {m.get('municipio', '')}, Jalisco, Mexico"
+                
+                # Usar coordenadas guardadas de la marca
+                if m.get('marca_lat') and m.get('marca_lng'):
+                    lat_origen = float(m['marca_lat'])
+                    lng_origen = float(m['marca_lng'])
+                    print(f"✅ Usando coordenadas guardadas de la marca: ({lat_origen}, {lng_origen})")
+                else:
+                    # Geocodificar al vuelo y guardar
+                    lat_origen, lng_origen = geocodificar_con_mapbox(origen_texto)
+                    if lat_origen and lng_origen:
+                        supabase.table('marcas').update({
+                            "marca_lat": lat_origen,
+                            "marca_lng": lng_origen
+                        }).eq('id', m['id']).execute()
+                        print(f"✅ Coordenadas de marca geocodificadas y guardadas: ({lat_origen}, {lng_origen})")
+            else:
+                return jsonify({"result": {"precio": "Marca no registrada", "km": 0}})
             
+            destino_texto = destino_input + ", Jalisco, Mexico"
+        
+        # ==========================================
+        # OBTENER COORDENADAS DEL DESTINO
+        # ==========================================
+        if tipo_origen != "recibir":
+            # Para modo "enviar", el destino viene del frontend (Mapbox)
+            if lat_destino_input and lng_destino_input:
+                try:
+                    lat_destino = float(lat_destino_input)
+                    lng_destino = float(lng_destino_input)
+                    print(f"✅ Usando coordenadas de Mapbox para destino: ({lat_destino}, {lng_destino})")
+                except:
+                    lat_destino, lng_destino = geocodificar_con_mapbox(destino_texto)
+            else:
+                # Fallback: geocodificar texto
+                lat_destino, lng_destino = geocodificar_con_mapbox(destino_texto)
+        
+        # ==========================================
+        # CALCULAR DISTANCIA
+        # ==========================================
+        if lat_origen and lng_origen and lat_destino and lng_destino:
+            km_reales = calcular_distancia_por_carretera(lat_origen, lng_origen, lat_destino, lng_destino)
+            print(f"✅ Distancia calculada: {km_reales:.2f} km")
+        else:
+            print(f"⚠️ Faltan coordenadas. Origen: ({lat_origen}, {lng_origen}), Destino: ({lat_destino}, {lng_destino})")
+            km_reales = 5.0  # Valor por defecto más razonable
+        
         km_cobrar = math.floor(km_reales)
         
+        # ==========================================
+        # BUSCAR TARIFA
+        # ==========================================
         es_premium = any(p in marca_norm for p in ['vsbeauty', 'aleayala', 'alejoyeria'])
         tabla_tarifas = 'tarifas_premiun' if es_premium else 'tarifas_generales'
         
@@ -869,14 +1014,14 @@ def api_calcular_precio():
                     break
                     
             if precio_encontrado is None:
-                precio_encontrado = tarifas[-1]['precio'] if tarifas else 0
+                precio_encontrado = tarifas[0]['precio'] if tarifas else 0
                 
             return jsonify({"result": {
                 "precio": precio_encontrado, 
                 "km": km_cobrar, 
                 "km_reales": round(km_reales, 2),
-                "origen": origen_completo, 
-                "destino": destino_completo, 
+                "origen": origen_texto, 
+                "destino": destino_texto,
                 "tarifaEspecial": False,
                 "tipoTarifa": tabla_tarifas
             }})
@@ -885,6 +1030,8 @@ def api_calcular_precio():
             return jsonify({"result": {"precio": 0, "km": km_cobrar, "debug": str(e)}})
     except Exception as e:
         print(f"❌ Error general: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({"result": {"error": str(e), "precio": 0, "km": 0}}), 500
 
 # ==========================================
@@ -925,7 +1072,8 @@ def api_obtener_perfil():
                 "exito": True, "marca": row.get('nombre'), "municipio": row.get('municipio'), 
                 "cp": row.get('cp'), "colonia": row.get('colonia'), "calle": row.get('calle'), 
                 "telefono": row.get('telefono'), "logo": row.get('logo_url') or "", 
-                "slogan": row.get('slogan') or ""
+                "slogan": row.get('slogan') or "",
+                "marca_lat": row.get('marca_lat'), "marca_lng": row.get('marca_lng')
             }})
         return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
     except Exception as e:
@@ -939,7 +1087,7 @@ def api_guardar_perfil():
         mime = request.args.get('arg2', 'image/jpeg')
         slogan = request.args.get('arg3', '')
         
-        response = supabase.table('marcas').select('id').ilike('nombre', marca).execute()
+        response = supabase.table('marcas').select('id, calle, colonia, cp, municipio').ilike('nombre', marca).execute()
         if not response.data:
             return jsonify({"result": {"exito": False, "mensaje": "Marca no encontrada"}})
         
@@ -1010,12 +1158,20 @@ def api_guardar_proveedor():
 def api_get_direccion_tienda():
     marca = request.args.get('arg0', '').strip()
     try:
-        response = supabase.table('marcas').select('calle, colonia, municipio, cp').ilike('nombre', marca).execute()
+        response = supabase.table('marcas').select('calle, colonia, municipio, cp, marca_lat, marca_lng').ilike('nombre', marca).execute()
         if response.data:
             row = response.data[0]
+            direccion = row.get('calle', '')
+            # Si la dirección ya viene completa de Mapbox, usarla tal cual
+            if ',' in direccion and 'jalisco' in direccion.lower():
+                direccion_completa = direccion
+            else:
+                direccion_completa = f"{row.get('calle', '')}, {row.get('colonia', '')}, CP {row.get('cp', '')}, {row.get('municipio', '')}, Jalisco, Mexico"
             return jsonify({"result": {
                 "exito": True, 
-                "direccionCompleta": f"{row.get('calle', '')}, {row.get('colonia', '')}, CP {row.get('cp', '')}, {row.get('municipio', '')}, Jalisco, Mexico"
+                "direccionCompleta": direccion_completa,
+                "lat": row.get('marca_lat'),
+                "lng": row.get('marca_lng')
             }})
         return jsonify({"result": {"exito": False}})
     except Exception:
