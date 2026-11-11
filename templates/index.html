@@ -17,15 +17,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <!-- ✅ MAPBOX GL JS -->
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
-
 <!-- ✅ MAPBOX GEOCODER -->
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css' type='text/css' />
-
 <style>
 :root { --primary: #0f172a; --primary-light: #1e293b; --accent: #6366f1; --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); --accent-shadow: rgba(99, 102, 241, 0.3); --success: #10b981; --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%); --warning: #f59e0b; --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); --danger: #ef4444; --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); --bg: #fafbfc; --bg-card: #ffffff; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; --shadow-sm: 0 2px 8px rgba(0,0,0,0.04); --shadow-md: 0 4px 16px rgba(0,0,0,0.08); --shadow-lg: 10px 40px -10px rgba(0,0,0,0.15); --shadow-accent: 0 8px 24px rgba(99, 102, 241, 0.25); --radius-sm: 12px; --radius-md: 16px; --radius-lg: 24px; --radius-xl: 32px; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
@@ -193,82 +190,69 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 .busca-box { margin-top: 16px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; text-align: left; }
 .live-indicator { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #10b981; border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 8px; font-size: 11px; font-weight: 700; color: #166534; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
-
-/* ✅ ESTILOS PARA MAPBOX GEOCODER - LUPA A LA IZQUIERDA */
-/* ✅ ESTILOS PARA MAPBOX GEOCODER - MISMO TAMAÑO QUE LOS DEMÁS INPUTS */
 /* ✅ ESTILOS PARA MAPBOX GEOCODER - MISMO TAMAÑO QUE LOS DEMÁS INPUTS */
 .mapbox-container .mapboxgl-ctrl-geocoder {
-    min-width: 100% !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    border-radius: var(--radius-sm) !important;
-    border: 2px solid var(--border) !important;
-    box-shadow: none !important;
-    font-family: 'Inter', sans-serif !important;
-    background: var(--bg) !important;
-    font-size: 16px !important;
-    margin-bottom: 0 !important;
+min-width: 100% !important;
+max-width: 100% !important;
+width: 100% !important;
+border-radius: var(--radius-sm) !important;
+border: 2px solid var(--border) !important;
+box-shadow: none !important;
+font-family: 'Inter', sans-serif !important;
+background: var(--bg) !important;
+font-size: 16px !important;
+margin-bottom: 0 !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder input {
-    font-size: 16px !important;
-    padding: 14px 16px 14px 44px !important;
-    font-family: 'Inter', sans-serif !important;
-    color: var(--text) !important;
-    background: var(--bg) !important;
-    height: auto !important;
-    min-height: 48px !important;
-    width: 100% !important;
+font-size: 16px !important;
+padding: 14px 16px 14px 44px !important;
+font-family: 'Inter', sans-serif !important;
+color: var(--text) !important;
+background: var(--bg) !important;
+height: auto !important;
+min-height: 48px !important;
+width: 100% !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder input::placeholder {
-    color: var(--text-muted) !important;
-    font-size: 16px !important;
+color: var(--text-muted) !important;
+font-size: 16px !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder:focus-within {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
-    background: #fff !important;
+border-color: var(--accent) !important;
+box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+background: #fff !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder input:focus {
-    background: #fff !important;
+background: #fff !important;
 }
-
 /* Lupa a la izquierda */
 .mapbox-container .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--icon {
-    left: 12px !important;
-    right: auto !important;
-    top: 14px !important;
-    width: 20px !important;
-    height: 20px !important;
+left: 12px !important;
+right: auto !important;
+top: 14px !important;
+width: 20px !important;
+height: 20px !important;
 }
-
 /* Botón de limpiar (X) a la derecha */
 .mapbox-container .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--button {
-    right: 8px !important;
-    left: auto !important;
-    top: 10px !important;
+right: 8px !important;
+left: auto !important;
+top: 10px !important;
 }
-
 /* Sugerencias de autocompletado */
 .mapbox-container .mapboxgl-ctrl-geocoder--suggestion {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 14px !important;
-    padding: 10px 16px !important;
+font-family: 'Inter', sans-serif !important;
+font-size: 14px !important;
+padding: 10px 16px !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder--suggestion-title {
-    font-size: 14px !important;
-    font-weight: 600 !important;
+font-size: 14px !important;
+font-weight: 600 !important;
 }
-
 .mapbox-container .mapboxgl-ctrl-geocoder--suggestion-address {
-    font-size: 12px !important;
-    color: var(--text-muted) !important;
+font-size: 12px !important;
+color: var(--text-muted) !important;
 }
-
 @media (max-width: 480px) { .admin-status-filters { gap: 6px; } .status-filter-btn { padding: 10px 4px; font-size: 9px; } .filter-icon { font-size: 16px; } .card.pedido-admin { padding: 12px; margin-bottom: 8px; } .fab-refresh { width: 48px; height: 48px; } }
 </style>
 </head>
@@ -403,12 +387,10 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <select id="c_destinatario" onchange="seleccionarDestinatario()" style="background:#fff; border-color:var(--accent); font-weight:600;"><option value="">— Seleccionar destinatario —</option></select>
 <small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;">💡 Al seleccionar, se rellenará la dirección automáticamente.</small>
 </div>
-
 <!-- ✅ CAMPOS OCULTOS PARA COORDENADAS DE MAPBOX -->
 <input type="hidden" id="destino_lat" value="">
 <input type="hidden" id="destino_lng" value="">
 <input type="hidden" id="destino_completo" value="">
-
 <!-- ✅ CONTENEDOR DEL GEOCODIFICADOR DE DESTINO -->
 <div id="grupo_destino_mapbox" class="mapbox-container">
 <div class="form-group">
@@ -416,21 +398,18 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <div id="geocoder-destino" style="position: relative; min-height: 50px; margin-bottom: 12px;"></div>
 <small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;">💡 Escribe la dirección completa (calle, número, colonia)</small>
 </div>
-
 <!-- ✅ NUEVO CAMPO: Número Interior (solo informativo) -->
 <div class="form-group" style="margin-top: 10px;">
 <label>🏢 Número Interior</label>
 <input type="text" id="destino_interior" placeholder="Ej: Depto 302, Casa 57, Int. B" style="background: #fff;">
 <small style="font-size:10px; color:var(--text-muted); display:block; margin-top:8px;">ℹ️ Este dato NO afecta el cálculo de kilómetros, solo es informativo para el repartidor.</small>
 </div>
-
 <div id="destino-preview" style="background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%); padding: 12px; border-radius: var(--radius-sm); margin-top: 12px; display: none; border-left: 4px solid var(--accent);">
 <div style="font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 6px;">📍 Dirección seleccionada:</div>
 <div id="destino-texto" style="font-size: 12px; color: var(--text);"></div>
 </div>
 </div>
 </div>
-
 <div id="modo_recibir_contenido" style="display:none;">
 <div class="ruta-2-puntos">
 <div style="font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 12px; text-align: center;">🚚 RUTA DE RECOLECCIÓN</div>
@@ -441,12 +420,10 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <select id="c_proveedor" onchange="seleccionarProveedor()" style="background:#fff; border-color:#f59e0b; font-weight:600;"><option value="">— Seleccionar proveedor —</option></select>
 <small style="font-size:10px; color:#92400e; display:block; margin-top:8px;">💡 Selecciona un proveedor guardado o ingresa uno nuevo.</small>
 </div>
-
 <!-- ✅ CAMPOS OCULTOS PARA COORDENADAS DE ORIGEN -->
 <input type="hidden" id="origen_lat" value="">
 <input type="hidden" id="origen_lng" value="">
 <input type="hidden" id="origen_completo" value="">
-
 <!-- ✅ CONTENEDOR DEL GEOCODIFICADOR DE ORIGEN -->
 <div id="grupo_origen_mapbox" class="mapbox-container">
 <div class="form-group">
@@ -593,6 +570,8 @@ h1, h2, h3 { background: var(--accent-gradient); -webkit-background-clip: text; 
 <h2 style="font-weight:900; margin-bottom:18px; font-size: 22px;">⚙️ Opciones</h2>
 <button class="btn" id="btn_gps_global" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); color:#fff;" onclick="activarGPSGlobal()">🛰️ Activar GPS Global</button>
 <div id="gps_status" style="font-size:11px; color:var(--danger); font-weight:700; text-align:left; margin-bottom:18px;">⚠️ GPS Inactivo</div>
+<!-- ✅ NUEVO BOTÓN PARA PROBAR NOTIFICACIONES -->
+<button class="btn btn-outline" onclick="probarNotificacionManual()">🔔 Activar / Probar Notificaciones Push</button>
 <button class="btn btn-outline" onclick="mostrarInstruccionesInstalacion()">📲 Agregar a Pantalla de Inicio</button>
 <button class="btn btn-outline" onclick="ver('v_bienvenida'); location.reload();">🚪 Cerrar Sesión</button>
 </div>
@@ -715,9 +694,15 @@ Para confirmar el pedido es necesario completar los siguientes campos obligatori
 <button class="btn btn-primary" onclick="cerrarModalErrorValidacion()" style="margin-bottom: 10px;">ENTENDIDO</button>
 </div>
 </div>
+
+<!-- ========================================== -->
+<!-- SCRIPTS PRINCIPALES (Sin modificar tu cimiento) -->
+<!-- ========================================== -->
 <script>
 // ✅ CONFIGURACIÓN DE MAPBOX
 mapboxgl.accessToken = 'pk.eyJ1IjoibGpsci0yMjk4IiwiYSI6ImNtdzVoNW5mOTA4bGkyeHBwM2R2d3hrNzMifQ.s_08G28bphByeekVHTrXgA';
+if (typeof mapboxgl === 'undefined') { console.error('❌ Mapbox GL JS no está cargado'); } else { console.log('✅ Mapbox GL JS cargado correctamente'); }
+if (typeof MapboxGeocoder === 'undefined') { console.error('❌ MapboxGeocoder no está cargado'); } else { console.log('✅ MapboxGeocoder cargado correctamente'); }
 
 let marca = "", km = 0, origen = "", pedidosCache = [], esEdicion = false;
 let statusAdminActual = 'Pendiente', diaAdminActual = 'HOY';
@@ -731,8 +716,6 @@ let routeCounts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles':
 let marcasCobrosCache = [];
 let ultimaActualizacion = null;
 let intervaloActualizacion = null;
-
-// ✅ VARIABLES PARA GEOCODIFICADORES
 let geocoderDestino = null;
 let geocoderOrigen = null;
 
@@ -756,6 +739,7 @@ console.error("Error en gs:", func, err);
 throw err;
 });
 }
+
 function showToast(msg, type) {
 type = type || 'info';
 const toast = document.createElement('div');
@@ -765,21 +749,26 @@ document.body.appendChild(toast);
 setTimeout(() => toast.classList.add('show'), 10);
 setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3500);
 }
+
 function showConfirm(message) { return Promise.resolve(confirm(message)); }
 function normalizarTexto(t) { return (t || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
 window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredPrompt = e; });
+
 function ver(id) {
 document.querySelectorAll('.seccion').forEach(s => s.style.display = 'none');
 let el = document.getElementById(id);
 if (el) { el.style.display = 'block'; el.style.animation = 'slideUp 0.4s ease-out'; }
 window.scrollTo(0, 0);
 }
+
 function loading(v) { document.getElementById('loader').style.display = v ? 'flex' : 'none'; }
+
 function fill(id, d) {
 let h = '<option value="">...</option>';
 if (d && Array.isArray(d)) d.forEach(i => h += '<option value="' + i + '">' + i + '</option>');
 document.getElementById(id).innerHTML = h;
 }
+
 function destruirMapa() {
 if (mapaCliente) { mapaCliente.remove(); mapaCliente = null; marcadorMoto = null; }
 const mapDiv = document.getElementById('map');
@@ -787,6 +776,7 @@ if (mapDiv) mapDiv.innerHTML = '';
 if (intervaloActualizacion) { clearInterval(intervaloActualizacion); intervaloActualizacion = null; }
 document.getElementById('live-indicator').style.display = 'none';
 }
+
 function abrirPerfil() {
 loading(true);
 gs('obtenerPerfilMarca', marca).then(function(res) {
@@ -799,6 +789,7 @@ renderizarPreviewPerfil();
 ver('v_perfil');
 }).catch(function() { loading(false); showToast('Error de conexión', 'error'); });
 }
+
 function renderizarPreviewPerfil() {
 var avatar = document.getElementById('perfil_avatar');
 var url = logoBase64Pendiente ? ('data:' + logoMimePendiente + ';base64,' + logoBase64Pendiente) : ((perfilCache && perfilCache.logo) ? perfilCache.logo : '');
@@ -807,6 +798,7 @@ else { avatar.style.backgroundImage = 'none'; avatar.innerText = marca.charAt(0)
 document.getElementById('perfil_nombre').innerText = marca;
 document.getElementById('perfil_slogan_preview').innerText = document.getElementById('perfil_slogan').value || (perfilCache ? perfilCache.slogan : '') || 'Sin slogan aún';
 }
+
 function previsualizarLogo(input) {
 if (!input.files || !input.files[0]) return;
 var file = input.files[0];
@@ -830,6 +822,7 @@ img.src = e.target.result;
 };
 reader.readAsDataURL(file);
 }
+
 function guardarPerfil() {
 loading(true);
 var slogan = document.getElementById('perfil_slogan').value.trim();
@@ -844,6 +837,7 @@ volverAlMenu();
 } else showToast('⚠️ ' + res.mensaje, 'error');
 }).catch(function() { loading(false); showToast('Error de conexión', 'error'); });
 }
+
 function quitarLogo() {
 loading(true);
 gs('quitarLogoMarca', marca).then(function(res) {
@@ -856,6 +850,7 @@ aplicarLogoEnMenu(); renderizarPreviewPerfil();
 } else showToast('❌ ' + res.mensaje, 'error');
 }).catch(function() { loading(false); showToast('Error de conexión', 'error'); });
 }
+
 function aplicarLogoEnMenu() {
 var avatar = document.getElementById('brand_avatar_menu');
 var inicial = document.getElementById('tag_marca_inicial');
@@ -865,34 +860,41 @@ else { avatar.style.backgroundImage = 'none'; inicial.innerText = marca.charAt(0
 if (perfilCache && perfilCache.slogan) sloganEl.innerText = perfilCache.slogan;
 else sloganEl.innerText = 'Panel de Control';
 }
+
 function cargarPerfilMenu() {
 gs('obtenerPerfilMarca', marca).then(function(res) { if (res.exito) { perfilCache = res; aplicarLogoEnMenu(); } }).catch(function() {});
 }
+
 function togglePassword() {
 var input = document.getElementById('l_p'), icon = document.getElementById('iconEye');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
 else { input.type = 'password'; icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; }
 }
+
 function togglePasswordReg() {
 var input = document.getElementById('r_p'), icon = document.getElementById('iconEyeReg');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
 else { input.type = 'password'; icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; }
 }
+
 function togglePasswordCP() {
 var input = document.getElementById('cp_actual'), icon = document.getElementById('iconEyeCP');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
 else { input.type = 'password'; icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; }
 }
+
 function togglePasswordCPNueva() {
 var input = document.getElementById('cp_nueva'), icon = document.getElementById('iconEyeCPNueva');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
 else { input.type = 'password'; icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; }
 }
+
 function togglePasswordCPConfirmar() {
 var input = document.getElementById('cp_confirmar'), icon = document.getElementById('iconEyeCPConfirmar');
 if (input.type === 'password') { input.type = 'text'; icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'; }
 else { input.type = 'password'; icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; }
 }
+
 async function recuperarPassword() {
 const m = document.getElementById('rp_m').value.trim();
 const tel = document.getElementById('rp_tel').value.trim();
@@ -905,6 +907,7 @@ if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); ver('v_bienvenida')
 else showToast('❌ ' + res.mensaje, 'error');
 } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
+
 async function cambiarPassword() {
 const pa = document.getElementById('cp_actual').value, pn = document.getElementById('cp_nueva').value, pc = document.getElementById('cp_confirmar').value;
 if (!pa || !pn || !pc) { showToast('⚠️ Completa todos los campos', 'warning'); return; }
@@ -918,7 +921,9 @@ showToast(res.mensaje, res.exito ? 'success' : 'error');
 if (res.exito) location.reload();
 } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
+
 async function volverAlMenu() { await refrescarDeuda(); ver('v_menu'); }
+
 async function refrescarDeuda() {
 if (!marca) return;
 try {
@@ -937,6 +942,7 @@ bannerDeuda.querySelector('.progress-bar').style.width = Math.min((deuda.deuda /
 aplicarLogoEnMenu();
 } catch (e) { console.error(e); }
 }
+
 function cambiarTab(tabNombre) {
 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
 document.querySelectorAll('.modern-tab').forEach(b => b.classList.remove('active'));
@@ -953,7 +959,9 @@ const index = tabs.indexOf(tabNombre);
 const botones = document.querySelectorAll('.modern-tab');
 if (index >= 0 && botones[index]) botones[index].classList.add('active');
 }
+
 function obtenerDiaSemanaActualFront() { const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return dias[new Date().getDay()]; }
+
 window.addEventListener("DOMContentLoaded", function() {
 console.log('🚀 DOMContentLoaded iniciado');
 try {
@@ -980,10 +988,12 @@ console.error('❌ Error en DOMContentLoaded:', e);
 loading(false);
 console.log('✅ Loader ocultado');
 });
+
 setTimeout(function() {
 loading(false);
 console.log('⏰ Loader forzado a ocultar por timeout');
 }, 3000);
+
 async function ejecutarRastreoClienteLoop() {
 if (!tokenClienteActual) return;
 try {
@@ -1014,12 +1024,11 @@ document.getElementById('espera_destino').innerText = res.destino || ''; documen
 }
 } catch (e) { console.error(e); }
 }
+
 function inicializarMapaRastreo(lat, lng) {
 if (mapaCliente && marcadorMoto) {
 const nuevaPos = new L.LatLng(lat, lng);
-if (marcadorMoto._icon) {
-marcadorMoto._icon.style.transition = 'all 1s ease-out';
-}
+if (marcadorMoto._icon) { marcadorMoto._icon.style.transition = 'all 1s ease-out'; }
 marcadorMoto.setLatLng(nuevaPos);
 mapaCliente.setView(nuevaPos, 17);
 ultimaActualizacion = new Date();
@@ -1029,86 +1038,45 @@ return;
 mapaCliente = L.map('map').setView([lat, lng], 17);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapaCliente);
 marcadorMoto = L.marker([lat, lng]).addTo(mapaCliente).bindPopup('Moto de Luna Delivery 🛵').openPopup();
-L.circleMarker([lat, lng], {
-radius: 15,
-color: '#10b981',
-fillColor: '#10b981',
-fillOpacity: 0.3,
-className: 'pulse-ring'
-}).addTo(mapaCliente);
+L.circleMarker([lat, lng], { radius: 15, color: '#10b981', fillColor: '#10b981', fillOpacity: 0.3, className: 'pulse-ring' }).addTo(mapaCliente);
 ultimaActualizacion = new Date();
 document.getElementById('live-indicator').style.display = 'flex';
 if (intervaloActualizacion) clearInterval(intervaloActualizacion);
 intervaloActualizacion = setInterval(actualizarTiempoTranscurrido, 1000);
 }
+
 function actualizarTiempoTranscurrido() {
 if (!ultimaActualizacion) return;
 const ahora = new Date();
 const segundos = Math.floor((ahora - ultimaActualizacion) / 1000);
 let texto = '';
-if (segundos < 60) {
-texto = 'hace ' + segundos + ' seg';
-} else if (segundos < 3600) {
-const minutos = Math.floor(segundos / 60);
-texto = 'hace ' + minutos + ' min';
-} else {
-const horas = Math.floor(segundos / 3600);
-texto = 'hace ' + horas + ' h';
-}
+if (segundos < 60) { texto = 'hace ' + segundos + ' seg'; }
+else if (segundos < 3600) { const minutos = Math.floor(segundos / 60); texto = 'hace ' + minutos + ' min'; }
+else { const horas = Math.floor(segundos / 3600); texto = 'hace ' + horas + ' h'; }
 const el = document.getElementById('last-update-time');
 if (el) el.innerText = texto;
 }
 
-// ✅ FUNCIÓN ENTRAR MODIFICADA: GEOCODIFICA LA DIRECCIÓN DE LA MARCA
 async function entrar(event) {
-    if (event) event.preventDefault();
-    marca = document.getElementById('l_m').value;
-    if (!marca) { showToast('Ingresa tu marca', 'warning'); return; }
-    loading(true);
-    try {
-        const ok = await gs('validarAccAccess', marca, document.getElementById('l_p').value);
-        if (ok) {
-            document.getElementById('tag_marca').innerText = marca;
-            cargarPerfilMenu();
-            await refrescarDeuda();
-            
-            // ✅ GEOCODIFICAR DIRECCIÓN DE LA MARCA CON MAPBOX
-            await geocodificarDireccionMarca();
-            
-            loading(false); ver('v_menu');
-        } else { loading(false); showToast('Credenciales incorrectas', 'error'); }
-    } catch (e) { loading(false); showToast('Error de conexión', 'error'); }
-}
-
-// ✅ NUEVA FUNCIÓN: Geocodificar dirección de la marca
-async function geocodificarDireccionMarca() {
-    try {
-        const perfil = await gs('obtenerPerfilMarca', marca);
-        if (perfil.exito && perfil.calle && perfil.colonia && perfil.municipio) {
-            const direccion = `${perfil.calle}, ${perfil.colonia}, ${perfil.municipio}, Jalisco, Mexico`;
-            console.log('🔍 Geocodificando dirección de marca:', direccion);
-            
-            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(direccion)}.json?access_token=${mapboxgl.accessToken}&country=mx&limit=1`;
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            if (data.features && data.features.length > 0) {
-                const coords = data.features[0].center;
-                window.marcaLat = coords[1];
-                window.marcaLng = coords[0];
-                console.log('✅ Coordenadas de marca guardadas:', window.marcaLat, window.marcaLng);
-            } else {
-                console.error('❌ No se encontraron coordenadas para la marca');
-            }
-        }
-    } catch (e) {
-        console.error('Error geocodificando marca:', e);
-    }
+if (event) event.preventDefault();
+marca = document.getElementById('l_m').value;
+if (!marca) { showToast('Ingresa tu marca', 'warning'); return; }
+loading(true);
+try {
+const ok = await gs('validarAccAccess', marca, document.getElementById('l_p').value);
+if (ok) {
+document.getElementById('tag_marca').innerText = marca;
+cargarPerfilMenu();
+await refrescarDeuda();
+loading(false); ver('v_menu');
+} else { loading(false); showToast('Credenciales incorrectas', 'error'); }
+} catch (e) { loading(false); showToast('Error de conexión', 'error'); }
 }
 
 async function abrirReg() { loading(true); try { const d = await gs('getMunicipios'); fill('r_mun', d); loading(false); ver('v_reg'); } catch (e) { loading(false); showToast('Error al cargar municipios', 'error'); } }
 async function getCPReg(m) { document.getElementById('r_cp').innerHTML = '<option value="">...</option>'; document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!m) return; loading(true); try { const d = await gs('getCPs', m); fill('r_cp', d); loading(false); } catch (e) { loading(false); } }
 async function getColReg(cp) { document.getElementById('r_col').innerHTML = '<option value="">...</option>'; if(!cp) return; loading(true); try { const d = await gs('getColonias', cp); fill('r_col', d); loading(false); } catch (e) { loading(false); } }
+
 async function ejecutarRegistro(event) {
 if (event) event.preventDefault();
 const o = { m: document.getElementById('r_m').value, mun: document.getElementById('r_mun').value, cp: document.getElementById('r_cp').value, col: document.getElementById('r_col').value, calle: document.getElementById('r_dir').value, tel: document.getElementById('r_tel').value, pass: document.getElementById('r_p').value };
@@ -1117,161 +1085,71 @@ loading(true);
 try { await gs('registrarMarca', o); loading(false); showToast('¡Cuenta creada! Ahora puedes iniciar sesión.', 'success'); ver('v_login'); document.getElementById('l_m').value = o.m; } catch (e) { loading(false); showToast('Error al registrar', 'error'); }
 }
 
-// ✅ FUNCIÓN PARA INICIALIZAR GEOCODIFICADOR DE DESTINO
 function inicializarGeocodificadorDestino() {
-    if (typeof mapboxgl === 'undefined' || typeof MapboxGeocoder === 'undefined') {
-        console.error('❌ Mapbox no está cargado');
-        return;
-    }
-    
-    if (geocoderDestino) {
-        console.log('⚠️ Geocodificador de destino ya existe');
-        return;
-    }
-    
-    console.log('🗺️ Inicializando geocodificador de destino...');
-    
-    geocoderDestino = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-        placeholder: 'Ej: Av. Vallarta 1234, Zapopan',
-        countries: 'mx',
-        types: 'address',
-        proximity: { longitude: -103.3918, latitude: 20.6597 },
-        minLength: 3,
-        limit: 5
-    });
-    
-    geocoderDestino.addTo('#geocoder-destino');
-    
-    geocoderDestino.on('result', function(e) {
-        const result = e.result;
-        document.getElementById('destino_lat').value = result.center[1];
-        document.getElementById('destino_lng').value = result.center[0];
-        document.getElementById('destino_completo').value = result.place_name;
-        document.getElementById('destino-texto').innerText = result.place_name;
-        document.getElementById('destino-preview').style.display = 'block';
-        
-        console.log('📍 Coordenadas destino:', result.center[1], result.center[0]);
-        calc();
-    });
+if (typeof mapboxgl === 'undefined' || typeof MapboxGeocoder === 'undefined') { console.error('❌ Mapbox no está cargado'); return; }
+if (geocoderDestino) { console.log('⚠️ Geocodificador de destino ya existe'); return; }
+console.log('🗺️ Inicializando geocodificador de destino...');
+try {
+geocoderDestino = new MapboxGeocoder({
+accessToken: mapboxgl.accessToken, mapboxgl: mapboxgl, placeholder: 'Ej: Av. Vallarta 1234, Zapopan', countries: 'mx', types: 'address', proximity: { longitude: -103.3918, latitude: 20.6597 }, minLength: 3, limit: 5
+});
+geocoderDestino.addTo('#geocoder-destino');
+geocoderDestino.on('result', function(e) {
+const result = e.result;
+document.getElementById('destino_lat').value = result.center[1];
+document.getElementById('destino_lng').value = result.center[0];
+document.getElementById('destino_completo').value = result.place_name;
+document.getElementById('destino-texto').innerText = result.place_name;
+document.getElementById('destino-preview').style.display = 'block';
+calc();
+});
+console.log('✅ Geocodificador de destino inicializado');
+} catch (error) { console.error('❌ Error al inicializar geocodificador:', error); }
 }
 
-// ✅ FUNCIÓN PARA INICIALIZAR GEOCODIFICADOR DE ORIGEN
 function inicializarGeocodificadorOrigen() {
-    if (typeof mapboxgl === 'undefined' || typeof MapboxGeocoder === 'undefined') {
-        console.error('❌ Mapbox no está cargado');
-        return;
-    }
-    
-    if (geocoderOrigen) {
-        console.log('⚠️ Geocodificador de origen ya existe');
-        return;
-    }
-    
-    console.log('🗺️ Inicializando geocodificador de origen...');
-    
-    geocoderOrigen = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-        placeholder: 'Ej: Av. Juárez 567, Guadalajara',
-        countries: 'mx',
-        types: 'address',
-        proximity: { longitude: -103.3918, latitude: 20.6597 },
-        minLength: 3,
-        limit: 5
-    });
-    
-    geocoderOrigen.addTo('#geocoder-origen');
-    
-    geocoderOrigen.on('result', function(e) {
-        const result = e.result;
-        document.getElementById('origen_lat').value = result.center[1];
-        document.getElementById('origen_lng').value = result.center[0];
-        document.getElementById('origen_completo').value = result.place_name;
-        document.getElementById('origen-texto').innerText = result.place_name;
-        document.getElementById('origen-preview').style.display = 'block';
-        
-        console.log('📍 Coordenadas origen:', result.center[1], result.center[0]);
-        calc();
-    });
-}
-
-// ✅ FUNCIÓN CALC ACTUALIZADA PARA USAR COORDENADAS DE MAPBOX (8 ARGUMENTOS)
-async function calc() {
-    if (tipoServicioActual === 'enviar') {
-        const destinoCompleto = document.getElementById('destino_completo').value.trim();
-        const destinoLat = document.getElementById('destino_lat').value;
-        const destinoLng = document.getElementById('destino_lng').value;
-        const tipoOrigen = document.getElementById('c_origen_tipo').value;
-        
-        if (destinoCompleto && destinoLat && destinoLng && window.marcaLat && window.marcaLng) {
-            document.getElementById('box_precio').innerText = "Calculando tarifa...";
-            try {
-                const res = await gs('calcularPrecio', 
-                    destinoCompleto, 
-                    marca, 
-                    tipoOrigen, 
-                    '', 
-                    destinoLat, 
-                    destinoLng,
-                    window.marcaLat,
-                    window.marcaLng
-                );
-                if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
-                else if (tipoOrigen === "hub" && res.precio === 75) document.getElementById('box_precio').innerText = '$75.00 (¡Tarifa Fija Hub!)';
-                else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
-                km = res.km; origen = res.origen;
-                if (!isNaN(res.precio) || res.precio == 75 || res.precio == 90) document.getElementById('btn_g').disabled = false;
-            } catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
-        }
-    } else {
-        const origenCompleto = document.getElementById('origen_completo').value.trim();
-        const origenLat = document.getElementById('origen_lat').value;
-        const origenLng = document.getElementById('origen_lng').value;
-        
-        if (origenCompleto && origenLat && origenLng && window.marcaLat && window.marcaLng) {
-            document.getElementById('box_precio').innerText = "Calculando tarifa...";
-            try {
-                const res = await gs('calcularPrecio', 
-                    origenCompleto, 
-                    marca, 
-                    "recibir", 
-                    '', 
-                    window.marcaLat,
-                    window.marcaLng,
-                    origenLat,
-                    origenLng
-                );
-                if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
-                else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
-                km = res.km; origen = origenCompleto;
-                if (!isNaN(res.precio) || res.precio == 90) document.getElementById('btn_g').disabled = false;
-            } catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
-        }
-    }
+if (typeof mapboxgl === 'undefined' || typeof MapboxGeocoder === 'undefined') { console.error('❌ Mapbox no está cargado'); return; }
+if (geocoderOrigen) { console.log('⚠️ Geocodificador de origen ya existe'); return; }
+console.log('🗺️ Inicializando geocodificador de origen...');
+try {
+geocoderOrigen = new MapboxGeocoder({
+accessToken: mapboxgl.accessToken, mapboxgl: mapboxgl, placeholder: 'Ej: Av. Juárez 567, Guadalajara', countries: 'mx', types: 'address', proximity: { longitude: -103.3918, latitude: 20.6597 }, minLength: 3, limit: 5
+});
+geocoderOrigen.addTo('#geocoder-origen');
+geocoderOrigen.on('result', function(e) {
+const result = e.result;
+document.getElementById('origen_lat').value = result.center[1];
+document.getElementById('origen_lng').value = result.center[0];
+document.getElementById('origen_completo').value = result.place_name;
+document.getElementById('origen-texto').innerText = result.place_name;
+document.getElementById('origen-preview').style.display = 'block';
+calc();
+});
+console.log('✅ Geocodificador de origen inicializado');
+} catch (error) { console.error('❌ Error al inicializar geocodificador:', error); }
 }
 
 function cambiarTipoServicio(tipo) {
-    tipoServicioActual = tipo;
-    document.getElementById('btn_enviar').classList.toggle('active', tipo === 'enviar');
-    document.getElementById('btn_recibir').classList.toggle('active', tipo === 'recibir');
-    const desc = document.getElementById('tipo_servicio_desc');
-    if (tipo === 'enviar') {
-        desc.innerText = '📤 Envío desde tu tienda a un destinatario';
-        document.getElementById('modo_enviar_contenido').style.display = 'block';
-        document.getElementById('modo_recibir_contenido').style.display = 'none';
-        document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
-        setTimeout(function() { inicializarGeocodificadorDestino(); }, 300);
-    } else {
-        desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
-        document.getElementById('modo_enviar_contenido').style.display = 'none';
-        document.getElementById('modo_recibir_contenido').style.display = 'block';
-        cargarProveedoresFrecuentes(); cargarDireccionTienda();
-        setTimeout(function() { inicializarGeocodificadorOrigen(); }, 300);
-    }
-    limpiarCamposDireccion(); document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false;
+tipoServicioActual = tipo;
+document.getElementById('btn_enviar').classList.toggle('active', tipo === 'enviar');
+document.getElementById('btn_recibir').classList.toggle('active', tipo === 'recibir');
+const desc = document.getElementById('tipo_servicio_desc');
+if (tipo === 'enviar') {
+desc.innerText = '📤 Envío desde tu tienda a un destinatario';
+document.getElementById('modo_enviar_contenido').style.display = 'block';
+document.getElementById('modo_recibir_contenido').style.display = 'none';
+document.getElementById('grupo_destinatario').style.display = destinatariosCache.length > 0 ? 'block' : 'none';
+setTimeout(function() { inicializarGeocodificadorDestino(); }, 300);
+} else {
+desc.innerText = '📥 Recibir mercancía: Proveedor → Tu tienda';
+document.getElementById('modo_enviar_contenido').style.display = 'none';
+document.getElementById('modo_recibir_contenido').style.display = 'block';
+cargarProveedoresFrecuentes(); cargarDireccionTienda();
+setTimeout(function() { inicializarGeocodificadorOrigen(); }, 300);
 }
+limpiarCamposDireccion(); document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false;
+}
+
 async function cargarProveedoresFrecuentes() {
 try {
 const provs = await gs('getProveedoresFrecuentes', marca);
@@ -1280,9 +1158,11 @@ const select = document.getElementById('c_proveedor'); select.innerHTML = '<opti
 proveedoresCache.forEach((p, idx) => { const opt = document.createElement('option'); opt.value = idx; opt.text = p.nombre + ' - ' + (p.colonia || '') + ', ' + (p.municipio || ''); select.appendChild(opt); });
 } catch (e) { console.error(e); }
 }
+
 async function cargarDireccionTienda() {
 try { const res = await gs('getDireccionTienda', marca); if (res.exito) { direccionTiendaCache = res; document.getElementById('texto_direccion_tienda').innerText = res.direccionCompleta; } } catch (e) { console.error(e); }
 }
+
 async function seleccionarProveedor() {
 const idx = document.getElementById('c_proveedor').value;
 if (idx === "" || !proveedoresCache[idx]) { limpiarCamposOrigen(); return; }
@@ -1290,9 +1170,7 @@ const prov = proveedoresCache[idx];
 loading(true);
 try {
 const direccionCompleta = prov.calle + ', ' + prov.colonia + ', ' + prov.municipio;
-if (geocoderOrigen) {
-geocoderOrigen.setInput(direccionCompleta);
-}
+if (geocoderOrigen) { geocoderOrigen.setInput(direccionCompleta); }
 document.getElementById('origen_completo').value = direccionCompleta;
 document.getElementById('origen-texto').innerText = direccionCompleta;
 document.getElementById('origen-preview').style.display = 'block';
@@ -1301,34 +1179,28 @@ calc();
 loading(false);
 } catch (e) { loading(false); showToast('Error al cargar proveedor', 'error'); }
 }
+
 function limpiarCamposDireccion() {
 if (geocoderDestino) geocoderDestino.setInput('');
-document.getElementById('destino_lat').value = '';
-document.getElementById('destino_lng').value = '';
-document.getElementById('destino_completo').value = '';
-document.getElementById('destino-preview').style.display = 'none';
+document.getElementById('destino_lat').value = ''; document.getElementById('destino_lng').value = ''; document.getElementById('destino_completo').value = ''; document.getElementById('destino-preview').style.display = 'none';
 limpiarCamposOrigen();
 }
+
 function limpiarCamposOrigen() {
 if (geocoderOrigen) geocoderOrigen.setInput('');
-document.getElementById('origen_lat').value = '';
-document.getElementById('origen_lng').value = '';
-document.getElementById('origen_completo').value = '';
-document.getElementById('origen-preview').style.display = 'none';
+document.getElementById('origen_lat').value = ''; document.getElementById('origen_lng').value = ''; document.getElementById('origen_completo').value = ''; document.getElementById('origen-preview').style.display = 'none';
 }
+
 async function abrirNuevo() {
 try {
 const deudaInfo = await gs('obtenerDeudaCliente', marca);
-console.log('📊 Info de deuda:', deudaInfo);
 if (deudaInfo.pedidosPendientes > 0 && deudaInfo.diasMasAntiguo > 3) {
 document.getElementById('dias_deuda_bloqueo').innerText = deudaInfo.diasMasAntiguo + ' días';
 document.getElementById('monto_deuda_bloqueo').innerText = deudaInfo.deuda.toFixed(2);
 document.getElementById('modal_bloqueo_deuda').classList.add('active');
 return;
 }
-} catch (e) {
-console.error('Error al verificar deuda:', e);
-}
+} catch (e) { console.error('Error al verificar deuda:', e); }
 esEdicion = false;
 document.getElementById('form_title').innerText = "Solicitar Envío";
 loading(true);
@@ -1340,40 +1212,24 @@ cambiarTipoServicio('enviar');
 limpiarCot();
 loading(false);
 ver('v_cot');
-} catch (e) {
-loading(false);
-showToast('Error al abrir formulario', 'error');
-}
-}
-function cerrarModalBloqueo() {
-document.getElementById('modal_bloqueo_deuda').classList.remove('active');
-}
-function cerrarModalErrorValidacion() {
-document.getElementById('modal_error_validacion').classList.remove('active');
+} catch (e) { loading(false); showToast('Error al abrir formulario', 'error'); }
 }
 
-// ✅ FUNCIÓN LIMPIAR COTIZACIÓN ACTUALIZADA (LIMPIA CAMPO INTERIOR)
+function cerrarModalBloqueo() { document.getElementById('modal_bloqueo_deuda').classList.remove('active'); }
+function cerrarModalErrorValidacion() { document.getElementById('modal_error_validacion').classList.remove('active'); }
+
 function limpiarCot() {
-document.getElementById('c_fila').value = ""; 
-document.getElementById('c_origen_tipo').value = "marca"; 
+document.getElementById('c_fila').value = "";
+document.getElementById('c_origen_tipo').value = "marca";
 if (geocoderDestino) geocoderDestino.setInput('');
-document.getElementById('destino_lat').value = '';
-document.getElementById('destino_lng').value = '';
-document.getElementById('destino_completo').value = '';
-document.getElementById('destino_interior').value = '';
-document.getElementById('destino-preview').style.display = 'none';
+document.getElementById('destino_lat').value = ''; document.getElementById('destino_lng').value = ''; document.getElementById('destino_completo').value = ''; document.getElementById('destino_interior').value = ''; document.getElementById('destino-preview').style.display = 'none';
 if (geocoderOrigen) geocoderOrigen.setInput('');
-document.getElementById('origen_lat').value = '';
-document.getElementById('origen_lng').value = '';
-document.getElementById('origen_completo').value = '';
-document.getElementById('origen-preview').style.display = 'none';
-document.getElementById('box_precio').innerText = "Costo: —"; 
-document.getElementById('c_rec').value = ""; 
-document.getElementById('c_tel').value = ""; 
-document.getElementById('c_com').value = ""; 
-document.getElementById('btn_g').disabled = false; 
-document.getElementById('chk_guardar_proveedor').checked = false; 
-document.getElementById('grupo_nombre_proveedor').style.display = 'none'; 
+document.getElementById('origen_lat').value = ''; document.getElementById('origen_lng').value = ''; document.getElementById('origen_completo').value = ''; document.getElementById('origen-preview').style.display = 'none';
+document.getElementById('box_precio').innerText = "Costo: —";
+document.getElementById('c_rec').value = ""; document.getElementById('c_tel').value = ""; document.getElementById('c_com').value = "";
+document.getElementById('btn_g').disabled = false;
+document.getElementById('chk_guardar_proveedor').checked = false;
+document.getElementById('grupo_nombre_proveedor').style.display = 'none';
 document.getElementById('nombre_proveedor_nuevo').value = "";
 const selDest = document.getElementById('c_destinatario'); if (selDest) selDest.value = "";
 const selProv = document.getElementById('c_proveedor'); if (selProv) selProv.value = "";
@@ -1381,18 +1237,46 @@ const selProv = document.getElementById('c_proveedor'); if (selProv) selProv.val
 
 function toggleNombreProveedor() { document.getElementById('grupo_nombre_proveedor').style.display = document.getElementById('chk_guardar_proveedor').checked ? 'block' : 'none'; }
 
-// ✅ FUNCIÓN GUARDAR ACTUALIZADA (INCLUYE NÚMERO INTERIOR)
+async function calc() {
+if (tipoServicioActual === 'enviar') {
+const destinoCompleto = document.getElementById('destino_completo').value.trim();
+const destinoLat = document.getElementById('destino_lat').value;
+const destinoLng = document.getElementById('destino_lng').value;
+const tipoOrigen = document.getElementById('c_origen_tipo').value;
+if (destinoCompleto && destinoLat && destinoLng) {
+document.getElementById('box_precio').innerText = "Calculando tarifa...";
+try {
+const res = await gs('calcularPrecio', destinoCompleto, marca, tipoOrigen, '', destinoLat, destinoLng);
+if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
+else if (tipoOrigen === "hub" && res.precio === 75) document.getElementById('box_precio').innerText = '$75.00 (¡Tarifa Fija Hub!)';
+else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
+km = res.km; origen = res.origen;
+if (!isNaN(res.precio) || res.precio == 75 || res.precio == 90) document.getElementById('btn_g').disabled = false;
+} catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
+}
+} else {
+const origenCompleto = document.getElementById('origen_completo').value.trim();
+const origenLat = document.getElementById('origen_lat').value;
+const origenLng = document.getElementById('origen_lng').value;
+if (origenCompleto && origenLat && origenLng) {
+document.getElementById('box_precio').innerText = "Calculando tarifa...";
+try {
+const res = await gs('calcularPrecio', origenCompleto, marca, "recibir", '', origenLat, origenLng);
+if (res.tarifaEspecial) document.getElementById('box_precio').innerText = '💎 $90.00 (Tarifa Especial) | ' + res.km + ' KM';
+else document.getElementById('box_precio').innerText = isNaN(res.precio) ? res.precio : '$' + res.precio + '.00 (' + res.km + ' KM)';
+km = res.km; origen = origenCompleto;
+if (!isNaN(res.precio) || res.precio == 90) document.getElementById('btn_g').disabled = false;
+} catch (e) { document.getElementById('box_precio').innerText = "Error calculando"; }
+}
+}
+}
+
 async function guardar() {
 const camposFaltantes = [];
-if (tipoServicioActual === 'enviar') {
-if (!document.getElementById('destino_completo').value) camposFaltantes.push('Dirección de Destino');
-} else {
-if (!document.getElementById('origen_completo').value) camposFaltantes.push('Dirección de Recolección');
-}
+if (tipoServicioActual === 'enviar') { if (!document.getElementById('destino_completo').value) camposFaltantes.push('Dirección de Destino'); } 
+else { if (!document.getElementById('origen_completo').value) camposFaltantes.push('Dirección de Recolección'); }
 const telReceptor = document.getElementById('c_tel').value.trim();
-if (!telReceptor) {
-camposFaltantes.push('Teléfono Receptor');
-}
+if (!telReceptor) { camposFaltantes.push('Teléfono Receptor'); }
 if (camposFaltantes.length > 0) {
 const listaHtml = camposFaltantes.map(campo => '<li>• ' + campo + '</li>').join('');
 document.getElementById('lista_campos_faltantes').innerHTML = listaHtml;
@@ -1404,33 +1288,22 @@ const match = document.getElementById('box_precio').innerText.match(/\d+/);
 const rawPrecio = match ? match[0] : 0;
 let destinoFinal;
 if (tipoServicioActual === 'enviar') {
-    let destinoBase = document.getElementById('destino_completo').value;
-    const interior = document.getElementById('destino_interior').value.trim();
-    if (interior) {
-        destinoFinal = destinoBase + ' | Int: ' + interior;
-    } else {
-        destinoFinal = destinoBase;
-    }
+let destinoBase = document.getElementById('destino_completo').value;
+const interior = document.getElementById('destino_interior').value.trim();
+destinoFinal = interior ? destinoBase + ' | Int: ' + interior : destinoBase;
 } else {
 if (!direccionTiendaCache) { showToast('No se pudo obtener la dirección de tu tienda', 'error'); loading(false); return; }
 destinoFinal = direccionTiendaCache.direccionCompleta;
 }
-const o = { 
-fila: document.getElementById('c_fila').value, 
-marca: marca, 
-origen: tipoServicioActual === 'recibir' ? document.getElementById('origen_completo').value : origen, 
-destino: destinoFinal, 
-precio: rawPrecio, 
-recibe: document.getElementById('c_rec').value, 
-celular: document.getElementById('c_tel').value, 
-coments: document.getElementById('c_com').value, 
-km: km, 
-tipoServicio: tipoServicioActual, 
+const o = {
+fila: document.getElementById('c_fila').value, marca: marca,
+origen: tipoServicioActual === 'recibir' ? document.getElementById('origen_completo').value : origen,
+destino: destinoFinal, precio: rawPrecio, recibe: document.getElementById('c_rec').value,
+celular: document.getElementById('c_tel').value, coments: document.getElementById('c_com').value,
+km: km, tipoServicio: tipoServicioActual,
 direccionProveedor: tipoServicioActual === 'recibir' ? document.getElementById('origen_completo').value : "",
-destino_lat: document.getElementById('destino_lat').value || null,
-destino_lng: document.getElementById('destino_lng').value || null,
-origen_lat: document.getElementById('origen_lat').value || null,
-origen_lng: document.getElementById('origen_lng').value || null
+destino_lat: document.getElementById('destino_lat').value || null, destino_lng: document.getElementById('destino_lng').value || null,
+origen_lat: document.getElementById('origen_lat').value || null, origen_lng: document.getElementById('origen_lng').value || null
 };
 try {
 if (esEdicion) {
@@ -1442,16 +1315,7 @@ const id = await gs('guardarPedido', o);
 if (tipoServicioActual === 'recibir' && document.getElementById('chk_guardar_proveedor').checked) {
 const nombreProv = document.getElementById('nombre_proveedor_nuevo').value.trim();
 if (nombreProv) {
-const datosProv = { 
-nombre: nombreProv, 
-calle: document.getElementById('origen_completo').value, 
-numExt: '', 
-numInt: '', 
-colonia: '', 
-municipio: '', 
-cp: '', 
-celular: document.getElementById('c_tel').value 
-};
+const datosProv = { nombre: nombreProv, calle: document.getElementById('origen_completo').value, numExt: '', numInt: '', colonia: '', municipio: '', cp: '', celular: document.getElementById('c_tel').value };
 const resProv = await gs('guardarProveedorFrecuente', marca, datosProv);
 if (resProv.exito && !resProv.duplicado) showToast('✅ Proveedor guardado: ' + nombreProv, 'success');
 }
@@ -1472,6 +1336,7 @@ fechaFiltroAdmin = new Date(fechaInput);
 toggleFechaSelectorAdmin();
 renderizarAdmin();
 }
+
 function filtrarHistorial(status) {
 statusHistorialActual = status;
 document.getElementById('f_pend').classList.toggle('active', status === 'Pendiente');
@@ -1527,6 +1392,7 @@ contenidoDireccion + fechaMostrar +
 });
 document.getElementById('list_c').innerHTML = bloquesHtml.join('') || '<p style="color:var(--text-muted); margin-top:24px;">' + ((textoBusqueda || fechaFiltro) ? '🤷 Sin resultados para tu búsqueda.' : 'Sin pedidos.') + '</p>';
 }
+
 async function confirmarCancelacion(fila, idPedido) {
 const ok = await showConfirm('¿Estás seguro de cancelar el pedido ' + idPedido + '?');
 if (!ok) return;
@@ -1537,20 +1403,19 @@ loading(false); showToast(res.mensaje, res.exito ? 'success' : 'error');
 if (res.exito) { pedidosCache = await gs('getPedidos', marca, "cliente"); filtrarHistorial('Pendiente'); }
 } catch (e) { loading(false); showToast('Error al cancelar', 'error'); }
 }
+
 async function prepararEdicion(pEncoded) {
-const p = JSON.parse(decodeURIComponent(pEncoded)); 
-esEdicion = true; 
-document.getElementById('form_title').innerText = "Editar Envío"; 
-document.getElementById('c_fila').value = p.fila; 
-document.getElementById('c_rec').value = p.recibe; 
-document.getElementById('c_tel').value = p.celular; 
+const p = JSON.parse(decodeURIComponent(pEncoded));
+esEdicion = true;
+document.getElementById('form_title').innerText = "Editar Envío";
+document.getElementById('c_fila').value = p.fila;
+document.getElementById('c_rec').value = p.recibe;
+document.getElementById('c_tel').value = p.celular;
 document.getElementById('c_com').value = p.coments;
 if (p.tipoServicio === 'recibir') cambiarTipoServicio('recibir');
 else {
 cambiarTipoServicio('enviar');
-if (geocoderDestino) {
-geocoderDestino.setInput(p.destino);
-}
+if (geocoderDestino) { geocoderDestino.setInput(p.destino); }
 document.getElementById('destino_completo').value = p.destino;
 document.getElementById('destino-texto').innerText = p.destino;
 document.getElementById('destino-preview').style.display = 'block';
@@ -1559,7 +1424,9 @@ if (p.destino_lng) document.getElementById('destino_lng').value = p.destino_lng;
 }
 loading(false); ver('v_cot');
 }
+
 async function cargarAdmin() { loading(true); try { pedidosCache = await gs('getPedidos', "", "admin", statusAdminActual); calcularContadoresRutas(); renderizarAdmin(); generarBotonesRuta(); loading(false); } catch (e) { loading(false); showToast('Error al cargar panel', 'error'); } }
+
 function calcularContadoresRutas() {
 const hoy = resolverDiaHoyTexto();
 const counts = { 'TODOS': 0, 'HOY': 0, 'Lunes': 0, 'Martes': 0, 'Miércoles': 0, 'Jueves': 0, 'Viernes': 0, 'Sábado': 0, 'Domingo': 0, 'Por asignar': 0 };
@@ -1567,35 +1434,29 @@ pedidosCache.forEach(p => {
 if (p.status === 'Entregado' || p.status === 'Cancelado') return;
 counts['TODOS']++;
 if (p.dia === hoy) counts['HOY']++;
-if (p.dia === 'Lunes') counts['Lunes']++;
-if (p.dia === 'Martes') counts['Martes']++;
-if (p.dia === 'Miércoles') counts['Miércoles']++;
-if (p.dia === 'Jueves') counts['Jueves']++;
-if (p.dia === 'Viernes') counts['Viernes']++;
-if (p.dia === 'Sábado') counts['Sábado']++;
-if (p.dia === 'Domingo') counts['Domingo']++;
+if (p.dia === 'Lunes') counts['Lunes']++; if (p.dia === 'Martes') counts['Martes']++; if (p.dia === 'Miércoles') counts['Miércoles']++;
+if (p.dia === 'Jueves') counts['Jueves']++; if (p.dia === 'Viernes') counts['Viernes']++; if (p.dia === 'Sábado') counts['Sábado']++; if (p.dia === 'Domingo') counts['Domingo']++;
 if (p.dia === 'Por asignar') counts['Por asignar']++;
 });
 routeCounts = counts; actualizarContadoresUI();
 }
+
 function actualizarContadoresUI() {
 const hoyNombre = resolverDiaHoyTexto(), hoyFecha = new Date().getDate();
 document.getElementById('text-hoy').innerText = 'Hoy (' + hoyNombre.substring(0, 3) + ' ' + hoyFecha + ')';
 document.getElementById('count-todos').innerText = routeCounts['TODOS'];
 document.getElementById('count-hoy').innerText = routeCounts['HOY'];
-document.getElementById('count-lunes').innerText = routeCounts['Lunes'];
-document.getElementById('count-martes').innerText = routeCounts['Martes'];
-document.getElementById('count-miercoles').innerText = routeCounts['Miércoles'];
-document.getElementById('count-jueves').innerText = routeCounts['Jueves'];
-document.getElementById('count-viernes').innerText = routeCounts['Viernes'];
-document.getElementById('count-sabado').innerText = routeCounts['Sábado'];
-document.getElementById('count-domingo').innerText = routeCounts['Domingo'];
-document.getElementById('count-sin-asignar').innerText = routeCounts['Por asignar'];
+document.getElementById('count-lunes').innerText = routeCounts['Lunes']; document.getElementById('count-martes').innerText = routeCounts['Martes'];
+document.getElementById('count-miercoles').innerText = routeCounts['Miércoles']; document.getElementById('count-jueves').innerText = routeCounts['Jueves'];
+document.getElementById('count-viernes').innerText = routeCounts['Viernes']; document.getElementById('count-sabado').innerText = routeCounts['Sábado'];
+document.getElementById('count-domingo').innerText = routeCounts['Domingo']; document.getElementById('count-sin-asignar').innerText = routeCounts['Por asignar'];
 const badge = document.getElementById('badge_sin_asignar');
 if (badge) { badge.innerText = routeCounts['Por asignar']; badge.style.display = routeCounts['Por asignar'] > 0 ? 'flex' : 'none'; }
 }
+
 function openDaysPanel() { document.getElementById('days-panel-overlay').classList.add('active'); document.getElementById('days-panel').classList.add('active'); document.body.style.overflow = 'hidden'; }
 function closeDaysPanel() { document.getElementById('days-panel-overlay').classList.remove('active'); document.getElementById('days-panel').classList.remove('active'); document.body.style.overflow = ''; }
+
 function selectDay(dia) {
 diaAdminActual = dia;
 document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
@@ -1604,6 +1465,7 @@ const activeBtn = document.getElementById(map[dia]);
 if (activeBtn) activeBtn.classList.add('active');
 closeDaysPanel(); renderizarAdmin(); generarBotonesRuta();
 }
+
 function cambiarEstatusAdmin(status) {
 statusAdminActual = status;
 const selectorContainer = document.getElementById('selector_fecha_admin');
@@ -1614,7 +1476,9 @@ document.getElementById('adm_tab_comp').classList.toggle('active', status === 'E
 document.getElementById('adm_tab_cancel').classList.toggle('active', status === 'Cancelado');
 cargarAdmin();
 }
+
 function resolverDiaHoyTexto() { const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']; return diasSemana[new Date().getDay()]; }
+
 function obtenerPedidosPorDiaAdmin() {
 const hoy = resolverDiaHoyTexto();
 return pedidosCache.filter(p => {
@@ -1625,6 +1489,7 @@ if (diaAdminActual === 'HOY') return diaPedido === hoy;
 return diaPedido === diaAdminActual;
 });
 }
+
 function renderizarAdmin() {
 const bloquesAdmin = [];
 const filtrados = pedidosCache.filter(p => {
@@ -1649,13 +1514,9 @@ const estadoPago = p.estadoPago || "Pendiente";
 const badgePago = (estadoPago === "Pendiente") ? '<span class="pago-badge pago-pend">⏳ Pendiente</span>' : '<span class="pago-badge pago-ok">✅ Pagado</span>';
 const statusBadge = p.status === 'Entregado' ? '<span class="status-badge entr">Entregado</span>' : (p.status === 'Cancelado' ? '<span class="status-badge cancel">Cancelado</span>' : '<span class="status-badge pend">' + p.status + '</span>');
 let btnIniciar;
-if (p.status === "En Entrega") {
-btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" onclick="detenerEntrega(' + p.fila + ')">⏸️ Detener Entrega</button>';
-} else if (p.status === "Cancelado") {
-btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>🚫 Cancelado</button>';
-} else {
-btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>';
-}
+if (p.status === "En Entrega") { btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" onclick="detenerEntrega(' + p.fila + ')">⏸️ Detener Entrega</button>'; } 
+else if (p.status === "Cancelado") { btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--danger-gradient); color:#fff;" disabled>🚫 Cancelado</button>'; } 
+else { btnIniciar = '<button class="btn" style="padding:12px; margin:0; font-size:11px; background:var(--accent-gradient); color:#fff;" onclick="iniciarEntrega(' + p.fila + ')">🛵 Iniciar Entrega</button>'; }
 const tipoBadge = (p.tipoServicio === 'recibir') ? '<span class="tipo-badge tipo-recibir">📥 Recibir</span>' : '<span class="tipo-badge tipo-enviar">📤 Enviar</span>';
 const contenidoDireccion = (p.tipoServicio === 'recibir' && p.direccionProveedor) ? '<div class="ruta-2-puntos" style="margin: 12px 0;"><div class="punto"><div class="punto-titulo">📍 Punto A - Recolección</div><div class="punto-direccion">' + p.direccionProveedor + '</div></div><div class="flecha">⬇️</div><div class="punto" style="border-left-color: var(--success);"><div class="punto-titulo" style="color: #166534;">🏪 Punto B - Tienda</div><div class="punto-direccion">' + p.destino + '</div></div></div>' : '<p style="margin:0 0 6px 0;"><b>📍 Destino:</b> ' + p.destino + ' (' + p.km + ' KM)</p>';
 const celLimpio = String(p.celular || '').replace(/\D/g, '');
@@ -1679,9 +1540,11 @@ contenidoDireccion +
 });
 document.getElementById('lista_admin').innerHTML = bloquesAdmin.join('') || "<p style='color:var(--text-muted); padding:24px;'>Sin pedidos.</p>";
 }
+
 async function guardarPrioridad(fila, valor) { await gs('actualizarPrioridad', fila, valor); cargarAdmin(); }
 async function cambiarDiaDirecto(fila, letraDia) { await gs('actualizarDiaUnico', fila, letraDia); cargarAdmin(); }
 async function setSt(f, s) { loading(true); await gs('actualizarStatus', f, s); cargarAdmin(); }
+
 async function detenerEntrega(fila) {
 const ok = await showConfirm("⚠️ ¿Detener la entrega? El GPS se desactivará y el pedido regresará a 'Pendiente'. El cliente ya no podrá ver tu ubicación.");
 if (!ok) return;
@@ -1689,20 +1552,13 @@ loading(true);
 try {
 const res = await gs('detenerEntrega', fila);
 loading(false);
-if (res.exito) {
-showToast('✅ ' + res.mensaje, 'success');
-cargarAdmin();
-} else {
-showToast('⚠️ ' + (res.error || res.mensaje), 'error');
+if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } 
+else { showToast('⚠️ ' + (res.error || res.mensaje), 'error'); }
+} catch (e) { loading(false); showToast('❌ Error al detener entrega', 'error'); }
 }
-} catch (e) {
-loading(false);
-showToast('❌ Error al detener entrega', 'error');
-}
-}
-function limpiarDestinoParaRuta(destino) {
-return destino;
-}
+
+function limpiarDestinoParaRuta(destino) { return destino; }
+
 function abrirRutaIndividual(fila) {
 const p = pedidosCache.find(item => item.fila === fila);
 if (!p) { showToast('No se encontró el pedido.', 'error'); return; }
@@ -1716,6 +1572,7 @@ navigator.geolocation.getCurrentPosition(position => { loading(false); window.op
 () => { loading(false); showToast('⚠️ Usando origen del pedido', 'warning'); window.open("https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(origenRespaldo) + "&destination=" + encodeURIComponent(destinoRuta), '_blank'); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
+
 async function enviarNotificacionWhatsApp(fila) {
 const p = pedidosCache.find(item => item.fila === fila);
 if (!p) { showToast('No se encontró el pedido.', 'error'); return; }
@@ -1731,6 +1588,7 @@ const msg = "🌙 *LUNA DELIVERY* 🌙\n━━━━━━━━━━━━━�
 window.open("https://api.whatsapp.com/send?phone=52" + String(p.celular || '').replace(/\D/g, '') + "&text=" + encodeURIComponent(msg), '_blank');
 } catch (e) { showToast('Error al generar link', 'error'); }
 }
+
 function construirRutaConGPS(paradas, origenRespaldo) {
 const abrir = (origen) => {
 let url;
@@ -1743,6 +1601,7 @@ navigator.geolocation.getCurrentPosition(position => { loading(false); abrir(pos
 () => { loading(false); showToast('⚠️ Usando origen del primer pedido', 'warning'); abrir(origenRespaldo); },
 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
+
 async function abrirRutaMapsPriorizada(filtro) {
 let seleccionados = obtenerPedidosPorDiaAdmin();
 if (filtro !== 'TODOS') seleccionados = seleccionados.filter(p => p.destino.includes(filtro));
@@ -1755,6 +1614,7 @@ const paradas = direccionesOptimizadas.map(d => encodeURIComponent(limpiarDestin
 construirRutaConGPS(paradas, seleccionados[0].origen || "");
 } catch (e) { loading(false); showToast('❌ Error al optimizar la ruta', 'error'); }
 }
+
 function generarBotonesRuta() {
 const pendientesDia = obtenerPedidosPorDiaAdmin();
 pendientesDia.sort((a, b) => a.prioridad - b.prioridad);
@@ -1769,6 +1629,7 @@ const routesSection = document.getElementById('routes-buttons-section'), botones
 if (hBotonesSheet.length > 0) { routesSection.style.display = 'block'; botonesContainer.innerHTML = hBotonesSheet.join(''); }
 else { routesSection.style.display = 'none'; botonesContainer.innerHTML = ''; }
 }
+
 async function consultarID() {
 const id = document.getElementById('in_id_consulta').value.trim();
 if (!id) { showToast('Por favor ingresa un ID', 'warning'); return; }
@@ -1795,6 +1656,7 @@ document.getElementById('rastreo_activo').style.display = 'none'; document.getEl
 }
 } catch (e) { loading(false); showToast('Error al buscar', 'error'); }
 }
+
 async function actualizarRastreoEnVivo(idPedido) {
 try {
 const res = await gs('obtenerDatosRastreoCliente', idPedido);
@@ -1807,18 +1669,16 @@ if (res.destino) document.getElementById('rastreo_destino').innerText = res.dest
 if (res.status) document.getElementById('rastreo_status').innerText = res.status;
 if (mapaCliente && marcadorMoto) {
 const np = new L.LatLng(res.moto.lat, res.moto.lng);
-if (marcadorMoto._icon) {
-marcadorMoto._icon.style.transition = 'all 1s ease-out';
-}
+if (marcadorMoto._icon) { marcadorMoto._icon.style.transition = 'all 1s ease-out'; }
 marcadorMoto.setLatLng(np);
 mapaCliente.setView(np, 17);
 ultimaActualizacion = new Date();
 document.getElementById('live-indicator').style.display = 'flex';
-}
-else inicializarMapaRastreo(res.moto.lat, res.moto.lng);
+} else { inicializarMapaRastreo(res.moto.lat, res.moto.lng); }
 }
 } catch (e) { console.error(e); }
 }
+
 async function iniciarEntrega(fila) {
 const ok = await showConfirm("¿Iniciar entrega? El cliente podrá ver tu ubicación en el mapa.");
 if (!ok) return;
@@ -1836,7 +1696,9 @@ loading(false); showToast('⚠️ Sin GPS, iniciando sin coordenadas', 'warning'
 try { const res = await gs('iniciarEntregaConGPS', fila, null, null); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarAdmin(); } else showToast('⚠️ ' + res.error, 'error'); } catch (e) {}
 }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
 }
+
 function mostrarNotifGPS(mensaje) { const notif = document.createElement('div'); notif.className = 'gps-notif'; notif.textContent = mensaje; document.body.appendChild(notif); setTimeout(() => notif.remove(), 3000); }
+
 async function activarGPSGlobal() {
 if (!navigator.geolocation) { showToast('❌ Tu navegador no soporta GPS', 'error'); return; }
 localStorage.setItem('gpsActivo', 'true'); actualizarBotonGPS(true);
@@ -1844,11 +1706,13 @@ document.getElementById('gps_status').innerHTML = '🛰️ GPS Activo - Enviando
 enviarGPSGlobal(); if (gpsIntervalo) clearInterval(gpsIntervalo); gpsIntervalo = setInterval(enviarGPSGlobal, 5000);
 showToast('✅ GPS Global activado', 'success');
 }
+
 function desactivarGPSGlobal() {
 localStorage.setItem('gpsActivo', 'false'); if (gpsIntervalo) { clearInterval(gpsIntervalo); gpsIntervalo = null; }
 actualizarBotonGPS(false); document.getElementById('gps_status').innerHTML = '🛰️ GPS Detenido'; document.getElementById('gps_status').style.color = 'var(--danger)';
 showToast('ℹ️ GPS Global detenido', 'info');
 }
+
 function actualizarBotonGPS(activo) {
 const btnGPS = document.getElementById('btn_gps_global');
 if (btnGPS) {
@@ -1856,6 +1720,7 @@ if (activo) { btnGPS.innerHTML = '⚠️ Detener GPS Global'; btnGPS.style.backg
 else { btnGPS.innerHTML = '🛰️ Activar GPS Global'; btnGPS.style.background = 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%);'; btnGPS.onclick = activarGPSGlobal; }
 }
 }
+
 async function enviarGPSGlobal() {
 try {
 const filas = await gs('obtenerFilasEnEntrega');
@@ -1866,6 +1731,7 @@ try { const res = await gs('actualizarGPSGlobal', filas, lat, lng); if (res.exit
 }, () => mostrarNotifGPS("❌ Error GPS"), { enableHighAccuracy: true, timeout: 10000 });
 } catch (e) { console.error(e); }
 }
+
 function verificarGPSAlCargar() {
 if (localStorage.getItem('gpsActivo') === 'true') {
 setTimeout(() => {
@@ -1874,7 +1740,9 @@ enviarGPSGlobal(); gpsIntervalo = setInterval(enviarGPSGlobal, 5000);
 }, 1500);
 }
 }
+
 async function marcarPagoAdmin(fila, estado) { loading(true); try { const res = await gs('marcarPago', fila, estado); loading(false); if (res.exito) cargarAdmin(); else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); } }
+
 async function cargarFinanzasHoy() {
 setActiveFinBtn('fin_hoy'); document.getElementById('nav_semana_container').style.display = 'none'; document.getElementById('vista_rango').style.display = 'none'; loading(true);
 try {
@@ -1886,6 +1754,7 @@ document.getElementById('rango_semana_texto').innerText = new Date().toLocaleDat
 document.getElementById('lista_dias_semana').innerHTML = renderizarDiaCard(hoyNombre, datosHoy, true); document.getElementById('nav_semana_container').style.display = 'block';
 } catch (e) { loading(false); showToast('Error al cargar finanzas', 'error'); }
 }
+
 async function cargarFinanzasSemana() {
 setActiveFinBtn('fin_semana'); document.getElementById('vista_rango').style.display = 'none'; document.getElementById('nav_semana_container').style.display = 'block'; loading(true);
 try {
@@ -1894,6 +1763,7 @@ loading(false); if (!res.exito) { showToast(res.error, 'error'); return; }
 mostrarResumenSuperior(res); document.getElementById('rango_semana_texto').innerText = res.rangoTexto; renderizarListaDias(res.porDia);
 } catch (e) { loading(false); showToast('Error al cargar semana', 'error'); }
 }
+
 async function cargarFinanzasMes() {
 setActiveFinBtn('fin_mes'); document.getElementById('nav_semana_container').style.display = 'none'; document.getElementById('vista_rango').style.display = 'none'; loading(true);
 const hoy = new Date(), inicioMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1), finMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
@@ -1908,16 +1778,20 @@ res.pedidos.forEach(p => { html += '<div style="display: flex; justify-content: 
 html += '</div>'; document.getElementById('lista_dias_semana').innerHTML = html; document.getElementById('nav_semana_container').style.display = 'block';
 } catch (e) { loading(false); showToast('Error al cargar mes', 'error'); }
 }
+
 function navegarSemana(direccion) { fechaSemanaActual.setDate(fechaSemanaActual.getDate() + (direccion * 7)); cargarFinanzasSemana(); }
+
 function renderizarListaDias(porDia) {
 const diasOrden = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']; let html = '';
 diasOrden.forEach(dia => { const datos = porDia[dia] || { pedidos: 0, pagado: 0, pendiente: 0, total: 0, fecha: "" }; html += renderizarDiaCard(dia, datos, false); });
 document.getElementById('lista_dias_semana').innerHTML = html;
 }
+
 function renderizarDiaCard(dia, datos, esUnico) {
 const sinPedidos = datos.pedidos === 0;
 return '<div class="dia-card ' + (sinPedidos ? 'sin-pedidos' : '') + '" onclick="' + (sinPedidos ? '' : 'verDetalleDia(\'' + dia + '\')') + '"><div class="dia-card-header"><div><div class="dia-card-nombre">📅 ' + dia + '</div>' + (datos.fecha ? '<div class="dia-card-fecha">' + datos.fecha + '</div>' : '') + '</div><div class="stat-total">' + datos.pedidos + ' pedido' + (datos.pedidos !== 1 ? 's' : '') + '</div></div>' + (sinPedidos ? '<div style="font-size: 11px; color: var(--text-muted);">Sin pedidos</div>' : '<div class="dia-card-stats"><span class="stat-pagado">✅ $' + datos.pagado.toFixed(2) + '</span><span class="stat-pendiente">💰 $' + datos.pendiente.toFixed(2) + '</span></div>') + '</div>';
 }
+
 async function verDetalleDia(dia) {
 loading(true);
 try {
@@ -1929,23 +1803,28 @@ datosDia.pedidosLista.forEach(p => { html += '<div style="display: flex; justify
 html += '</div>'; document.getElementById('lista_dias_semana').innerHTML = html;
 } catch (e) { loading(false); showToast('Error al ver detalle', 'error'); }
 }
+
 function mostrarResumenSuperior(res) {
 document.getElementById('fin_total_pedidos').innerText = res.totalPedidos;
 document.getElementById('fin_total_ingresos').innerText = '$' + res.totalIngresos.toFixed(2);
 document.getElementById('fin_total_pagado').innerText = '$' + res.totalPagado.toFixed(2);
 document.getElementById('fin_total_pendiente').innerText = '$' + res.totalPendiente.toFixed(2);
 }
+
 function setActiveFinBtn(id) {
 ['fin_hoy', 'fin_semana', 'fin_mes', 'fin_rango'].forEach(btnId => { const btn = document.getElementById(btnId); if (btn) btn.classList.remove('active'); });
 const activeBtn = document.getElementById(id); if (activeBtn) activeBtn.classList.add('active');
 }
+
 function abrirModalRango() {
 setActiveFinBtn('fin_rango');
 const hoy = new Date(), yyyy = hoy.getFullYear(), mm = String(hoy.getMonth() + 1).padStart(2, '0'), dd = String(hoy.getDate()).padStart(2, '0');
 document.getElementById('rango_inicio').value = yyyy + '-' + mm + '-' + dd; document.getElementById('rango_fin').value = yyyy + '-' + mm + '-' + dd;
 document.getElementById('modal_rango').classList.add('active');
 }
+
 function cerrarModalRango() { document.getElementById('modal_rango').classList.remove('active'); }
+
 async function aplicarRango() {
 const fechaInicio = document.getElementById('rango_inicio').value, fechaFin = document.getElementById('rango_fin').value;
 if (!fechaInicio || !fechaFin) { showToast('Selecciona ambas fechas', 'warning'); return; }
@@ -1962,6 +1841,7 @@ res.pedidos.forEach(p => { html += '<div style="display: flex; justify-content: 
 document.getElementById('lista_pedidos_rango').innerHTML = html;
 } catch (e) { loading(false); showToast('Error al aplicar rango', 'error'); }
 }
+
 async function cargarPendientes() {
 const filtroMarca = document.getElementById('filtro_marca_pend').value || 'todas';
 const selectMarcas = document.getElementById('filtro_marca_pend');
@@ -1978,11 +1858,7 @@ opt.text = m;
 selectMarcas.appendChild(opt);
 });
 selectMarcas.value = filtroMarca;
-} catch (e) {
-loading(false);
-showToast('Error al cargar marcas', 'error');
-return;
-}
+} catch (e) { loading(false); showToast('Error al cargar marcas', 'error'); return; }
 }
 loading(true);
 try {
@@ -1994,11 +1870,9 @@ document.getElementById('pend_total_count').innerText = res.total;
 document.getElementById('pend_total_monto').innerText = '$' + res.montoTotal.toFixed(2);
 renderizarListaPendientes();
 actualizarResumenSeleccion();
-} catch (e) {
-loading(false);
-showToast('Error al cargar pendientes', 'error');
+} catch (e) { loading(false); showToast('Error al cargar pendientes', 'error'); }
 }
-}
+
 async function refrescarMarcasCobros() {
 marcasCobrosCache = [];
 const selectMarcas = document.getElementById('filtro_marca_pend');
@@ -2006,6 +1880,7 @@ selectMarcas.innerHTML = '<option value="todas">Todas las marcas</option>';
 await cargarPendientes();
 showToast('✅ Lista de marcas actualizada', 'success');
 }
+
 function renderizarListaPendientes() {
 let html = '';
 if (pedidosPendientesCache.length === 0) html = '<p style="text-align:center; color:var(--text-muted); padding:36px;">🎉 No hay pagos pendientes</p>';
@@ -2016,11 +1891,13 @@ html += '<div class="pendiente-item"><input type="checkbox" class="pend-checkbox
 }
 document.getElementById('lista_pendientes').innerHTML = html;
 }
+
 function actualizarResumenSeleccion() {
 const checkboxes = document.querySelectorAll('.pend-checkbox:checked'); let total = 0;
 checkboxes.forEach(cb => { total += parseFloat(cb.dataset.precio) || 0; });
 document.getElementById('pend_seleccionados_count').innerText = checkboxes.length; document.getElementById('pend_seleccionados_monto').innerText = '$' + total.toFixed(2);
 }
+
 async function marcarSeleccionadosPagado() {
 const checkboxes = document.querySelectorAll('.pend-checkbox:checked');
 if (checkboxes.length === 0) { showToast('Selecciona al menos un pedido', 'warning'); return; }
@@ -2029,11 +1906,13 @@ if (!ok) return;
 const filas = Array.from(checkboxes).map(cb => cb.dataset.fila); loading(true);
 try { const res = await gs('marcarPagosMasivo', filas); loading(false); if (res.exito) { showToast('✅ ' + res.mensaje, 'success'); cargarPendientes(); } else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pagos', 'error'); }
 }
+
 async function marcarUnPago(fila) {
 const ok = await showConfirm('¿Marcar este pedido como Pagado?');
 if (!ok) return; loading(true);
 try { const res = await gs('marcarPago', fila, 'Pagado'); loading(false); if (res.exito) cargarPendientes(); else showToast('❌ ' + res.error, 'error'); } catch (e) { loading(false); showToast('Error al marcar pago', 'error'); }
 }
+
 function enviarRecordatoriosWA() {
 const checkboxes = document.querySelectorAll('.pend-checkbox:checked');
 if (checkboxes.length === 0) { showToast('Selecciona al menos un pedido', 'warning'); return; }
@@ -2046,12 +1925,14 @@ const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos que ti
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
 }
+
 function enviarRecordatorioUn(fila) {
 const p = pedidosPendientesCache.find(x => x.fila === fila); if (!p) return;
 const celLimpio = String(p.celularMarca || p.celular || '').replace(/\D/g, '');
 const msg = '*Luna Delivery* 🌙\nHola *' + p.marca + '*,\nTe recordamos tu pedido *' + p.id + '* por $' + p.precio.toFixed(2) + ' del ' + p.fecha + ' está pendiente de pago.\n¡Gracias!';
 window.open("https://api.whatsapp.com/send?phone=52" + celLimpio + "&text=" + encodeURIComponent(msg), '_blank');
 }
+
 function cargarDropdownDestinatarios(dests) {
 const select = document.getElementById('c_destinatario'), grupo = document.getElementById('grupo_destinatario');
 if (!select || !grupo) return;
@@ -2066,36 +1947,27 @@ option.text = textoMostrar; select.appendChild(option);
 });
 } else grupo.style.display = 'none';
 }
+
 async function seleccionarDestinatario() {
 const idx = document.getElementById('c_destinatario').value;
 if (idx === "" || !destinatariosCache[idx]) {
 if (geocoderDestino) geocoderDestino.setInput('');
-document.getElementById('destino_lat').value = '';
-document.getElementById('destino_lng').value = '';
-document.getElementById('destino_completo').value = '';
-document.getElementById('destino_interior').value = '';
-document.getElementById('destino-preview').style.display = 'none';
-document.getElementById('c_rec').value = ""; 
-document.getElementById('c_tel').value = "";
-document.getElementById('box_precio').innerText = "Costo: —"; 
-document.getElementById('btn_g').disabled = false;
+document.getElementById('destino_lat').value = ''; document.getElementById('destino_lng').value = ''; document.getElementById('destino_completo').value = ''; document.getElementById('destino_interior').value = ''; document.getElementById('destino-preview').style.display = 'none';
+document.getElementById('c_rec').value = ""; document.getElementById('c_tel').value = "";
+document.getElementById('box_precio').innerText = "Costo: —"; document.getElementById('btn_g').disabled = false;
 return;
 }
 const dest = destinatariosCache[idx];
-document.getElementById('c_rec').value = dest.nombre || ""; 
+document.getElementById('c_rec').value = dest.nombre || "";
 document.getElementById('c_tel').value = dest.celular || "";
-if (geocoderDestino && dest.destino) {
-geocoderDestino.setInput(dest.destino);
-}
+if (geocoderDestino && dest.destino) { geocoderDestino.setInput(dest.destino); }
 document.getElementById('destino_completo').value = dest.destino || '';
 document.getElementById('destino-texto').innerText = dest.destino || '';
 document.getElementById('destino-preview').style.display = 'block';
 loading(true);
-try {
-calc();
-loading(false);
-} catch (e) { loading(false); showToast('Error al cargar destinatario', 'error'); }
+try { calc(); loading(false); } catch (e) { loading(false); showToast('Error al cargar destinatario', 'error'); }
 }
+
 function mostrarInstruccionesInstalacion() {
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent), esAndroid = /Android/.test(navigator.userAgent);
 if (esIOS) showToast('📲 Toca "Compartir" en Safari y luego "Agregar a inicio"', 'info');
@@ -2104,9 +1976,11 @@ if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r 
 else showToast('📱 Abre el menú de Chrome y selecciona "Instalar aplicación"', 'info');
 } else showToast('📲 Busca "Agregar a inicio" en el menú de tu navegador', 'info');
 }
+
 let touchStartX = 0, touchEndX = 0;
 document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
 document.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; manejarSwipe(); });
+
 function manejarSwipe() {
 const swipeThreshold = 100, diff = touchStartX - touchEndX;
 if (Math.abs(diff) > swipeThreshold) {
@@ -2117,12 +1991,15 @@ if (diff > 0 && indexActual < tabs.length - 1) cambiarTab(tabs[indexActual + 1])
 else if (diff < 0 && indexActual > 0) cambiarTab(tabs[indexActual - 1]);
 }
 }
+
 function vibrar() { if (navigator.vibrate) navigator.vibrate(50); }
 document.addEventListener('click', e => { if (e.target.closest('.btn')) vibrar(); });
+
 async function cargarAsignacionRepartidores() {
 loading(true);
 try { repartidoresCache = await gs('getListaRepartidores'); await cargarPedidosParaAsignar(); } catch (e) { loading(false); showToast('Error al cargar repartidores', 'error'); }
 }
+
 async function cargarPedidosParaAsignar() {
 try {
 const pedidos = await gs('getPedidos', "", "admin");
@@ -2140,6 +2017,7 @@ else asignados.forEach(p => { htmlAsignados += crearCardPedidoAsignado(p); });
 document.getElementById('lista_pedidos_asignados').innerHTML = htmlAsignados;
 } catch (e) { loading(false); showToast('Error al cargar pedidos', 'error'); }
 }
+
 function crearCardPedidoAsignable(p) {
 let opciones = '<option value="">— Seleccionar repartidor —</option>';
 repartidoresCache.forEach(r => { if (r.activo) opciones += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
@@ -2147,6 +2025,7 @@ const idMostrar = p.idPedido || p.token || 'Sin ID';
 const destinoCorto = p.destino ? p.destino.substring(0, 60) : '';
 return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--warning);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><select onchange="asignarRepartidor(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); margin-top:8px; font-size:12px;">' + opciones + '</select></div>';
 }
+
 function crearCardPedidoAsignado(p) {
 let nombreRepartidor = 'Sin nombre';
 const rep = repartidoresCache.find(r => r.id === p.repartidor);
@@ -2157,6 +2036,7 @@ let opcionesReasignar = '<option value="' + p.repartidor + '">' + nombreRepartid
 repartidoresCache.forEach(r => { if (r.activo && r.id !== p.repartidor) opcionesReasignar += '<option value="' + r.id + '">' + r.nombre + '</option>'; });
 return '<div class="card" style="text-align:left; font-size:12px; margin-bottom:12px; border-left: 4px solid var(--success);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><div><strong>' + idMostrar + '</strong><br><span style="color:var(--text-muted);">' + p.marca + '</span></div><span style="font-weight:800; color:var(--accent);">$' + p.precio + '</span></div><p style="margin:0 0 8px 0; font-size:11px;"><b>📍 Destino:</b> ' + destinoCorto + '...</p><p style="margin:0 0 8px 0; font-size:11px;"><b>👤 Recibe:</b> ' + p.recibe + '</p><div style="background:var(--bg); padding:8px; border-radius:6px; margin-top:8px;"><span style="font-size:10px; color:var(--text-muted);">Asignado a:</span><br><strong style="color:var(--success); font-size:13px;">👤 ' + nombreRepartidor + '</strong></div><div style="margin-top:12px;"><label style="font-size:10px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">🔄 Reasignar o quitar:</label><select onchange="reasignarPedido(' + p.fila + ', this.value)" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-size:12px;">' + opcionesReasignar + '</select></div></div>';
 }
+
 async function asignarRepartidor(fila, idRepartidor) {
 if (!idRepartidor) return;
 const ok = await showConfirm('¿Asignar este pedido al repartidor seleccionado?');
@@ -2164,6 +2044,7 @@ if (!ok) { cargarAsignacionRepartidores(); return; }
 loading(true);
 try { const res = await gs('asignarPedidoRepartidor', fila, idRepartidor); loading(false); showToast(res.exito ? '✅ ' + res.mensaje : '❌ ' + res.mensaje, res.exito ? 'success' : 'error'); cargarAsignacionRepartidores(); } catch (e) { loading(false); showToast('❌ Error de conexión', 'error'); cargarAsignacionRepartidores(); }
 }
+
 async function reasignarPedido(fila, nuevoId) {
 const pedidoActual = pedidosCache.find(p => p.fila === fila);
 if (pedidoActual && pedidoActual.repartidor === nuevoId) return;
@@ -2180,6 +2061,10 @@ try { const res = await gs('asignarPedidoRepartidor', fila, nuevoId); loading(fa
 }
 }
 </script>
+
+<!-- ========================================== -->
+<!-- ✅ SCRIPTS DE NOTIFICACIONES PUSH (CORREGIDOS) -->
+<!-- ========================================== -->
 <script>
 if ('serviceWorker' in navigator) {
 const modo = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') || 'cliente';
@@ -2189,40 +2074,47 @@ navigator.serviceWorker.register(swFile)
 .catch(err => console.log('❌ Error SW:', err));
 }
 </script>
+
 <script>
 const modoActual = document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo');
+
 if (modoActual === 'admin' && 'serviceWorker' in navigator && 'PushManager' in window) {
 const VAPID_PUBLIC_KEY = 'BFnCZ2Xk4P41E_DcTrXr4LiTGT5EtGS6Dwonf40bHraPRDr2VeiZy_NtkwLbpa1QkO_JfIPr1stu7Z_6phgrI6g';
+
 function urlBase64ToUint8Array(base64String) {
 const padding = '='.repeat((4 - base64String.length % 4) % 4);
 const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
 const rawData = window.atob(base64);
 const outputArray = new Uint8Array(rawData.length);
-for (let i = 0; i < rawData.length; ++i) {
-outputArray[i] = rawData.charCodeAt(i);
-}
+for (let i = 0; i < rawData.length; ++i) { outputArray[i] = rawData.charCodeAt(i); }
 return outputArray;
 }
+
 async function solicitarPermisoNotificaciones() {
 try {
 const permission = await Notification.requestPermission();
 console.log('Permiso de notificación:', permission);
+
 if (permission === 'granted') {
 console.log('✅ Permiso concedido. Registrando suscripción...');
 const registration = await navigator.serviceWorker.ready;
 const existingSubscription = await registration.pushManager.getSubscription();
+
 if (existingSubscription) {
 console.log('⚠️ Ya existe una suscripción previa. Eliminando...');
 await existingSubscription.unsubscribe();
 console.log('✅ Suscripción anterior eliminada');
 }
+
 const subscription = await registration.pushManager.subscribe({
 userVisibleOnly: true,
 applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
 });
+
 const subData = subscription.toJSON();
 console.log('Suscripción generada:', subData);
-await fetch('/api/guardarSuscripcionPush', {
+
+const response = await fetch('/api/guardarSuscripcionPush', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({
@@ -2231,43 +2123,40 @@ p256dh: subData.keys.p256dh,
 auth: subData.keys.auth
 })
 });
+
+if (response.ok) {
 console.log('✅ Suscripción guardada en el servidor.');
+showToast('🔔 Notificaciones activadas correctamente', 'success');
+} else {
+console.error('❌ Error al guardar en el servidor');
+}
 } else {
 console.log('⚠️ Permiso de notificaciones denegado.');
+showToast('⚠️ Permiso denegado. Actívalo en la configuración de tu navegador', 'warning');
 }
 } catch (error) {
 console.error('❌ Error al configurar notificaciones push:', error);
+showToast('❌ Error al configurar notificaciones', 'error');
 }
 }
+
+// Intentar automáticamente al cargar (con delay para asegurar que el SW esté listo)
 setTimeout(solicitarPermisoNotificaciones, 2000);
-}
-</script>
-<script>
-if (document.getElementById('modo_arranque_servidor')?.getAttribute('data-modo') === 'admin') {
-document.getElementById('btn-test-notif').style.display = 'block';
-}
-async function probarNotificacion() {
-try {
-const permiso = await Notification.requestPermission();
-console.log('Permiso:', permiso);
-if (permiso !== 'granted') {
-alert('⚠️ Necesitas aceptar el permiso de notificaciones.');
-return;
-}
-if ('serviceWorker' in navigator) {
+
+// ✅ Función global para el botón manual en la pestaña "Más"
+window.probarNotificacionManual = async function() {
+await solicitarPermisoNotificaciones();
+
+// Si ya tiene permiso, mostrar una notificación local de prueba inmediata
+if (Notification.permission === 'granted') {
 const reg = await navigator.serviceWorker.ready;
-await reg.showNotification('🔔 ¡Prueba exitosa!', {
-body: 'Si ves esto, las notificaciones funcionan correctamente',
-icon: '/manifest-admin.json',
+await reg.showNotification('🔔 ¡Prueba de Luna Delivery!', {
+body: 'Si ves esto, el sistema de notificaciones funciona perfectamente.',
+icon: 'https://drive.google.com/thumbnail?id=1jOiiRWxhyXF_wA7ObkKYVjd9PTlmXPvd&sz=w200',
 vibrate: [200, 100, 200]
 });
-alert('✅ Notificación enviada. Revisa tu barra de notificaciones.');
-} else {
-alert('❌ Tu navegador no soporta Service Workers');
 }
-} catch (error) {
-alert('❌ Error: ' + error.message);
-}
+};
 }
 </script>
 </body>
